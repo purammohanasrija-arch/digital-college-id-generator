@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import confetti from 'canvas-confetti';
@@ -6,7 +6,16 @@ import Header from './components/Header';
 import StudentForm from './components/StudentForm';
 import IDCard from './components/IDCard';
 import Footer from './components/Footer';
-import { initialStudentState, sampleStudentData, cardThemes, initialLogoConfig, sampleColleges } from './utils/defaultData';
+import AuroraBackground from './components/AuroraBackground';
+import MouseGlow from './components/MouseGlow';
+import {
+  initialStudentState,
+  sampleStudentData,
+  cardThemes,
+  initialLogoConfig,
+  sampleColleges
+} from './utils/defaultData';
+import { Sparkles } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -17,8 +26,31 @@ function App() {
   const [isGenerated, setIsGenerated] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [logoConfig, setLogoConfig] = useState(initialLogoConfig);
+  const [toastMessage, setToastMessage] = useState(null);
+  const [hasSavedDraft, setHasSavedDraft] = useState(false);
 
   const cardRef = useRef(null);
+  const toastTimeoutRef = useRef(null);
+
+  // Check if saved draft exists on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('digital_id_generator_draft');
+      if (saved) {
+        setHasSavedDraft(true);
+      }
+    } catch (e) {
+      // Local storage disabled or error
+    }
+  }, []);
+
+  const showToast = (msg) => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    setToastMessage(msg);
+    toastTimeoutRef.current = setTimeout(() => {
+      setToastMessage(null);
+    }, 3200);
+  };
 
   // Controlled input handler
   const handleInputChange = (e) => {
@@ -28,7 +60,6 @@ function App() {
       [name]: value
     }));
 
-    // Clear field-specific validation error on user input
     if (errors[name]) {
       setErrors((prev) => {
         const updated = { ...prev };
@@ -105,7 +136,6 @@ function App() {
       });
     }
 
-    // If logo is in default mode, keep text monogram synced with custom short name
     if (field === 'shortName' && logoConfig.mode === 'default') {
       const monogram = value.trim().toUpperCase() || 'COL';
       setLogoConfig((prev) => ({
@@ -134,6 +164,7 @@ function App() {
         mode: 'upload',
         customUpload: event.target?.result || ''
       }));
+      showToast('🖼️ Custom college logo uploaded!');
     };
     reader.readAsDataURL(file);
   };
@@ -166,6 +197,7 @@ function App() {
         }
       });
     }
+    showToast('🏛️ Restored default college crest');
   };
 
   // Apply custom created logo from Custom Logo Creator modal
@@ -176,6 +208,7 @@ function App() {
       activeLogo: { ...newLogoConfig.activeLogo },
       customLogo: { ...newLogoConfig.activeLogo }
     });
+    showToast('🎨 Custom designed logo applied to ID card!');
   };
 
   // Photo upload using FileReader for base64 data URL
@@ -193,6 +226,7 @@ function App() {
         ...prev,
         photo: event.target?.result || ''
       }));
+      showToast('📷 Student portrait photo updated');
     };
     reader.readAsDataURL(file);
   };
@@ -203,6 +237,7 @@ function App() {
       ...prev,
       photo: ''
     }));
+    showToast('Student photo removed');
   };
 
   // Auto-fill sample student data for rapid testing
@@ -216,6 +251,45 @@ function App() {
     });
     setErrors({});
     setIsGenerated(true);
+    showToast('✨ Auto-filled sample student credentials');
+  };
+
+  // Save draft to localStorage
+  const handleSaveDraft = () => {
+    try {
+      const dataToSave = {
+        student,
+        logoConfig,
+        selectedThemeId: selectedTheme.id
+      };
+      localStorage.setItem('digital_id_generator_draft', JSON.stringify(dataToSave));
+      setHasSavedDraft(true);
+      showToast('💾 Draft successfully saved to local browser storage!');
+    } catch (err) {
+      console.error(err);
+      showToast('⚠️ Could not save draft to local storage.');
+    }
+  };
+
+  // Load draft from localStorage
+  const handleLoadDraft = () => {
+    try {
+      const saved = localStorage.getItem('digital_id_generator_draft');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.student) setStudent(parsed.student);
+        if (parsed.logoConfig) setLogoConfig(parsed.logoConfig);
+        if (parsed.selectedThemeId) {
+          const theme = cardThemes.find((t) => t.id === parsed.selectedThemeId);
+          if (theme) setSelectedTheme(theme);
+        }
+        setErrors({});
+        showToast('📂 Saved draft restored successfully!');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('⚠️ Failed to load saved draft.');
+    }
   };
 
   // Validate required fields
@@ -259,18 +333,19 @@ function App() {
     const isValid = validateForm();
     if (isValid) {
       setIsGenerated(true);
-      // Trigger joyful celebration confetti
+      showToast('🎉 Official student ID badge verified & generated!');
       try {
         confetti({
-          particleCount: 75,
-          spread: 70,
+          particleCount: 90,
+          spread: 80,
           origin: { y: 0.6 }
         });
       } catch (err) {
-        // Safe fallback if canvas is not ready
+        // Fallback
       }
     } else {
       setIsGenerated(false);
+      showToast('⚠️ Please fill in all required fields highlighted in red.');
     }
   };
 
@@ -281,13 +356,13 @@ function App() {
     setErrors({});
     setIsGenerated(false);
     setActiveSide('front');
+    showToast('↺ Form reset to default blank state');
   };
 
   // Export as high-resolution PNG image
   const handleDownloadPNG = async () => {
     if (!cardRef.current) return;
 
-    // Run quick validation check first
     const isValid = validateForm();
     if (!isValid) {
       alert('Please fill in the required fields before downloading the ID card.');
@@ -299,7 +374,7 @@ function App() {
 
       const cardElement = cardRef.current;
       const canvas = await html2canvas(cardElement, {
-        scale: 3, // 3x pixel ratio for crystal clear high-DPI print quality
+        scale: 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
@@ -314,6 +389,7 @@ function App() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      showToast('📥 PNG download complete!');
     } catch (error) {
       console.error('Failed to export ID Card image:', error);
       alert('An error occurred while generating the ID card image. Please try again.');
@@ -345,16 +421,16 @@ function App() {
       });
 
       const imgData = canvas.toDataURL('image/png');
-      // Standard CR80 card dimensions in mm: 54mm width x 86mm height (portrait badge)
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: [85.6, 120] // Card container with slight printable margin
+        format: [85.6, 120]
       });
 
       pdf.addImage(imgData, 'PNG', 5, 5, 75.6, 110);
       const filename = `${student.studentId.trim() || 'student'}_id_card.pdf`.toLowerCase().replace(/[^a-z0-9._-]/g, '_');
       pdf.save(filename);
+      showToast('📄 PDF document generated!');
     } catch (error) {
       console.error('Failed to export ID Card PDF:', error);
       alert('An error occurred while generating the PDF. Please try again.');
@@ -363,24 +439,32 @@ function App() {
     }
   };
 
-  // Check if any custom input was entered
   const isLiveCustom = Object.entries(student).some(([key, val]) => val && val.trim?.() !== '');
 
   return (
-    <div className="app-layout">
-      {/* Background Decorative Blobs */}
-      <div className="bg-glow blob-1"></div>
-      <div className="bg-glow blob-2"></div>
-      <div className="bg-glow blob-3"></div>
+    <div className="app-layout futuristic-layout">
+      {/* 🌌 Aurora Background System */}
+      <AuroraBackground />
+
+      {/* ✨ Cursor Following Mouse Glow */}
+      <MouseGlow />
+
+      {/* Floating Glass Toast Notification */}
+      {toastMessage && (
+        <div className="floating-toast-alert glass-panel">
+          <Sparkles size={16} className="toast-sparkle" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
       <div className="app-container">
         {/* Header */}
         <Header />
 
-        {/* Main Two-Column Content Area */}
-        <main className="main-content-grid">
-          {/* Left Column: Controlled Student Details Form */}
-          <section className="form-column">
+        {/* Bento Grid Dashboard Layout */}
+        <main className="bento-dashboard-layout">
+          {/* Left Column: Form Bento Cards */}
+          <section className="bento-form-col">
             <StudentForm
               student={student}
               errors={errors}
@@ -394,6 +478,9 @@ function App() {
               onDownloadPNG={handleDownloadPNG}
               onDownloadPDF={handleDownloadPDF}
               onLoadSample={handleLoadSample}
+              onSaveDraft={handleSaveDraft}
+              onLoadDraft={handleLoadDraft}
+              hasSavedDraft={hasSavedDraft}
               selectedTheme={selectedTheme}
               onThemeChange={setSelectedTheme}
               logoConfig={logoConfig}
@@ -405,9 +492,21 @@ function App() {
             />
           </section>
 
-          {/* Right Column: Instant Live ID Card Preview */}
-          <section className="preview-column">
-            <div className="sticky-preview-wrapper">
+          {/* Right Column: Live 3D Holographic ID Card Preview */}
+          <section className="bento-preview-col">
+            <div className="bento-card bento-preview-card glass-panel sticky-bento-preview">
+              <div className="bento-card-header preview-bento-header">
+                <div className="bento-header-left">
+                  <div className="bento-icon-box cyan-glow">
+                    <Sparkles size={18} />
+                  </div>
+                  <div>
+                    <h3 className="bento-title">🪪 Live 3D Credential Preview</h3>
+                    <p className="bento-subtitle">Interactive 3D tilt & holographic security verification</p>
+                  </div>
+                </div>
+              </div>
+
               <IDCard
                 student={student}
                 cardRef={cardRef}

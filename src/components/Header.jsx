@@ -1,45 +1,46 @@
 import React from 'react';
-import { GraduationCap, Sparkles, QrCode, Download, ShieldCheck } from 'lucide-react';
+import { Sparkles, ShieldCheck, QrCode, Download, Cpu } from 'lucide-react';
 
 const Header = () => {
   return (
-    <header className="app-header">
-      <div className="header-badge">
-        <Sparkles size={16} className="badge-sparkle" />
-        <span>Official Academic Credential Studio</span>
-      </div>
-
-      <div className="header-brand">
-        <div className="brand-icon-wrapper">
-          <GraduationCap className="brand-icon" size={38} />
-          <div className="icon-glow"></div>
+    <header className="futuristic-app-header glass-panel">
+      <div className="header-top-meta">
+        <div className="system-pill">
+          <Cpu size={13} className="meta-icon-spin" />
+          <span>PORTAL v2.5 • AI CREDENTIAL ENGINE</span>
         </div>
-        <div className="brand-text">
-          <h1 className="header-title">
-            Digital College <span className="title-gradient">ID Generator</span>
-          </h1>
-          <p className="header-subtitle">
-            Create your professional digital college ID instantly
-          </p>
+
+        <div className="live-status-pill">
+          <span className="live-pulse-dot"></span>
+          <span className="live-text">LIVE PREVIEW</span>
         </div>
       </div>
 
-      <div className="header-features">
-        <div className="feature-pill">
-          <ShieldCheck size={15} />
-          <span>Real-time Live Sync</span>
+      <div className="header-main-title-wrap">
+        <h1 className="futuristic-title">
+          🎓 Digital College <span className="cyber-gradient-text">ID</span>
+        </h1>
+        <p className="futuristic-subtitle">
+          Create • Customize • Preview • Download
+        </p>
+      </div>
+
+      <div className="header-feature-pills">
+        <div className="glass-pill">
+          <ShieldCheck size={14} className="pill-cyan" />
+          <span>Holographic 3D Security</span>
         </div>
-        <div className="feature-pill">
-          <QrCode size={15} />
-          <span>Dynamic QR Code</span>
+        <div className="glass-pill">
+          <QrCode size={14} className="pill-purple" />
+          <span>Camera-Scannable QR</span>
         </div>
-        <div className="feature-pill">
-          <Download size={15} />
-          <span>HD Export (PNG & PDF)</span>
+        <div className="glass-pill">
+          <Download size={14} className="pill-emerald" />
+          <span>Vector HD 3x Print Ready</span>
         </div>
       </div>
     </header>
   );
 };
 
-export default Header;
+export default React.memo(Header);
