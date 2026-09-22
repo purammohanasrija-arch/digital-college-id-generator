@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import JsBarcode from 'jsbarcode';
+import BarcodeCanvas from './BarcodeCanvas';
 import {
   Shield,
   Phone,
@@ -38,9 +38,6 @@ const IDCard = ({
   const [showTestModal, setShowTestModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const barcodeRef = useRef(null);
-  const modalBarcodeRef = useRef(null);
-
   // Merge student input with fallback sample data so preview is never blank
   const displayData = {
     name: student.name.trim() || sampleStudentData.name,
@@ -72,60 +69,6 @@ Year: ${displayData.year}
 Validity: ${displayData.academicYear}
 Status: OFFICIAL STUDENT ✅`;
 
-  // Draw real scannable Code128 barcode whenever studentId or active side changes
-  useEffect(() => {
-    const rawId = (displayData.studentId || 'STU-2024-8842').trim();
-    // CODE128 supports ASCII 32 to 126
-    const sanitized = rawId.replace(/[^\x20-\x7E]/g, '') || 'STU-2024-8842';
-
-    const renderBarcode = (svgElem, width = 1.7, height = 40) => {
-      if (!svgElem) return;
-      try {
-        JsBarcode(svgElem, sanitized, {
-          format: 'CODE128',
-          lineColor: '#0f172a',
-          width: width,
-          height: height,
-          displayValue: true,
-          fontSize: 11,
-          font: 'monospace',
-          fontOptions: 'bold',
-          textMargin: 4,
-          margin: 6,
-          background: '#ffffff'
-        });
-      } catch (err) {
-        console.warn('Barcode render error, falling back to clean alphanumeric:', err);
-        const clean = sanitized.replace(/[^a-zA-Z0-9]/g, '') || 'STUDENT';
-        try {
-          JsBarcode(svgElem, clean, {
-            format: 'CODE128',
-            lineColor: '#0f172a',
-            width: width,
-            height: height,
-            displayValue: true,
-            fontSize: 11,
-            font: 'monospace',
-            fontOptions: 'bold',
-            textMargin: 4,
-            margin: 6,
-            background: '#ffffff'
-          });
-        } catch (e) {
-          console.error('Barcode generation failed:', e);
-        }
-      }
-    };
-
-    if (activeSide === 'back' && barcodeRef.current) {
-      renderBarcode(barcodeRef.current, 1.7, 40);
-    }
-
-    if (showTestModal && modalBarcodeRef.current) {
-      renderBarcode(modalBarcodeRef.current, 2.0, 50);
-    }
-  }, [displayData.studentId, activeSide, showTestModal]);
-
   const handleCopyPayload = () => {
     navigator.clipboard.writeText(qrPayload);
     setCopied(true);
@@ -143,15 +86,15 @@ Status: OFFICIAL STUDENT ✅`;
             onClick={() => onToggleSide('front')}
           >
             <FileBadge size={15} />
-            <span>Front (QR)</span>
+            <span>Front Side</span>
           </button>
           <button
             type="button"
             className={`side-tab-btn ${activeSide === 'back' ? 'active' : ''}`}
             onClick={() => onToggleSide('back')}
           >
-            <BarcodeIcon size={15} />
-            <span>Back (Barcode)</span>
+            <Layers size={15} />
+            <span>Back Side</span>
           </button>
         </div>
 
@@ -336,6 +279,18 @@ Status: OFFICIAL STUDENT ✅`;
                 </div>
               </div>
 
+              {/* REAL SCANNABLE CODE 128 BARCODE ON FRONT */}
+              <div className="card-front-barcode-section">
+                <div className="barcode-inner-card">
+                  <BarcodeCanvas
+                    value={displayData.studentId}
+                    width={1.55}
+                    height={32}
+                    fontSize={10}
+                  />
+                </div>
+              </div>
+
               {/* Card Footer with Scannable QR & Dual Signatures */}
               <div className="card-footer-zone">
                 <div className="qr-code-section">
@@ -426,10 +381,15 @@ Status: OFFICIAL STUDENT ✅`;
                   </div>
                 </div>
 
-                {/* REAL CODE128 BARCODE SVG & Return Notice */}
+                {/* REAL CODE128 BARCODE CANVAS ON BACK */}
                 <div className="barcode-container">
                   <div className="real-barcode-wrapper">
-                    <svg ref={barcodeRef} className="barcode-svg" />
+                    <BarcodeCanvas
+                      value={displayData.studentId}
+                      width={1.65}
+                      height={40}
+                      fontSize={11}
+                    />
                   </div>
                   <p className="return-policy">
                     If found, please return to any campus administrative desk or drop in nearest mailbox.
@@ -461,7 +421,7 @@ Status: OFFICIAL STUDENT ✅`;
 
             <div className="modal-body">
               <p className="modal-desc">
-                Both codes are dynamically generated from live student inputs and are 100% compliant with standard smartphone cameras and optical barcode scanners.
+                Both codes are dynamically generated from live student inputs using HTML5 vector standards and are 100% compliant with standard smartphone cameras and optical barcode scanners.
               </p>
 
               <div className="scanner-cards-grid">
@@ -504,7 +464,12 @@ Status: OFFICIAL STUDENT ✅`;
                     <span>Code 128 Barcode</span>
                   </div>
                   <div className="scanner-visual-box barcode-box">
-                    <svg ref={modalBarcodeRef} className="modal-barcode-svg" />
+                    <BarcodeCanvas
+                      value={displayData.studentId}
+                      width={2.0}
+                      height={50}
+                      fontSize={12}
+                    />
                   </div>
                   <div className="scanner-decoded-box">
                     <div className="decoded-header">
