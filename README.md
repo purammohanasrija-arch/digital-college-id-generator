@@ -16,6 +16,11 @@ Students can personalize their ID badges, choose from authentic university theme
 
 - ⚡ **Instant Live Preview**: Dynamic dual-binding updates the ID card badge in real time as the user types.
 - 🪪 **Authentic CR80 Portrait Badge Design**: Formatted according to standard institutional ID specifications, complete with lanyard slot punch, security microchip, and rainbow hologram seal.
+- 📋 **Pre-Populated Academic Option Dropdowns**:
+  - **Department**: 18+ comprehensive engineering, science, business, and humanities departments (with 1-click toggle to type custom).
+  - **Course / Program**: 20+ undergraduate, graduate, and doctorate programs (with custom input toggle).
+  - **Section**: Options from **Section 1 through Section 22**, plus letter batches.
+  - **Year of Study**: 1st Year through Ph.D Scholar.
 - 🔄 **Front & Back Flip View**: Interactive toggle to inspect both the front credential face and the reverse regulatory side (terms, campus helpline, return policy, and barcode).
 - 📱 **Real Scannable QR Code**: Powered by `qrcode.react`, embedding student verification JSON payload (Student ID, Name, Department, Valid Period) readable by any standard smartphone camera.
 - 🎨 **Institutional Theme Presets**:
