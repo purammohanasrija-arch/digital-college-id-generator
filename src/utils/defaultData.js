@@ -182,3 +182,100 @@ export const academicSessionOptions = [
   "2026 - 2027"
 ];
 
+export const collegeOptions = [
+  "Apex Institute of Science & Technology",
+  "Stanford Institute of Higher Education",
+  "Massachusetts Institute of Technology (MIT)",
+  "Oxford Academic University",
+  "Indian Institute of Technology (IIT)",
+  "Imperial College of Engineering & Research",
+  "Harvard Academy of Technology",
+  "Cambridge International University",
+  "California State Polytechnic University",
+  "National University of Singapore (NUS)",
+  "Melbourne Institute of Technology",
+  "University of Toronto & Technology",
+  "National Institute of Technology (NIT)",
+  "Delhi Technological University",
+  "ETH Zurich University of Technology"
+];
+
+export const presetLogos = [
+  {
+    id: "classic",
+    name: "Academic Shield (Gold & Navy)",
+    icon: "book",
+    shape: "shield",
+    primaryColor: "#1e3a8a",
+    accentColor: "#f59e0b",
+    monogram: "AIST",
+    estYear: "1985"
+  },
+  {
+    id: "tech",
+    name: "Quantum Tech & Innovation",
+    icon: "atom",
+    shape: "hexagon",
+    primaryColor: "#0f172a",
+    accentColor: "#38bdf8",
+    monogram: "MIT",
+    estYear: "1960"
+  },
+  {
+    id: "pillars",
+    name: "Classical Heritage Pillars",
+    icon: "pillars",
+    shape: "circle",
+    primaryColor: "#450a0a",
+    accentColor: "#fbbf24",
+    monogram: "OXF",
+    estYear: "1872"
+  },
+  {
+    id: "torch",
+    name: "Beacon of Excellence (Torch)",
+    icon: "torch",
+    shape: "shield",
+    primaryColor: "#064e3b",
+    accentColor: "#34d399",
+    monogram: "IIT",
+    estYear: "1951"
+  },
+  {
+    id: "crown",
+    name: "Imperial Royal Crown",
+    icon: "crown",
+    shape: "diamond",
+    primaryColor: "#2e1065",
+    accentColor: "#c084fc",
+    monogram: "HARV",
+    estYear: "1905"
+  },
+  {
+    id: "cap",
+    name: "Scholars Mortarboard Cap",
+    icon: "cap",
+    shape: "circle",
+    primaryColor: "#172554",
+    accentColor: "#60a5fa",
+    monogram: "UNIV",
+    estYear: "1992"
+  }
+];
+
+export const initialLogoConfig = {
+  mode: "preset",
+  presetId: "classic",
+  preset: presetLogos[0],
+  customUpload: "",
+  creator: {
+    icon: "book",
+    shape: "shield",
+    bgColor: "#1e3a8a",
+    accentColor: "#f59e0b",
+    monogram: "AIST",
+    estYear: "EST. 1985"
+  }
+};
+
+

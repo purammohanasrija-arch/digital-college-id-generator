@@ -16,6 +16,11 @@ Students can personalize their ID badges, choose from authentic university theme
 
 - ⚡ **Instant Live Preview**: Dynamic dual-binding updates the ID card badge in real time as the user types.
 - 🪪 **Authentic CR80 Portrait Badge Design**: Formatted according to standard institutional ID specifications, complete with lanyard slot punch, security microchip, and rainbow hologram seal.
+- 🏛️ **College Names Dropdown**: Pre-loaded list of 25+ top global & national institutions (IIT Delhi, IIT Bombay, MIT, Harvard, Stanford, Oxford, Cambridge, BITS Pilani, etc.) with 1-click toggle to type any custom institution.
+- 🎨 **College Logo Studio & Custom Logo Creator**:
+  - **Preset Crests**: Pick from official style university seals (Imperial Blue, Crimson Veritas, Tech Atom, Oxford Shield, etc.).
+  - **Customize Logo Creator**: Real-time vector crest designer with custom shield/circle/hexagon/diamond shapes, emblems (Book, Torch, Atom, Pillars, Graduation Cap, Crown), custom 1–3 letter monogram, dual color pickers, and establishment year.
+  - **Custom Image Upload**: Drag & drop or upload any custom college logo/crest PNG/SVG.
 - 📋 **Pre-Populated Academic & Personal Option Dropdowns**:
   - **Father's / Guardian's Name**: Dedicated bio field on the form, rendered on the ID card badge and embedded into the camera QR code.
   - **Academic Session Dropdown**: Pre-populated with 15+ standard 4-year, 3-year, 2-year, and 5-year sessions (e.g. `2024 - 2028`, `2025 - 2029`, etc.) with 1-click toggle to type custom.
@@ -24,7 +29,9 @@ Students can personalize their ID badges, choose from authentic university theme
   - **Section**: Options from **Section 1 through Section 22**, plus letter batches.
   - **Year of Study**: 1st Year through Ph.D Scholar.
 - 🔄 **Front & Back Flip View**: Interactive toggle to inspect both the front credential face and the reverse regulatory side (terms, campus helpline, return policy, and barcode).
-- 📱 **Real Scannable QR Code**: Powered by `qrcode.react`, embedding student verification JSON payload (Student ID, Name, Department, Valid Period) readable by any standard smartphone camera.
+- 📱 **Real Scannable QR Code & Barcode**:
+  - **Camera-Scannable QR**: Powered by `qrcode.react`, embedding student verification text readable by iPhone Camera, Google Lens, or Android scanners.
+  - **Code 128 Barcode**: High-contrast, optical scanner-ready canvas barcode (`jsbarcode`) on both front and back of badge, plus an interactive "Test Scanners" inspection modal.
 - 🎨 **Institutional Theme Presets**:
   - *Royal Navy & Gold*
   - *Crimson & Bronze*
@@ -104,11 +111,14 @@ digital-college-id-generator/
     ├── utils/
     │   └── defaultData.js   # Initial state, sample student data, theme definitions
     └── components/
-        ├── Header.jsx       # App branding and feature indicators
-        ├── FormInput.jsx    # Reusable controlled input with validation state
-        ├── StudentForm.jsx  # Multi-section details form & actions
-        ├── IDCard.jsx       # Realistic CR80 smart ID card badge (Front/Back)
-        └── Footer.jsx       # Application footer and credentials notice
+        ├── Header.jsx          # App branding and feature indicators
+        ├── FormInput.jsx       # Reusable controlled input with validation state
+        ├── StudentForm.jsx     # Multi-section details form, dropdowns & actions
+        ├── CollegeLogo.jsx     # Dynamic vector SVG crest & emblem renderer
+        ├── LogoStudioModal.jsx # Custom logo creator & presets modal
+        ├── BarcodeCanvas.jsx   # Code 128 canvas barcode generator
+        ├── IDCard.jsx          # Realistic CR80 smart ID card badge (Front/Back)
+        └── Footer.jsx          # Application footer and credentials notice
 ```
 
 ---
@@ -218,7 +228,10 @@ git push -u origin main
 
 ## Future Enhancements
 
-- [ ] Support for custom college logo / seal uploads.
+- [x] Pre-loaded college names, university presets, and custom college creator studio.
+- [x] Support for custom college logo / seal uploads and real-time SVG vector crest synthesis.
+- [x] Optical Code 128 barcode and camera-scannable QR verification.
+- [x] Father's / Guardian's name and Academic Session dropdowns.
 - [ ] NFC / vCard generation inside the QR payload for 1-tap contact saving.
 - [ ] Bulk batch ID card generation from CSV / Excel spreadsheets.
 - [ ] Direct print preset (standard 85.6mm x 54mm thermal printer driver sizing).

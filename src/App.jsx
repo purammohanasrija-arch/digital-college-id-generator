@@ -6,7 +6,7 @@ import Header from './components/Header';
 import StudentForm from './components/StudentForm';
 import IDCard from './components/IDCard';
 import Footer from './components/Footer';
-import { initialStudentState, sampleStudentData, cardThemes } from './utils/defaultData';
+import { initialStudentState, sampleStudentData, cardThemes, initialLogoConfig } from './utils/defaultData';
 import './App.css';
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
   const [activeSide, setActiveSide] = useState('front');
   const [isGenerated, setIsGenerated] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [logoConfig, setLogoConfig] = useState(initialLogoConfig);
 
   const cardRef = useRef(null);
 
@@ -126,6 +127,7 @@ function App() {
   // Reset form to pristine state
   const handleReset = () => {
     setStudent(initialStudentState);
+    setLogoConfig(initialLogoConfig);
     setErrors({});
     setIsGenerated(false);
     setActiveSide('front');
@@ -242,6 +244,8 @@ function App() {
               onLoadSample={handleLoadSample}
               selectedTheme={selectedTheme}
               onThemeChange={setSelectedTheme}
+              logoConfig={logoConfig}
+              onLogoConfigChange={setLogoConfig}
               isDownloading={isDownloading}
               isGenerated={isGenerated}
             />
@@ -256,6 +260,7 @@ function App() {
                 theme={selectedTheme}
                 activeSide={activeSide}
                 onToggleSide={setActiveSide}
+                logoConfig={logoConfig}
                 isLiveCustom={isLiveCustom}
               />
             </div>

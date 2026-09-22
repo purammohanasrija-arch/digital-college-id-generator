@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import BarcodeCanvas from './BarcodeCanvas';
+import CollegeLogo from './CollegeLogo';
 import {
   Shield,
   Phone,
@@ -34,6 +35,7 @@ const IDCard = ({
   theme,
   activeSide,
   onToggleSide,
+  logoConfig,
   isLiveCustom
 }) => {
   const [showTestModal, setShowTestModal] = useState(false);
@@ -152,11 +154,7 @@ Status: OFFICIAL STUDENT ✅`;
               {/* College Header */}
               <div className="card-header-bar" style={{ background: theme.gradient }}>
                 <div className="header-crest-wrap">
-                  <img
-                    src="/college-crest.svg"
-                    alt="Crest"
-                    className="college-crest-icon"
-                  />
+                  <CollegeLogo config={logoConfig} size={46} />
                 </div>
                 <div className="header-info">
                   <h3 className="card-college-name">{displayData.college}</h3>

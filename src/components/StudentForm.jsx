@@ -27,6 +27,8 @@ import {
   UserCheck
 } from 'lucide-react';
 import FormInput from './FormInput';
+import CollegeLogo from './CollegeLogo';
+import LogoStudioModal from './LogoStudioModal';
 import {
   bloodGroups,
   genders,
@@ -35,7 +37,8 @@ import {
   sectionOptions,
   departmentOptions,
   courseOptions,
-  academicSessionOptions
+  academicSessionOptions,
+  collegeOptions
 } from '../utils/defaultData';
 
 const StudentForm = ({
@@ -51,12 +54,16 @@ const StudentForm = ({
   onLoadSample,
   selectedTheme,
   onThemeChange,
+  logoConfig,
+  onLogoConfigChange,
   isDownloading,
   isGenerated
 }) => {
   const fileInputRef = useRef(null);
+  const [isLogoStudioOpen, setIsLogoStudioOpen] = useState(false);
 
   const [customMode, setCustomMode] = useState({
+    college: false,
     department: false,
     course: false,
     section: false,
@@ -326,17 +333,59 @@ const StudentForm = ({
             <h3 className="section-title">Academic Details</h3>
           </div>
 
+          {/* College Logo & Emblem Studio Banner */}
+          <div className="logo-selector-card">
+            <div className="logo-selector-left">
+              <div className="logo-preview-badge-mini">
+                <CollegeLogo config={logoConfig} size={42} />
+              </div>
+              <div className="logo-selector-info">
+                <span className="logo-selector-title">College Crest & Logo</span>
+                <span className="logo-selector-desc">
+                  {logoConfig?.mode === 'upload'
+                    ? '📁 Custom image active'
+                    : logoConfig?.mode === 'creator'
+                    ? `🎨 Custom: ${logoConfig?.creator?.monogram || 'Crest'} (${logoConfig?.creator?.shape})`
+                    : `🛡️ Preset: ${logoConfig?.preset?.name || 'Academic Shield'}`}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="btn-open-logo-studio"
+              onClick={() => setIsLogoStudioOpen(true)}
+            >
+              <Sparkles size={14} />
+              <span>Customize Logo Creator</span>
+            </button>
+          </div>
+
           <div className="form-grid-1">
-            <FormInput
-              label="College / University Name"
-              name="college"
-              value={student.college}
-              onChange={onChange}
-              placeholder="e.g. Apex Institute of Science & Technology"
-              required
-              error={errors.college}
-              icon={School}
-            />
+            <div className="field-with-switch">
+              <div className="field-top-meta">
+                <button
+                  type="button"
+                  className="btn-text-switch"
+                  onClick={() => toggleCustomMode('college')}
+                >
+                  {customMode.college ? <List size={12} /> : <Edit3 size={12} />}
+                  <span>{customMode.college ? 'College list' : 'Type custom'}</span>
+                </button>
+              </div>
+              <FormInput
+                label="College / University Name"
+                name="college"
+                type={customMode.college ? 'text' : 'select'}
+                options={collegeOptions}
+                value={student.college}
+                onChange={onChange}
+                placeholder={customMode.college ? "e.g. Apex Institute of Science & Technology" : "Select College / University"}
+                required
+                error={errors.college}
+                icon={School}
+              />
+            </div>
           </div>
 
           <div className="form-grid-2">
@@ -526,6 +575,14 @@ const StudentForm = ({
           </div>
         </div>
       </form>
+
+      {/* College Logo & Emblem Studio Modal */}
+      <LogoStudioModal
+        isOpen={isLogoStudioOpen}
+        onClose={() => setIsLogoStudioOpen(false)}
+        logoConfig={logoConfig}
+        onChangeLogoConfig={onLogoConfigChange}
+      />
     </div>
   );
 };
