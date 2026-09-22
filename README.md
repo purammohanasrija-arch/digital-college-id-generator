@@ -16,8 +16,10 @@ Students can personalize their ID badges, choose from authentic university theme
 
 - ⚡ **Instant Live Preview**: Dynamic dual-binding updates the ID card badge in real time as the user types.
 - 🪪 **Authentic CR80 Portrait Badge Design**: Formatted according to standard institutional ID specifications, complete with lanyard slot punch, security microchip, and rainbow hologram seal.
-- 📋 **Pre-Populated Academic Option Dropdowns**:
-  - **Department**: 18+ comprehensive engineering, science, business, and humanities departments (with 1-click toggle to type custom).
+- 📋 **Pre-Populated Academic & Personal Option Dropdowns**:
+  - **Father's / Guardian's Name**: Dedicated bio field on the form, rendered on the ID card badge and embedded into the camera QR code.
+  - **Academic Session Dropdown**: Pre-populated with 15+ standard 4-year, 3-year, 2-year, and 5-year sessions (e.g. `2024 - 2028`, `2025 - 2029`, etc.) with 1-click toggle to type custom.
+  - **Department**: 18+ comprehensive engineering, science, business, and humanities departments (with custom input toggle).
   - **Course / Program**: 20+ undergraduate, graduate, and doctorate programs (with custom input toggle).
   - **Section**: Options from **Section 1 through Section 22**, plus letter batches.
   - **Year of Study**: 1st Year through Ph.D Scholar.
