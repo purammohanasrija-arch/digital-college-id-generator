@@ -66,6 +66,7 @@ const StudentForm = ({
   logoConfig,
   onLogoUpload,
   onLogoRemove,
+  onUpdateLogoSetting,
   onApplyCustomLogo,
   isDownloading,
   isGenerated
@@ -480,8 +481,13 @@ const StudentForm = ({
           <div className="bento-card-body">
             <div className="logo-management-header">
               <div className="logo-management-left">
-                <div className="logo-mini-badge-frame holo-photo-ring">
-                  <CollegeLogo config={logoConfig} size={46} />
+                <div
+                  className={`logo-mini-badge-frame holo-photo-ring crest-shape-${logoConfig?.uploadShape || 'circle'} crest-bg-${logoConfig?.uploadBg || 'white'}`}
+                >
+                  <CollegeLogo
+                    config={logoConfig}
+                    size={logoConfig?.mode === 'upload' && logoConfig?.uploadBg === 'transparent' ? 44 : 40}
+                  />
                 </div>
                 <div className="logo-status-text-wrap">
                   <span className="logo-management-title">Active College Logo</span>
@@ -544,6 +550,123 @@ const StudentForm = ({
                 )}
               </div>
             </div>
+
+            {/* Customizer controls when an image is uploaded */}
+            {logoConfig?.mode === 'upload' && (
+              <div className="uploaded-logo-customizer-box glass-panel">
+                <div className="customizer-box-header">
+                  <div className="customizer-header-title">
+                    <Sparkles size={14} className="customizer-sparkle-icon" />
+                    <span>Uploaded Logo Appearance & Auto-Clip</span>
+                  </div>
+                  <span className="customizer-badge">Live Preview</span>
+                </div>
+
+                <div className="logo-controls-grid">
+                  {/* Shape Selector */}
+                  <div className="logo-control-unit">
+                    <label className="logo-control-label">Badge Shape</label>
+                    <div className="logo-chips-row">
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${(!logoConfig.uploadShape || logoConfig.uploadShape === 'circle') ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadShape', 'circle')}
+                        title="Circle Crest - smooth circular crop (eliminates square corners)"
+                      >
+                        🔘 Circle Crest
+                      </button>
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${logoConfig.uploadShape === 'rounded' ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadShape', 'rounded')}
+                        title="Rounded Badge - modern rounded square"
+                      >
+                        🔲 Rounded
+                      </button>
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${logoConfig.uploadShape === 'natural' ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadShape', 'natural')}
+                        title="Natural - unclipped original ratio"
+                      >
+                        🔳 Natural
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Background Selector */}
+                  <div className="logo-control-unit">
+                    <label className="logo-control-label">Badge Background</label>
+                    <div className="logo-chips-row">
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${(!logoConfig.uploadBg || logoConfig.uploadBg === 'white') ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadBg', 'white')}
+                        title="Solid White Backing"
+                      >
+                        ⚪ White
+                      </button>
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${logoConfig.uploadBg === 'transparent' ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadBg', 'transparent')}
+                        title="Transparent Backing (great for transparent PNGs)"
+                      >
+                        🏁 Transparent
+                      </button>
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${logoConfig.uploadBg === 'glass' ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadBg', 'glass')}
+                        title="Glassmorphic Backing"
+                      >
+                        🧊 Glass
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Image Fit */}
+                  <div className="logo-control-unit">
+                    <label className="logo-control-label">Image Scaling</label>
+                    <div className="logo-chips-row">
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${(!logoConfig.uploadFit || logoConfig.uploadFit === 'contain') ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadFit', 'contain')}
+                        title="Fit Inside - preserve complete image"
+                      >
+                        🔍 Fit Inside
+                      </button>
+                      <button
+                        type="button"
+                        className={`logo-chip-btn ${logoConfig.uploadFit === 'cover' ? 'active' : ''}`}
+                        onClick={() => onUpdateLogoSetting?.('uploadFit', 'cover')}
+                        title="Fill Crest - fill entire circular area"
+                      >
+                        📐 Fill Crest
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Size Slider */}
+                  <div className="logo-control-unit logo-slider-unit">
+                    <div className="logo-slider-header">
+                      <label className="logo-control-label">Header Crest Size</label>
+                      <span className="logo-slider-value">{logoConfig.uploadSize || 48}px</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="36"
+                      max="62"
+                      step="2"
+                      value={logoConfig.uploadSize || 48}
+                      onChange={(e) => onUpdateLogoSetting?.('uploadSize', parseInt(e.target.value, 10))}
+                      className="logo-range-slider"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

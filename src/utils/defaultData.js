@@ -471,7 +471,11 @@ export const borderOptions = [
 export const defaultLogoConfig = {
   mode: "default", // "default" | "creator" | "upload"
   customUpload: "",
-  activeLogo: { ...sampleColleges[0].defaultLogo }
+  activeLogo: { ...sampleColleges[0].defaultLogo },
+  uploadShape: "circle", // "circle" | "rounded" | "natural"
+  uploadBg: "white",     // "white" | "transparent" | "glass"
+  uploadSize: 48,
+  uploadFit: "contain"   // "contain" | "cover"
 };
 
 export const initialLogoConfig = defaultLogoConfig;

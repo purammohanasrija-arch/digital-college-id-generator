@@ -219,8 +219,23 @@ Status: OFFICIAL VERIFIED STUDENT ✅`;
               <div className="card-face card-face-front">
                 {/* College Header */}
                 <div className="card-header-bar" style={{ background: theme.gradient }}>
-                  <div className="header-crest-wrap">
-                    <CollegeLogo config={logoConfig} size={logoConfig?.activeLogo?.size || 46} />
+                  <div
+                    className={`header-crest-wrap crest-shape-${logoConfig?.uploadShape || 'circle'} crest-bg-${logoConfig?.uploadBg || 'white'}`}
+                    style={{
+                      width: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`,
+                      height: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`,
+                      minWidth: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`,
+                      minHeight: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`
+                    }}
+                  >
+                    <CollegeLogo
+                      config={logoConfig}
+                      size={
+                        logoConfig?.mode === 'upload'
+                          ? (logoConfig.uploadBg === 'transparent' ? (logoConfig.uploadSize || 48) : (logoConfig.uploadSize || 48) - 4)
+                          : (logoConfig?.activeLogo?.size ? logoConfig.activeLogo.size - 4 : 44)
+                      }
+                    />
                   </div>
                   <div className="header-info">
                     <h3 className="card-college-name">{displayData.college}</h3>

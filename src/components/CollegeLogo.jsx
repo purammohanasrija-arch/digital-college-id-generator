@@ -3,16 +3,46 @@ import React from 'react';
 const CollegeLogo = ({ config, size = 46, className = '' }) => {
   // If uploaded custom image file
   if (config?.mode === 'upload' && config?.customUpload) {
+    const uploadShape = config?.uploadShape || 'circle';
+    const uploadBg = config?.uploadBg || 'white';
+    const uploadFit = config?.uploadFit || 'contain';
+
+    const shapeRadius =
+      uploadShape === 'circle' ? '50%' :
+      uploadShape === 'rounded' ? '10px' : '4px';
+
+    const bgStyle =
+      uploadBg === 'transparent' ? 'transparent' :
+      uploadBg === 'glass' ? 'rgba(255, 255, 255, 0.22)' : '#ffffff';
+
+    const overflowStyle = uploadShape === 'natural' ? 'visible' : 'hidden';
+
     return (
       <div
-        className={`college-logo-container uploaded-logo-frame ${className}`}
-        style={{ width: size, height: size }}
+        className={`college-logo-container uploaded-logo-frame shape-${uploadShape} bg-${uploadBg} ${className}`}
+        style={{
+          width: size,
+          height: size,
+          borderRadius: shapeRadius,
+          backgroundColor: bgStyle,
+          overflow: overflowStyle,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}
       >
         <img
           src={config.customUpload}
           alt="Custom College Logo"
           className="college-logo-img"
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: uploadFit,
+            borderRadius: 'inherit',
+            display: 'block'
+          }}
         />
       </div>
     );

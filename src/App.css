@@ -1598,6 +1598,42 @@ select.form-control option {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden; /* Clips square uploaded logo corners */
+  transition: width 0.2s ease, height 0.2s ease, border-radius 0.2s ease;
+}
+
+.header-crest-wrap.crest-shape-circle {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.header-crest-wrap.crest-shape-rounded {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.header-crest-wrap.crest-shape-natural {
+  border-radius: 6px;
+  overflow: visible;
+}
+
+.header-crest-wrap.crest-bg-white {
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.header-crest-wrap.crest-bg-transparent {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.header-crest-wrap.crest-bg-glass {
+  background: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .college-crest-icon {
@@ -2623,6 +2659,40 @@ select.form-control option {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
+  transition: border-radius 0.2s ease, background 0.2s ease;
+}
+
+.logo-mini-badge-frame.crest-shape-circle {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.logo-mini-badge-frame.crest-shape-rounded {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.logo-mini-badge-frame.crest-shape-natural {
+  border-radius: 6px;
+  overflow: visible;
+}
+
+.logo-mini-badge-frame.crest-bg-white {
+  background: #ffffff;
+}
+
+.logo-mini-badge-frame.crest-bg-transparent {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.logo-mini-badge-frame.crest-bg-glass {
+  background: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .logo-status-text-wrap {
@@ -2720,7 +2790,6 @@ select.form-control option {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
 }
 
 .college-logo-svg {
@@ -2730,9 +2799,187 @@ select.form-control option {
 }
 
 .uploaded-logo-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-radius 0.2s ease;
+}
+
+.uploaded-logo-frame.shape-circle {
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+.uploaded-logo-frame.shape-rounded {
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
+
+.uploaded-logo-frame.shape-natural {
+  border-radius: 4px !important;
+  overflow: visible !important;
+}
+
+.uploaded-logo-frame.bg-white {
   background: #ffffff;
-  border-radius: 50%;
-  padding: 2px;
+}
+
+.uploaded-logo-frame.bg-transparent {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.uploaded-logo-frame.bg-glass {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+
+.uploaded-logo-frame img.college-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ==========================================================================
+   UPLOADED LOGO CUSTOMIZER CONTROLS (Bento Card 3)
+   ========================================================================== */
+.uploaded-logo-customizer-box {
+  margin-top: 1rem;
+  padding: 0.95rem 1.15rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.customizer-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.5rem;
+}
+
+.customizer-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #c4b5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.customizer-sparkle-icon {
+  color: #a78bfa;
+}
+
+.customizer-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.logo-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.85rem;
+}
+
+.logo-control-unit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.logo-control-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+}
+
+.logo-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.logo-chip-btn {
+  padding: 0.38rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 41, 59, 0.8);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.logo-chip-btn:hover {
+  background: rgba(51, 65, 85, 0.9);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.logo-chip-btn.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  color: #ffffff;
+  border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+}
+
+.logo-slider-unit {
+  grid-column: 1 / -1;
+  background: rgba(2, 6, 23, 0.35);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logo-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.logo-slider-value {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-family: monospace;
+}
+
+.logo-range-slider {
+  width: 100%;
+  accent-color: #8b5cf6;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(51, 65, 85, 0.8);
+  outline: none;
+  cursor: pointer;
 }
 
 /* ==========================================================================

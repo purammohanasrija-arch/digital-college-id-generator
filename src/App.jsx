@@ -162,11 +162,23 @@ function App() {
       setLogoConfig((prev) => ({
         ...prev,
         mode: 'upload',
-        customUpload: event.target?.result || ''
+        customUpload: event.target?.result || '',
+        uploadShape: prev.uploadShape || 'circle',
+        uploadBg: prev.uploadBg || 'white',
+        uploadSize: prev.uploadSize || 48,
+        uploadFit: prev.uploadFit || 'contain'
       }));
       showToast('🖼️ Custom college logo uploaded!');
     };
     reader.readAsDataURL(file);
+  };
+
+  // Update logo configuration settings (shape, background, size, fit)
+  const handleUpdateLogoSetting = (field, value) => {
+    setLogoConfig((prev) => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   // Remove Logo handler: restores the selected college's default logo
@@ -486,6 +498,7 @@ function App() {
               logoConfig={logoConfig}
               onLogoUpload={handleLogoUpload}
               onLogoRemove={handleLogoRemove}
+              onUpdateLogoSetting={handleUpdateLogoSetting}
               onApplyCustomLogo={handleApplyCustomLogo}
               isDownloading={isDownloading}
               isGenerated={isGenerated}
