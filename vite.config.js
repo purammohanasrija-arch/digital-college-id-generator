@@ -15,7 +15,7 @@ export default defineConfig({
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-export': ['html2canvas', 'jspdf'],
-          'vendor-icons': ['lucide-react', 'qrcode.react']
+          'vendor-icons': ['lucide-react', 'qrcode.react', 'jsbarcode']
         }
       }
     }

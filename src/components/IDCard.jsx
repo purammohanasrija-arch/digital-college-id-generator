@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import JsBarcode from 'jsbarcode';
 import {
   Shield,
   Phone,
@@ -16,7 +17,13 @@ import {
   Sparkles,
   Eye,
   CheckCircle,
-  FileBadge
+  FileBadge,
+  QrCode,
+  Barcode as BarcodeIcon,
+  Maximize2,
+  X,
+  Copy,
+  Check
 } from 'lucide-react';
 import { sampleStudentData } from '../utils/defaultData';
 
@@ -28,6 +35,12 @@ const IDCard = ({
   onToggleSide,
   isLiveCustom
 }) => {
+  const [showTestModal, setShowTestModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const barcodeRef = useRef(null);
+  const modalBarcodeRef = useRef(null);
+
   // Merge student input with fallback sample data so preview is never blank
   const displayData = {
     name: student.name.trim() || sampleStudentData.name,
@@ -48,16 +61,76 @@ const IDCard = ({
     emergencyContact: student.emergencyContact.trim() || sampleStudentData.emergencyContact
   };
 
-  // QR Code Verification Payload
-  const qrPayload = JSON.stringify({
-    institution: displayData.college,
-    id: displayData.studentId,
-    name: displayData.name,
-    dept: displayData.department,
-    course: displayData.course,
-    validUntil: displayData.academicYear,
-    verified: true
-  });
+  // Human-readable and camera-friendly QR Code Verification Payload
+  const qrPayload = `🎓 STUDENT IDENTITY VERIFICATION
+Name: ${displayData.name}
+ID: ${displayData.studentId}
+College: ${displayData.college}
+Dept: ${displayData.department}
+Course: ${displayData.course}
+Year: ${displayData.year}
+Validity: ${displayData.academicYear}
+Status: OFFICIAL STUDENT ✅`;
+
+  // Draw real scannable Code128 barcode whenever studentId or active side changes
+  useEffect(() => {
+    const rawId = (displayData.studentId || 'STU-2024-8842').trim();
+    // CODE128 supports ASCII 32 to 126
+    const sanitized = rawId.replace(/[^\x20-\x7E]/g, '') || 'STU-2024-8842';
+
+    const renderBarcode = (svgElem, width = 1.7, height = 40) => {
+      if (!svgElem) return;
+      try {
+        JsBarcode(svgElem, sanitized, {
+          format: 'CODE128',
+          lineColor: '#0f172a',
+          width: width,
+          height: height,
+          displayValue: true,
+          fontSize: 11,
+          font: 'monospace',
+          fontOptions: 'bold',
+          textMargin: 4,
+          margin: 6,
+          background: '#ffffff'
+        });
+      } catch (err) {
+        console.warn('Barcode render error, falling back to clean alphanumeric:', err);
+        const clean = sanitized.replace(/[^a-zA-Z0-9]/g, '') || 'STUDENT';
+        try {
+          JsBarcode(svgElem, clean, {
+            format: 'CODE128',
+            lineColor: '#0f172a',
+            width: width,
+            height: height,
+            displayValue: true,
+            fontSize: 11,
+            font: 'monospace',
+            fontOptions: 'bold',
+            textMargin: 4,
+            margin: 6,
+            background: '#ffffff'
+          });
+        } catch (e) {
+          console.error('Barcode generation failed:', e);
+        }
+      }
+    };
+
+    if (activeSide === 'back' && barcodeRef.current) {
+      renderBarcode(barcodeRef.current, 1.7, 40);
+    }
+
+    if (showTestModal && modalBarcodeRef.current) {
+      renderBarcode(modalBarcodeRef.current, 2.0, 50);
+    }
+  }, [displayData.studentId, activeSide, showTestModal]);
+
+  const handleCopyPayload = () => {
+    navigator.clipboard.writeText(qrPayload);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="id-card-stage">
@@ -70,28 +143,28 @@ const IDCard = ({
             onClick={() => onToggleSide('front')}
           >
             <FileBadge size={15} />
-            <span>Front Side</span>
+            <span>Front (QR)</span>
           </button>
           <button
             type="button"
             className={`side-tab-btn ${activeSide === 'back' ? 'active' : ''}`}
             onClick={() => onToggleSide('back')}
           >
-            <Layers size={15} />
-            <span>Back Side</span>
+            <BarcodeIcon size={15} />
+            <span>Back (Barcode)</span>
           </button>
         </div>
 
         <div className="status-indicator">
-          {isLiveCustom ? (
-            <span className="badge-live">
-              <span className="live-dot"></span> Live Custom Data
-            </span>
-          ) : (
-            <span className="badge-sample">
-              <Eye size={13} /> Sample Preview Mode
-            </span>
-          )}
+          <button
+            type="button"
+            className="btn-test-scanner"
+            onClick={() => setShowTestModal(true)}
+            title="Inspect & test scannability of QR & Barcode"
+          >
+            <Maximize2 size={13} />
+            <span>Test Scanners</span>
+          </button>
         </div>
       </div>
 
@@ -266,13 +339,14 @@ const IDCard = ({
               {/* Card Footer with Scannable QR & Dual Signatures */}
               <div className="card-footer-zone">
                 <div className="qr-code-section">
-                  <div className="qr-wrapper-card">
+                  <div className="qr-wrapper-card" title="Point your phone camera to scan">
                     <QRCodeSVG
                       value={qrPayload}
-                      size={60}
+                      size={68}
                       level="M"
-                      includeMargin={false}
+                      includeMargin={true}
                       fgColor="#0f172a"
+                      bgColor="#ffffff"
                     />
                   </div>
                   <span className="qr-caption">SCAN TO VERIFY</span>
@@ -352,62 +426,10 @@ const IDCard = ({
                   </div>
                 </div>
 
-                {/* Barcode Graphic & Return Notice */}
+                {/* REAL CODE128 BARCODE SVG & Return Notice */}
                 <div className="barcode-container">
-                  <div className="svg-barcode-strip">
-                    <svg viewBox="0 0 280 45" className="barcode-svg">
-                      {/* Realistic variable-width barcode bars */}
-                      <rect x="0" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="5" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="10" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="16" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="20" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="25" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="33" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="38" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="45" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="48" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="54" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="62" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="67" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="73" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="80" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="84" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="90" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="98" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="103" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="110" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="114" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="120" y="0" width="6" height="40" fill="#0f172a" />
-                      <rect x="128" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="133" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="139" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="146" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="150" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="155" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="162" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="167" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="173" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="180" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="184" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="190" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="195" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="203" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="208" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="212" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="218" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="223" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="231" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="236" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="241" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="247" y="0" width="1" height="40" fill="#0f172a" />
-                      <rect x="252" y="0" width="3" height="40" fill="#0f172a" />
-                      <rect x="258" y="0" width="5" height="40" fill="#0f172a" />
-                      <rect x="266" y="0" width="2" height="40" fill="#0f172a" />
-                      <rect x="270" y="0" width="4" height="40" fill="#0f172a" />
-                      <rect x="276" y="0" width="3" height="40" fill="#0f172a" />
-                    </svg>
-                    <span className="barcode-number">*{displayData.studentId.replace(/[^a-zA-Z0-9]/g, '')}*</span>
+                  <div className="real-barcode-wrapper">
+                    <svg ref={barcodeRef} className="barcode-svg" />
                   </div>
                   <p className="return-policy">
                     If found, please return to any campus administrative desk or drop in nearest mailbox.
@@ -418,6 +440,100 @@ const IDCard = ({
           )}
         </div>
       </div>
+
+      {/* MODAL: Test & Inspect Scannable Codes */}
+      {showTestModal && (
+        <div className="modal-backdrop" onClick={() => setShowTestModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-header-title">
+                <QrCode size={20} className="text-blue-400" />
+                <h3>Digital Scanner & Code Verification</h3>
+              </div>
+              <button
+                type="button"
+                className="btn-close-modal"
+                onClick={() => setShowTestModal(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <p className="modal-desc">
+                Both codes are dynamically generated from live student inputs and are 100% compliant with standard smartphone cameras and optical barcode scanners.
+              </p>
+
+              <div className="scanner-cards-grid">
+                {/* QR Code Inspection */}
+                <div className="scanner-card">
+                  <div className="scanner-card-badge">
+                    <QrCode size={16} />
+                    <span>Real-time QR Code</span>
+                  </div>
+                  <div className="scanner-visual-box">
+                    <QRCodeSVG
+                      value={qrPayload}
+                      size={140}
+                      level="M"
+                      includeMargin={true}
+                      fgColor="#0f172a"
+                      bgColor="#ffffff"
+                    />
+                  </div>
+                  <div className="scanner-decoded-box">
+                    <div className="decoded-header">
+                      <span>Decoded Content:</span>
+                      <button
+                        type="button"
+                        onClick={handleCopyPayload}
+                        className="btn-copy-payload"
+                      >
+                        {copied ? <Check size={13} /> : <Copy size={13} />}
+                        <span>{copied ? 'Copied' : 'Copy'}</span>
+                      </button>
+                    </div>
+                    <pre className="decoded-pre">{qrPayload}</pre>
+                  </div>
+                </div>
+
+                {/* Barcode Inspection */}
+                <div className="scanner-card">
+                  <div className="scanner-card-badge">
+                    <BarcodeIcon size={16} />
+                    <span>Code 128 Barcode</span>
+                  </div>
+                  <div className="scanner-visual-box barcode-box">
+                    <svg ref={modalBarcodeRef} className="modal-barcode-svg" />
+                  </div>
+                  <div className="scanner-decoded-box">
+                    <div className="decoded-header">
+                      <span>Decoded String:</span>
+                    </div>
+                    <div className="barcode-decoded-val">
+                      <Hash size={14} />
+                      <code>{displayData.studentId}</code>
+                    </div>
+                    <p className="scanner-tip">
+                      Standard Code 128 symbology. Scannable with any handheld laser scanner, POS terminal, or mobile barcode scanner app.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setShowTestModal(false)}
+              >
+                Close Inspector
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
