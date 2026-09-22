@@ -14,6 +14,13 @@ Students can personalize their ID badges, choose from authentic university theme
 
 ## Features
 
+- 🌌 **Aurora Background System**: Dynamic, animated soft aurora beams, cosmic void base, cyber grid matrix overlay, and twinkling starfield.
+- 🧊 **Glassmorphism ID Card**: Frosted glass blur (`backdrop-filter: blur(24px)`), semi-transparent surfaces, and crisp institutional typography.
+- 🌈 **Holographic Security Border**: Multi-stop continuous color-shifting gradient border (`Cyan → Blue → Purple → Pink → Orange → Cyan`) and periodic diagonal light sweep reflection.
+- 🎴 **Physical 3D Tilt Stage**: Interactive perspective tilt reacting to cursor movements with specular mouse glare and zero-lag direct CSS custom property updates.
+- ✨ **Global Mouse Glow**: Fluid, lerp-interpolated cursor follower providing soft ambient lighting across the dashboard.
+- 🧩 **Bento Grid Dashboard**: Modular glass cards for Student Information, College Selection, Logo Studio, Theme Studio, Profile Photo, and Quick Actions Dock.
+- 💾 **Local Storage Save/Load Draft**: Persist all student information, custom logos, and selected themes to the browser for instant recall anytime.
 - ⚡ **Instant Live Preview**: Dynamic dual-binding updates the ID card badge in real time as the user types.
 - 🪪 **Authentic CR80 Portrait Badge Design**: Formatted according to standard institutional ID specifications, complete with lanyard slot punch, security microchip, and rainbow hologram seal.
 - 🏛️ **Select College Dropdown with Sample Institutions & Custom Mode**:
