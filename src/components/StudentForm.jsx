@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   User,
   Hash,
@@ -21,10 +21,20 @@ import {
   FileDown,
   Palette,
   CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  Edit3,
+  List
 } from 'lucide-react';
 import FormInput from './FormInput';
-import { bloodGroups, genders, yearOptions, cardThemes } from '../utils/defaultData';
+import {
+  bloodGroups,
+  genders,
+  yearOptions,
+  cardThemes,
+  sectionOptions,
+  departmentOptions,
+  courseOptions
+} from '../utils/defaultData';
 
 const StudentForm = ({
   student,
@@ -43,6 +53,19 @@ const StudentForm = ({
   isGenerated
 }) => {
   const fileInputRef = useRef(null);
+
+  const [customMode, setCustomMode] = useState({
+    department: false,
+    course: false,
+    section: false
+  });
+
+  const toggleCustomMode = (field) => {
+    setCustomMode((prev) => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -303,27 +326,55 @@ const StudentForm = ({
           </div>
 
           <div className="form-grid-2">
-            <FormInput
-              label="Department"
-              name="department"
-              value={student.department}
-              onChange={onChange}
-              placeholder="e.g. Computer Science & Engineering"
-              required
-              error={errors.department}
-              icon={Building2}
-            />
+            <div className="field-with-switch">
+              <div className="field-top-meta">
+                <button
+                  type="button"
+                  className="btn-text-switch"
+                  onClick={() => toggleCustomMode('department')}
+                >
+                  {customMode.department ? <List size={12} /> : <Edit3 size={12} />}
+                  <span>{customMode.department ? 'Choose from list' : 'Type custom'}</span>
+                </button>
+              </div>
+              <FormInput
+                label="Department"
+                name="department"
+                type={customMode.department ? 'text' : 'select'}
+                options={departmentOptions}
+                value={student.department}
+                onChange={onChange}
+                placeholder={customMode.department ? "e.g. Computer Science & Engineering" : "Select Department"}
+                required
+                error={errors.department}
+                icon={Building2}
+              />
+            </div>
 
-            <FormInput
-              label="Course / Program"
-              name="course"
-              value={student.course}
-              onChange={onChange}
-              placeholder="e.g. B.Tech Computer Science"
-              required
-              error={errors.course}
-              icon={BookOpen}
-            />
+            <div className="field-with-switch">
+              <div className="field-top-meta">
+                <button
+                  type="button"
+                  className="btn-text-switch"
+                  onClick={() => toggleCustomMode('course')}
+                >
+                  {customMode.course ? <List size={12} /> : <Edit3 size={12} />}
+                  <span>{customMode.course ? 'Choose from list' : 'Type custom'}</span>
+                </button>
+              </div>
+              <FormInput
+                label="Course / Program"
+                name="course"
+                type={customMode.course ? 'text' : 'select'}
+                options={courseOptions}
+                value={student.course}
+                onChange={onChange}
+                placeholder={customMode.course ? "e.g. B.Tech Computer Science" : "Select Course"}
+                required
+                error={errors.course}
+                icon={BookOpen}
+              />
+            </div>
           </div>
 
           <div className="form-grid-3">
@@ -340,14 +391,28 @@ const StudentForm = ({
               icon={GraduationCap}
             />
 
-            <FormInput
-              label="Section"
-              name="section"
-              value={student.section}
-              onChange={onChange}
-              placeholder="e.g. Sec A / Batch 2"
-              icon={Layers}
-            />
+            <div className="field-with-switch">
+              <div className="field-top-meta">
+                <button
+                  type="button"
+                  className="btn-text-switch"
+                  onClick={() => toggleCustomMode('section')}
+                >
+                  {customMode.section ? <List size={12} /> : <Edit3 size={12} />}
+                  <span>{customMode.section ? '1-22 List' : 'Custom'}</span>
+                </button>
+              </div>
+              <FormInput
+                label="Section"
+                name="section"
+                type={customMode.section ? 'text' : 'select'}
+                options={sectionOptions}
+                value={student.section}
+                onChange={onChange}
+                placeholder={customMode.section ? "e.g. Sec 1 / Batch A" : "Select Section (1-22)"}
+                icon={Layers}
+              />
+            </div>
 
             <FormInput
               label="Academic Session / Year"

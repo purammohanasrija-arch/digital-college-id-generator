@@ -91,4 +91,73 @@ export const cardThemes = [
 
 export const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 export const genders = ["Male", "Female", "Non-Binary", "Other"];
-export const yearOptions = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year", "Postgraduate / Master's"];
+
+export const yearOptions = [
+  "1st Year",
+  "2nd Year",
+  "3rd Year",
+  "4th Year",
+  "5th Year (Dual Degree)",
+  "Final Year",
+  "Postgraduate (Year 1)",
+  "Postgraduate (Year 2)",
+  "Ph.D / Research Scholar"
+];
+
+// Sections 1 to 22 as requested by user, plus common letter sections
+export const sectionOptions = [
+  ...Array.from({ length: 22 }, (_, i) => `Section ${i + 1}`),
+  "Section A",
+  "Section B",
+  "Section C",
+  "Section D",
+  "Batch 1",
+  "Batch 2",
+  "Batch 3"
+];
+
+export const departmentOptions = [
+  "Computer Science & Engineering",
+  "Information Technology",
+  "Artificial Intelligence & Machine Learning",
+  "Data Science & Analytics",
+  "Cyber Security & Forensics",
+  "Electronics & Communication Engineering",
+  "Electrical & Electronics Engineering",
+  "Mechanical Engineering",
+  "Civil Engineering",
+  "Aerospace & Aeronautical Engineering",
+  "Biotechnology & Bioinformatics",
+  "Chemical Engineering",
+  "Business Administration & Management",
+  "Commerce & Financial Studies",
+  "Computer Applications (BCA / MCA)",
+  "Physics & Applied Sciences",
+  "Mathematics & Computing",
+  "Humanities, Arts & Social Sciences"
+];
+
+export const courseOptions = [
+  "B.Tech Computer Science & Engineering",
+  "B.Tech Information Technology",
+  "B.Tech Artificial Intelligence & ML",
+  "B.Tech Electronics & Communication",
+  "B.Tech Mechanical Engineering",
+  "B.Tech Civil Engineering",
+  "B.Tech Electrical Engineering",
+  "B.E. Computer Science",
+  "BCA (Bachelor of Computer Applications)",
+  "B.Sc Computer Science",
+  "B.Sc Information Technology",
+  "B.Sc Data Science",
+  "BBA (Bachelor of Business Admin)",
+  "B.Com (Honours)",
+  "B.A. Economics / English",
+  "M.Tech Computer Science",
+  "M.Tech Artificial Intelligence",
+  "MCA (Master of Computer Applications)",
+  "MBA (Master of Business Admin)",
+  "M.Sc Computer Science",
+  "Ph.D Research Fellow"
+];
+
