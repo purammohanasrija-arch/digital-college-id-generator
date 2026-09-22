@@ -1,0 +1,425 @@
+import React from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import {
+  Shield,
+  Phone,
+  Mail,
+  Calendar,
+  HeartPulse,
+  Hash,
+  MapPin,
+  Building,
+  GraduationCap,
+  Globe,
+  Award,
+  Layers,
+  Sparkles,
+  Eye,
+  CheckCircle,
+  FileBadge
+} from 'lucide-react';
+import { sampleStudentData } from '../utils/defaultData';
+
+const IDCard = ({
+  student,
+  cardRef,
+  theme,
+  activeSide,
+  onToggleSide,
+  isLiveCustom
+}) => {
+  // Merge student input with fallback sample data so preview is never blank
+  const displayData = {
+    name: student.name.trim() || sampleStudentData.name,
+    studentId: student.studentId.trim() || sampleStudentData.studentId,
+    dob: student.dob || sampleStudentData.dob,
+    gender: student.gender || sampleStudentData.gender,
+    bloodGroup: student.bloodGroup || sampleStudentData.bloodGroup,
+    phone: student.phone.trim() || sampleStudentData.phone,
+    email: student.email.trim() || sampleStudentData.email,
+    photo: student.photo || '',
+    college: student.college.trim() || sampleStudentData.college,
+    department: student.department.trim() || sampleStudentData.department,
+    course: student.course.trim() || sampleStudentData.course,
+    year: student.year || sampleStudentData.year,
+    section: student.section.trim() || sampleStudentData.section,
+    academicYear: student.academicYear.trim() || sampleStudentData.academicYear,
+    address: student.address.trim() || sampleStudentData.address,
+    emergencyContact: student.emergencyContact.trim() || sampleStudentData.emergencyContact
+  };
+
+  // QR Code Verification Payload
+  const qrPayload = JSON.stringify({
+    institution: displayData.college,
+    id: displayData.studentId,
+    name: displayData.name,
+    dept: displayData.department,
+    course: displayData.course,
+    validUntil: displayData.academicYear,
+    verified: true
+  });
+
+  return (
+    <div className="id-card-stage">
+      {/* Top Preview Controls Bar */}
+      <div className="card-stage-controls">
+        <div className="side-toggle-group">
+          <button
+            type="button"
+            className={`side-tab-btn ${activeSide === 'front' ? 'active' : ''}`}
+            onClick={() => onToggleSide('front')}
+          >
+            <FileBadge size={15} />
+            <span>Front Side</span>
+          </button>
+          <button
+            type="button"
+            className={`side-tab-btn ${activeSide === 'back' ? 'active' : ''}`}
+            onClick={() => onToggleSide('back')}
+          >
+            <Layers size={15} />
+            <span>Back Side</span>
+          </button>
+        </div>
+
+        <div className="status-indicator">
+          {isLiveCustom ? (
+            <span className="badge-live">
+              <span className="live-dot"></span> Live Custom Data
+            </span>
+          ) : (
+            <span className="badge-sample">
+              <Eye size={13} /> Sample Preview Mode
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Lanyard Strap & Clip Simulation */}
+      <div className="lanyard-container">
+        <div className="lanyard-ribbon" style={{ background: theme.primary }}>
+          <div className="lanyard-texture"></div>
+          <span className="lanyard-text">{displayData.college}</span>
+        </div>
+        <div className="lanyard-hardware">
+          <div className="lanyard-metal-clip"></div>
+          <div className="lanyard-metal-loop"></div>
+        </div>
+      </div>
+
+      {/* THE ID CARD BADGE — Target for html2canvas */}
+      <div className="id-card-outer-wrapper">
+        <div
+          ref={cardRef}
+          id="college-id-card"
+          className={`id-card-badge ${theme.id} ${activeSide === 'back' ? 'showing-back' : ''}`}
+          style={{
+            '--theme-primary': theme.primary,
+            '--theme-secondary': theme.secondary,
+            '--theme-accent': theme.accent,
+            '--theme-badge-bg': theme.badgeBg,
+            '--theme-gradient': theme.gradient,
+            '--theme-light-accent': theme.lightAccent
+          }}
+        >
+          {/* Lanyard Slot Cutout */}
+          <div className="card-slot-punch">
+            <div className="slot-inner-hole"></div>
+          </div>
+
+          {activeSide === 'front' ? (
+            /* ================= FRONT SIDE ================= */
+            <div className="card-face card-face-front">
+              {/* College Header */}
+              <div className="card-header-bar" style={{ background: theme.gradient }}>
+                <div className="header-crest-wrap">
+                  <img
+                    src="/college-crest.svg"
+                    alt="Crest"
+                    className="college-crest-icon"
+                  />
+                </div>
+                <div className="header-info">
+                  <h3 className="card-college-name">{displayData.college}</h3>
+                  <p className="card-college-accreditation">
+                    Affiliated to State University • Accredited Grade 'A++'
+                  </p>
+                </div>
+              </div>
+
+              {/* Card Sub-banner */}
+              <div className="card-sub-banner">
+                <div className="badge-title-box">
+                  <span className="badge-title-text">STUDENT IDENTIFICATION CARD</span>
+                </div>
+                <span className="badge-session-pill">{displayData.academicYear}</span>
+              </div>
+
+              {/* Main Body with Photo & Key Bio */}
+              <div className="card-main-body">
+                {/* Left Column: Photo, Chip, Hologram */}
+                <div className="card-photo-column">
+                  <div className="photo-outer-frame">
+                    {displayData.photo ? (
+                      <img
+                        src={displayData.photo}
+                        alt={displayData.name}
+                        className="student-portrait-img"
+                      />
+                    ) : (
+                      <div className="default-avatar-graphic">
+                        <svg viewBox="0 0 100 100" className="avatar-svg">
+                          <circle cx="50" cy="50" r="48" fill="#e2e8f0" />
+                          <circle cx="50" cy="38" r="20" fill="#94a3b8" />
+                          <path
+                            d="M 20 85 C 20 65, 35 60, 50 60 C 65 60, 80 65, 80 85 Z"
+                            fill="#64748b"
+                          />
+                        </svg>
+                        <span className="avatar-label">PHOTO</span>
+                      </div>
+                    )}
+                    <div className="photo-corner-accent top-left"></div>
+                    <div className="photo-corner-accent bottom-right"></div>
+                  </div>
+
+                  {/* Smart Chip & Security Hologram */}
+                  <div className="security-badges-row">
+                    <div className="smart-chip-graphic" title="RFID Microchip">
+                      <div className="chip-line horizontal"></div>
+                      <div className="chip-line vertical"></div>
+                      <div className="chip-core"></div>
+                    </div>
+                    <div className="hologram-seal" title="Official Security Hologram">
+                      <Shield size={13} className="hologram-icon" />
+                      <span className="hologram-text">SECURE</span>
+                    </div>
+                  </div>
+
+                  {/* Blood Group Tag */}
+                  {displayData.bloodGroup && (
+                    <div className="blood-group-tag">
+                      <HeartPulse size={12} className="blood-icon" />
+                      <span>BLOOD: <strong>{displayData.bloodGroup}</strong></span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right Column: Student Details */}
+                <div className="card-info-column">
+                  <div className="student-name-block">
+                    <h2 className="student-primary-name">{displayData.name}</h2>
+                    <div className="student-id-pill">
+                      <Hash size={13} />
+                      <span className="id-number">{displayData.studentId}</span>
+                    </div>
+                  </div>
+
+                  <div className="details-table">
+                    <div className="detail-row">
+                      <span className="detail-key">Department:</span>
+                      <span className="detail-value">{displayData.department}</span>
+                    </div>
+
+                    <div className="detail-row">
+                      <span className="detail-key">Course:</span>
+                      <span className="detail-value bold">{displayData.course}</span>
+                    </div>
+
+                    <div className="detail-row dual">
+                      <div>
+                        <span className="detail-key">Year:</span>
+                        <span className="detail-value">{displayData.year}</span>
+                      </div>
+                      {displayData.section && (
+                        <div>
+                          <span className="detail-key">Section:</span>
+                          <span className="detail-value">{displayData.section}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {displayData.dob && (
+                      <div className="detail-row">
+                        <span className="detail-key">DOB:</span>
+                        <span className="detail-value">{displayData.dob}</span>
+                      </div>
+                    )}
+
+                    {displayData.phone && (
+                      <div className="detail-row">
+                        <span className="detail-key">Phone:</span>
+                        <span className="detail-value">{displayData.phone}</span>
+                      </div>
+                    )}
+
+                    {displayData.email && (
+                      <div className="detail-row">
+                        <span className="detail-key">Email:</span>
+                        <span className="detail-value email-value">{displayData.email}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Footer with Scannable QR & Dual Signatures */}
+              <div className="card-footer-zone">
+                <div className="qr-code-section">
+                  <div className="qr-wrapper-card">
+                    <QRCodeSVG
+                      value={qrPayload}
+                      size={60}
+                      level="M"
+                      includeMargin={false}
+                      fgColor="#0f172a"
+                    />
+                  </div>
+                  <span className="qr-caption">SCAN TO VERIFY</span>
+                </div>
+
+                <div className="signatures-container">
+                  <div className="signature-box">
+                    <div className="signature-line-drawn student-sig">
+                      {displayData.name.split(' ')[0] || 'Student'}
+                    </div>
+                    <div className="signature-divider"></div>
+                    <span className="signature-title">Card Holder Signature</span>
+                  </div>
+
+                  <div className="signature-box">
+                    <div className="signature-line-drawn auth-sig">
+                      Dr. R. Vance
+                    </div>
+                    <div className="signature-divider"></div>
+                    <span className="signature-title">Dean / Authorized Signatory</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom security strip */}
+              <div className="card-bottom-strip" style={{ background: theme.primary }}>
+                <span>OFFICIAL STUDENT IDENTIFICATION • PROPERTY OF {displayData.college.toUpperCase()}</span>
+              </div>
+            </div>
+          ) : (
+            /* ================= BACK SIDE ================= */
+            <div className="card-face card-face-back">
+              <div className="back-top-strip" style={{ background: theme.primary }}>
+                <span>INSTITUTIONAL REGULATIONS & EMERGENCY CONTACT</span>
+              </div>
+
+              <div className="back-card-body">
+                {/* Institutional Terms */}
+                <div className="back-section">
+                  <h4 className="back-heading">Terms & Conditions of Usage</h4>
+                  <ul className="back-rules-list">
+                    <li>This card is non-transferable and remains property of the college.</li>
+                    <li>Loss of this card must be immediately reported to the Campus Registrar.</li>
+                    <li>Must be visibly worn or produced upon request by campus authorities.</li>
+                    <li>Valid strictly through the completion of the registered program.</li>
+                  </ul>
+                </div>
+
+                {/* Residential & Emergency Details */}
+                <div className="back-section contact-section">
+                  <div className="back-info-item">
+                    <MapPin size={15} className="back-icon" />
+                    <div>
+                      <strong>Permanent Address:</strong>
+                      <p>{displayData.address || 'Campus Residential Hall, Student Quarter'}</p>
+                    </div>
+                  </div>
+
+                  <div className="back-info-item emergency-item">
+                    <Phone size={15} className="back-icon" />
+                    <div>
+                      <strong>Emergency Contact:</strong>
+                      <p>{displayData.emergencyContact || '+1 (555) 000-HELP (Campus Security)'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Institution Contact Information */}
+                <div className="back-institution-box">
+                  <Building size={16} className="inst-icon" />
+                  <div>
+                    <span className="inst-title">{displayData.college}</span>
+                    <p className="inst-details">
+                      Administrative Wing, Academic Avenue • Helpline: +1 (800) 555-UNIV
+                    </p>
+                    <p className="inst-web">www.campus-registry.edu • registry@college.edu</p>
+                  </div>
+                </div>
+
+                {/* Barcode Graphic & Return Notice */}
+                <div className="barcode-container">
+                  <div className="svg-barcode-strip">
+                    <svg viewBox="0 0 280 45" className="barcode-svg">
+                      {/* Realistic variable-width barcode bars */}
+                      <rect x="0" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="5" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="10" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="16" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="20" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="25" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="33" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="38" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="45" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="48" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="54" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="62" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="67" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="73" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="80" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="84" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="90" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="98" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="103" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="110" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="114" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="120" y="0" width="6" height="40" fill="#0f172a" />
+                      <rect x="128" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="133" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="139" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="146" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="150" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="155" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="162" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="167" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="173" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="180" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="184" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="190" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="195" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="203" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="208" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="212" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="218" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="223" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="231" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="236" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="241" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="247" y="0" width="1" height="40" fill="#0f172a" />
+                      <rect x="252" y="0" width="3" height="40" fill="#0f172a" />
+                      <rect x="258" y="0" width="5" height="40" fill="#0f172a" />
+                      <rect x="266" y="0" width="2" height="40" fill="#0f172a" />
+                      <rect x="270" y="0" width="4" height="40" fill="#0f172a" />
+                      <rect x="276" y="0" width="3" height="40" fill="#0f172a" />
+                    </svg>
+                    <span className="barcode-number">*{displayData.studentId.replace(/[^a-zA-Z0-9]/g, '')}*</span>
+                  </div>
+                  <p className="return-policy">
+                    If found, please return to any campus administrative desk or drop in nearest mailbox.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default IDCard;

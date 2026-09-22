@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="crestGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Ring with Laurel Accent -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#crestGold)" stroke-width="4" stroke-dasharray="8 4" />
+  <circle cx="100" cy="100" r="84" fill="#0B132B" stroke="url(#crestGold)" stroke-width="2.5" />
+
+  <!-- Shield Shape -->
+  <path d="M 60 55 Q 100 48 140 55 C 140 105 125 135 100 155 C 75 135 60 105 60 55 Z" fill="url(#shieldGrad)" stroke="url(#crestGold)" stroke-width="2.5" />
+
+  <!-- Open Book of Knowledge -->
+  <path d="M 75 88 Q 100 80 100 98 Q 100 80 125 88 L 125 116 Q 100 108 100 126 Q 100 108 75 116 Z" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5" />
+  <line x1="100" y1="98" x2="100" y2="126" stroke="#475569" stroke-width="1.5" />
+
+  <!-- Torch / Flame of Excellence -->
+  <path d="M 97 68 Q 100 58 103 68 Q 107 72 100 78 Q 93 72 97 68 Z" fill="#EF4444" />
+  <path d="M 98 70 Q 100 62 102 70 Q 104 74 100 77 Q 96 74 98 70 Z" fill="#F59E0B" />
+  <path d="M 96 78 L 104 78 L 102 85 L 98 85 Z" fill="url(#crestGold)" />
+
+  <!-- Academic Stars -->
+  <polygon points="100,32 102,38 108,38 103,42 105,48 100,44 95,48 97,42 92,38 98,38" fill="url(#crestGold)" />
+  <polygon points="76,40 78,45 83,45 79,48 81,53 76,50 71,53 73,48 69,45 74,45" fill="url(#crestGold)" transform="scale(0.8) translate(18, 12)" />
+  <polygon points="124,40 126,45 131,45 127,48 129,53 124,50 119,53 121,48 117,45 122,45" fill="url(#crestGold)" transform="scale(0.8) translate(40, 12)" />
+
+  <!-- Ribbon / Motto Arch Bottom -->
+  <path d="M 45 152 Q 100 175 155 152 L 150 162 Q 100 185 50 162 Z" fill="url(#crestGold)" opacity="0.9" />
+</svg>
