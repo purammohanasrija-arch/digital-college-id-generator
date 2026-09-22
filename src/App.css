@@ -1276,21 +1276,21 @@ select.form-control option {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: -15px;
-  z-index: 10;
+  margin-bottom: -16px;
+  z-index: 25;
   pointer-events: none;
 }
 
 .lanyard-ribbon {
-  width: 58px;
-  height: 48px;
-  border-radius: 4px 4px 0 0;
+  width: 76px;
+  height: 38px;
+  border-radius: 6px 6px 0 0;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-bottom: none;
   overflow: hidden;
 }
@@ -1300,8 +1300,8 @@ select.form-control option {
   inset: 0;
   background: repeating-linear-gradient(
     45deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.08) 2px,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.1) 2px,
     transparent 2px,
     transparent 6px
   );
@@ -1309,39 +1309,41 @@ select.form-control option {
 
 .lanyard-text {
   font-family: var(--font-heading);
-  font-size: 0.6rem;
+  font-size: 0.725rem;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.7);
-  letter-spacing: 0.1em;
+  color: #ffffff;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  overflow: hidden;
-  max-height: 42px;
+  z-index: 2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
 }
 
 .lanyard-hardware {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -2px;
+  margin-top: -1px;
 }
 
 .lanyard-metal-clip {
-  width: 22px;
-  height: 16px;
-  background: linear-gradient(180deg, #94a3b8, #cbd5e1 45%, #64748b 100%);
+  width: 24px;
+  height: 14px;
+  background: linear-gradient(180deg, #e2e8f0, #94a3b8 50%, #64748b 100%);
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  border: 1px solid #cbd5e1;
 }
 
 .lanyard-metal-loop {
-  width: 14px;
-  height: 16px;
+  width: 16px;
+  height: 18px;
   border: 3px solid #cbd5e1;
   border-top: none;
-  border-radius: 0 0 7px 7px;
-  margin-top: -3px;
+  border-radius: 0 0 8px 8px;
+  margin-top: -2px;
+  background: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 /* ==========================================================================
@@ -1543,25 +1545,26 @@ select.form-control option {
 /* Slot punch for lanyard clip */
 .card-slot-punch {
   position: absolute;
-  top: 10px;
+  top: 9px;
   left: 50%;
   transform: translateX(-50%);
   width: 44px;
   height: 11px;
   background: #090d16;
-  border-radius: 8px;
+  border-radius: 6px;
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .slot-inner-hole {
-  width: 34px;
-  height: 5px;
+  width: 32px;
+  height: 4px;
   background: #000000;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 /* Front Face */
@@ -1569,7 +1572,7 @@ select.form-control option {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-top: 1.5rem;
+  padding-top: 0;
   background: #ffffff;
 }
 
@@ -1577,15 +1580,16 @@ select.form-control option {
 .card-header-bar {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 1.15rem;
+  gap: 0.85rem;
+  padding: 1.55rem 1.15rem 0.85rem;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  position: relative;
 }
 
 .header-crest-wrap {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #ffffff;
   padding: 2px;
@@ -1604,7 +1608,7 @@ select.form-control option {
 .header-info {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.2rem;
   overflow: hidden;
 }
 
@@ -1620,6 +1624,7 @@ select.form-control option {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin: 0;
 }
 
 .card-college-accreditation {
@@ -1627,6 +1632,7 @@ select.form-control option {
   color: var(--theme-light-accent, #93c5fd);
   font-weight: 500;
   letter-spacing: 0.02em;
+  margin: 0;
 }
 
 /* Sub-banner */
@@ -1634,24 +1640,58 @@ select.form-control option {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.35rem 1.15rem;
+  padding: 0.4rem 1.15rem;
   background: #f1f5f9;
   border-bottom: 1px solid #e2e8f0;
 }
 
+.badge-title-box {
+  display: flex;
+  align-items: center;
+}
+
 .badge-title-text {
   font-family: var(--font-heading);
-  font-size: 0.7rem;
+  font-size: 0.725rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  color: #334155;
+  color: #1e293b;
+}
+
+.sub-banner-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge-verified-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #065f46;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.verified-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+  animation: pulse 1.6s infinite;
 }
 
 .badge-session-pill {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   font-weight: 700;
-  padding: 0.15rem 0.5rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 4px;
   background: var(--theme-primary, #0f172a);
   color: #ffffff;
@@ -1660,10 +1700,11 @@ select.form-control option {
 /* Main Body with Photo & Bio */
 .card-main-body {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 0.85rem;
-  padding: 0.95rem 1.15rem 0.5rem;
+  grid-template-columns: 115px 1fr;
+  gap: 0.95rem;
+  padding: 0.85rem 1.15rem 0.5rem;
   flex: 1;
+  background: #ffffff;
 }
 
 /* Photo Column */
@@ -1671,13 +1712,13 @@ select.form-control option {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.6rem;
 }
 
 .photo-outer-frame {
   position: relative;
   width: 110px;
-  height: 130px;
+  height: 128px;
   border-radius: 8px;
   background: #f8fafc;
   border: 3px solid #ffffff;
@@ -1692,6 +1733,7 @@ select.form-control option {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .default-avatar-graphic {
@@ -1705,8 +1747,8 @@ select.form-control option {
 }
 
 .avatar-svg {
-  width: 75px;
-  height: 75px;
+  width: 72px;
+  height: 72px;
 }
 
 .avatar-label {
@@ -1745,51 +1787,61 @@ select.form-control option {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0 2px;
+  gap: 6px;
 }
 
-.smart-chip-graphic {
+.smart-chip-sim {
   position: relative;
-  width: 38px;
-  height: 28px;
+  width: 36px;
+  height: 27px;
   background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%);
   border-radius: 4px;
   border: 1px solid #a16207;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.chip-line.horizontal {
+.chip-center {
+  width: 14px;
+  height: 11px;
+  border: 1px solid #854d0e;
+  border-radius: 2px;
+  background: rgba(254, 240, 138, 0.4);
+}
+
+.chip-lines {
   position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
   background: #854d0e;
 }
 
-.chip-line.vertical {
-  position: absolute;
+.chip-lines.line-top {
+  top: 6px;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.chip-lines.line-mid {
   top: 0;
   bottom: 0;
   left: 50%;
   width: 1px;
-  background: #854d0e;
 }
 
-.chip-core {
-  position: absolute;
-  top: 7px;
-  left: 10px;
-  width: 16px;
-  height: 12px;
-  border-radius: 2px;
-  border: 1px solid #854d0e;
+.chip-lines.line-bot {
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  height: 1px;
 }
 
 .hologram-seal {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: linear-gradient(135deg, #a7f3d0, #fbcfe8, #fed7aa, #bae6fd);
   border: 1px solid rgba(255, 255, 255, 0.9);
@@ -1799,6 +1851,7 @@ select.form-control option {
   align-items: center;
   justify-content: center;
   color: #0f172a;
+  flex-shrink: 0;
 }
 
 .hologram-icon {
@@ -1810,125 +1863,191 @@ select.form-control option {
   font-weight: 800;
   letter-spacing: 0.05em;
   color: #1e293b;
+  line-height: 1;
 }
 
+/* Blood Group Tag */
 .blood-group-tag {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  background: #fee2e2;
-  border: 1px solid #fca5a5;
-  border-radius: 4px;
-  padding: 0.2rem 0.45rem;
-  font-size: 0.65rem;
-  color: #991b1b;
-  width: 100%;
   justify-content: center;
+  gap: 0.35rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #b91c1c;
+  width: 100%;
 }
 
 .blood-icon {
   color: #dc2626;
+  flex-shrink: 0;
 }
 
-/* Info Column */
+.blood-val {
+  font-family: var(--font-mono);
+}
+
+/* Front Barcode */
+.front-barcode-wrap {
+  width: 100%;
+  background: #ffffff;
+  padding: 4px 2px 2px;
+  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.front-barcode-wrap canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Info Column & Bio Data */
 .card-info-column {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  min-width: 0;
 }
 
 .student-name-block {
   border-bottom: 2px solid var(--theme-accent, #f59e0b);
   padding-bottom: 0.35rem;
+  margin-bottom: 0.35rem;
 }
 
-.student-primary-name {
+.student-full-name {
   font-family: var(--font-heading);
-  font-size: 1.05rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: #0f172a;
-  line-height: 1.2;
+  line-height: 1.15;
+  margin: 0.15rem 0;
   word-break: break-word;
 }
 
-.student-id-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.725rem;
-  font-weight: 700;
-  color: var(--theme-secondary, #1e3a8a);
-  margin-top: 0.2rem;
-}
-
-.details-table {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.725rem;
-}
-
-.detail-row {
+.student-father-name-row {
   display: flex;
   align-items: baseline;
   gap: 0.35rem;
-  line-height: 1.35;
+  margin-top: 0.2rem;
 }
 
-.detail-row.dual {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-.detail-row.dual > div {
-  display: flex;
-  align-items: baseline;
-  gap: 0.25rem;
-}
-
-.detail-key {
-  color: #64748b;
+.val-father-name {
+  font-size: 0.775rem;
   font-weight: 600;
-  font-size: 0.675rem;
-  white-space: nowrap;
-}
-
-.detail-value {
-  color: #0f172a;
-  font-weight: 600;
+  color: #334155;
   word-break: break-word;
 }
 
-.detail-value.bold {
-  font-weight: 700;
-  color: #0f172a;
+.id-number-block {
+  margin-bottom: 0.4rem;
 }
 
-.email-value {
-  font-size: 0.675rem;
+.id-badge-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.825rem;
+  font-weight: 800;
+  color: var(--theme-primary, #1e3a8a);
+  background: rgba(59, 130, 246, 0.08);
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  margin-top: 0.15rem;
+}
+
+.code-text {
+  letter-spacing: 0.04em;
+}
+
+.hash-icon {
+  color: var(--theme-accent, #f59e0b);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   ACADEMIC META GRID (Separated Labels and Values - Zero Overlap!)
+   ========================================================================== */
+.academic-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.42rem 0.65rem;
+  margin-top: 0.15rem;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.meta-item.full-row {
+  grid-column: span 2;
+}
+
+.label-tiny {
+  display: block;
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 1px;
+}
+
+.val-text {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.val-text.highlight {
+  color: var(--theme-primary, #1e3a8a);
+  font-weight: 700;
+}
+
+.dept-text,
+.course-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e293b;
 }
 
 /* Card Footer Zone: QR & Signatures */
 .card-footer-zone {
   display: grid;
-  grid-template-columns: 75px 1fr;
+  grid-template-columns: 72px 1fr;
   gap: 0.75rem;
   align-items: center;
-  padding: 0.4rem 1.15rem 0.65rem;
+  padding: 0.45rem 1.15rem 0.65rem;
   background: #f8fafc;
   border-top: 1px solid #e2e8f0;
 }
 
-.qr-code-section {
+.qr-container-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
 }
 
-.qr-wrapper-card {
+.qr-wrapper-border {
   background: #ffffff;
   padding: 3px;
   border-radius: 6px;
@@ -1948,10 +2067,10 @@ select.form-control option {
   white-space: nowrap;
 }
 
-.signatures-container {
+.signatures-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .signature-box {
@@ -1962,12 +2081,13 @@ select.form-control option {
 
 .signature-line-drawn {
   font-family: var(--font-signature);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: #1e3a8a;
-  height: 28px;
+  height: 26px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  line-height: 1;
 }
 
 .signature-line-drawn.student-sig {
@@ -1988,7 +2108,7 @@ select.form-control option {
 }
 
 .signature-title {
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   font-weight: 600;
   color: #64748b;
   text-align: center;
@@ -1999,9 +2119,9 @@ select.form-control option {
   padding: 0.35rem 0.5rem;
   color: #ffffff;
   font-family: var(--font-mono);
-  font-size: 0.525rem;
+  font-size: 0.52rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-align: center;
   margin-top: auto;
 }
@@ -2013,18 +2133,19 @@ select.form-control option {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-top: 1.5rem;
+  padding-top: 0;
   background: #ffffff;
 }
 
 .back-top-strip {
-  padding: 0.5rem 1rem;
+  padding: 1.55rem 1rem 0.5rem;
   color: #ffffff;
   font-family: var(--font-heading);
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-align: center;
+  position: relative;
 }
 
 .back-card-body {

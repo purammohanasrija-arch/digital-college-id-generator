@@ -170,7 +170,9 @@ Status: OFFICIAL VERIFIED STUDENT ✅`;
       <div className="lanyard-container">
         <div className="lanyard-ribbon" style={{ background: theme.primary }}>
           <div className="lanyard-texture"></div>
-          <span className="lanyard-text">{displayData.college}</span>
+          <span className="lanyard-text">
+            {collegeMeta?.shortName || student.customCollege?.shortName || 'CAMPUS ID'}
+          </span>
         </div>
         <div className="lanyard-hardware">
           <div className="lanyard-metal-clip"></div>
