@@ -23,7 +23,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   Edit3,
-  List
+  List,
+  UserCheck
 } from 'lucide-react';
 import FormInput from './FormInput';
 import {
@@ -33,7 +34,8 @@ import {
   cardThemes,
   sectionOptions,
   departmentOptions,
-  courseOptions
+  courseOptions,
+  academicSessionOptions
 } from '../utils/defaultData';
 
 const StudentForm = ({
@@ -57,7 +59,8 @@ const StudentForm = ({
   const [customMode, setCustomMode] = useState({
     department: false,
     course: false,
-    section: false
+    section: false,
+    academicYear: false
   });
 
   const toggleCustomMode = (field) => {
@@ -172,6 +175,17 @@ const StudentForm = ({
             />
 
             <FormInput
+              label="Father's / Guardian's Name"
+              name="fatherName"
+              value={student.fatherName || ''}
+              onChange={onChange}
+              placeholder="e.g. Robert H. Morgan"
+              icon={UserCheck}
+            />
+          </div>
+
+          <div className="form-grid-2">
+            <FormInput
               label="Student ID / Roll Number"
               name="studentId"
               value={student.studentId}
@@ -181,9 +195,7 @@ const StudentForm = ({
               error={errors.studentId}
               icon={Hash}
             />
-          </div>
 
-          <div className="form-grid-3">
             <FormInput
               label="Date of Birth"
               name="dob"
@@ -192,7 +204,9 @@ const StudentForm = ({
               onChange={onChange}
               icon={Calendar}
             />
+          </div>
 
+          <div className="form-grid-2">
             <FormInput
               label="Gender"
               name="gender"
@@ -414,14 +428,28 @@ const StudentForm = ({
               />
             </div>
 
-            <FormInput
-              label="Academic Session / Year"
-              name="academicYear"
-              value={student.academicYear}
-              onChange={onChange}
-              placeholder="e.g. 2024 - 2028"
-              icon={Calendar}
-            />
+            <div className="field-with-switch">
+              <div className="field-top-meta">
+                <button
+                  type="button"
+                  className="btn-text-switch"
+                  onClick={() => toggleCustomMode('academicYear')}
+                >
+                  {customMode.academicYear ? <List size={12} /> : <Edit3 size={12} />}
+                  <span>{customMode.academicYear ? 'Session list' : 'Custom'}</span>
+                </button>
+              </div>
+              <FormInput
+                label="Academic Session / Year"
+                name="academicYear"
+                type={customMode.academicYear ? 'text' : 'select'}
+                options={academicSessionOptions}
+                value={student.academicYear}
+                onChange={onChange}
+                placeholder={customMode.academicYear ? "e.g. 2024 - 2028" : "Select Academic Session"}
+                icon={Calendar}
+              />
+            </div>
           </div>
         </div>
 

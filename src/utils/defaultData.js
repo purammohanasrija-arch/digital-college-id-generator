@@ -1,5 +1,6 @@
 export const initialStudentState = {
   name: "",
+  fatherName: "",
   studentId: "",
   dob: "",
   gender: "",
@@ -19,6 +20,7 @@ export const initialStudentState = {
 
 export const sampleStudentData = {
   name: "Alexander J. Morgan",
+  fatherName: "Robert H. Morgan",
   studentId: "STU-2024-8842",
   dob: "2003-08-14",
   gender: "Male",
@@ -159,5 +161,24 @@ export const courseOptions = [
   "MBA (Master of Business Admin)",
   "M.Sc Computer Science",
   "Ph.D Research Fellow"
+];
+
+export const academicSessionOptions = [
+  "2025 - 2029",
+  "2024 - 2028",
+  "2023 - 2027",
+  "2022 - 2026",
+  "2021 - 2025",
+  "2025 - 2028",
+  "2024 - 2027",
+  "2023 - 2026",
+  "2025 - 2027",
+  "2024 - 2026",
+  "2023 - 2025",
+  "2025 - 2030",
+  "2024 - 2029",
+  "2025 - 2026",
+  "2024 - 2025",
+  "2026 - 2027"
 ];
 

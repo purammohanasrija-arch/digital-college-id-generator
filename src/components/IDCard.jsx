@@ -23,7 +23,8 @@ import {
   Maximize2,
   X,
   Copy,
-  Check
+  Check,
+  UserCheck
 } from 'lucide-react';
 import { sampleStudentData } from '../utils/defaultData';
 
@@ -41,6 +42,7 @@ const IDCard = ({
   // Merge student input with fallback sample data so preview is never blank
   const displayData = {
     name: student.name.trim() || sampleStudentData.name,
+    fatherName: student.fatherName?.trim() || sampleStudentData.fatherName,
     studentId: student.studentId.trim() || sampleStudentData.studentId,
     dob: student.dob || sampleStudentData.dob,
     gender: student.gender || sampleStudentData.gender,
@@ -61,6 +63,7 @@ const IDCard = ({
   // Human-readable and camera-friendly QR Code Verification Payload
   const qrPayload = `🎓 STUDENT IDENTITY VERIFICATION
 Name: ${displayData.name}
+Father's Name: ${displayData.fatherName}
 ID: ${displayData.studentId}
 College: ${displayData.college}
 Dept: ${displayData.department}
@@ -242,6 +245,13 @@ Status: OFFICIAL STUDENT ✅`;
                       <span className="detail-value bold">{displayData.course}</span>
                     </div>
 
+                    {displayData.fatherName && (
+                      <div className="detail-row">
+                        <span className="detail-key">Father:</span>
+                        <span className="detail-value">{displayData.fatherName}</span>
+                      </div>
+                    )}
+
                     <div className="detail-row dual">
                       <div>
                         <span className="detail-key">Year:</span>
@@ -352,6 +362,16 @@ Status: OFFICIAL STUDENT ✅`;
 
                 {/* Residential & Emergency Details */}
                 <div className="back-section contact-section">
+                  {displayData.fatherName && (
+                    <div className="back-info-item">
+                      <UserCheck size={15} className="back-icon" />
+                      <div>
+                        <strong>Father / Guardian:</strong>
+                        <p>{displayData.fatherName}</p>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="back-info-item">
                     <MapPin size={15} className="back-icon" />
                     <div>
