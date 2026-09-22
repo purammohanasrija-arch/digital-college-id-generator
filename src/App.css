@@ -2065,6 +2065,44 @@ select.form-control option {
   color: #1e293b;
 }
 
+.contact-mini-row {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.25rem;
+  border-top: 1px dashed #e2e8f0;
+  margin-top: 0.15rem;
+}
+
+.contact-mini-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.contact-mini-icon {
+  color: var(--theme-primary, #1e3a8a);
+  flex-shrink: 0;
+}
+
+.contact-text {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-text.email-text {
+  color: #0284c7;
+}
+
+
 /* Card Footer Zone: QR & Signatures */
 .card-footer-zone {
   display: grid;

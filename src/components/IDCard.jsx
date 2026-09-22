@@ -391,6 +391,17 @@ Status: OFFICIAL VERIFIED STUDENT ✅`;
                         <span className="label-tiny">GENDER</span>
                         <span className="val-text">{displayData.gender}</span>
                       </div>
+
+                      <div className="meta-item full-row contact-mini-row">
+                        <div className="contact-mini-item" title={displayData.phone}>
+                          <Phone size={10} className="contact-mini-icon" />
+                          <span className="contact-text">{displayData.phone || '—'}</span>
+                        </div>
+                        <div className="contact-mini-item" title={displayData.email}>
+                          <Mail size={10} className="contact-mini-icon" />
+                          <span className="contact-text email-text">{displayData.email || '—'}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
