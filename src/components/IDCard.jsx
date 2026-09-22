@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import BarcodeCanvas from './BarcodeCanvas';
 import CollegeLogo from './CollegeLogo';
@@ -23,6 +23,7 @@ import {
   Barcode as BarcodeIcon,
   Maximize2,
   X,
+  ArrowLeft,
   Copy,
   Check,
   UserCheck,
@@ -42,6 +43,23 @@ const IDCard = ({
   const [showTestModal, setShowTestModal] = useState(false);
   const [copied, setCopied] = useState(false);
   const tiltStageRef = useRef(null);
+
+  // Close modal on Escape key and prevent background scroll when modal is open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowTestModal(false);
+      }
+    };
+    if (showTestModal) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [showTestModal]);
 
   // College name & metadata resolution
   const isCustom = student.collegeChoice === 'Custom College';
@@ -525,14 +543,26 @@ Status: OFFICIAL VERIFIED STUDENT ✅`;
                   <p className="modal-subtitle">Directly test optical barcode & smartphone camera verification</p>
                 </div>
               </div>
-              <button
-                type="button"
-                className="modal-btn-close"
-                onClick={() => setShowTestModal(false)}
-                aria-label="Close"
-              >
-                <X size={18} />
-              </button>
+              <div className="modal-header-actions">
+                <button
+                  type="button"
+                  className="modal-btn-back"
+                  onClick={() => setShowTestModal(false)}
+                  title="Go back to live ID card preview"
+                >
+                  <ArrowLeft size={15} />
+                  <span>Back to ID Card</span>
+                </button>
+                <button
+                  type="button"
+                  className="modal-btn-close"
+                  onClick={() => setShowTestModal(false)}
+                  aria-label="Close"
+                  title="Close Inspector"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             <div className="scanner-test-content">
@@ -605,12 +635,14 @@ Status: OFFICIAL VERIFIED STUDENT ✅`;
             </div>
 
             <div className="modal-footer">
+              <span className="modal-footer-hint">💡 Press Esc key or click outside to return</span>
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn-modal-back-primary"
                 onClick={() => setShowTestModal(false)}
               >
-                Done
+                <ArrowLeft size={16} />
+                <span>Back to ID Card Preview</span>
               </button>
             </div>
           </div>
