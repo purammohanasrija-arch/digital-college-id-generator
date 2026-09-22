@@ -16,11 +16,36 @@ Students can personalize their ID badges, choose from authentic university theme
 
 - ⚡ **Instant Live Preview**: Dynamic dual-binding updates the ID card badge in real time as the user types.
 - 🪪 **Authentic CR80 Portrait Badge Design**: Formatted according to standard institutional ID specifications, complete with lanyard slot punch, security microchip, and rainbow hologram seal.
-- 🏛️ **College Names Dropdown**: Pre-loaded list of 25+ top global & national institutions (IIT Delhi, IIT Bombay, MIT, Harvard, Stanford, Oxford, Cambridge, BITS Pilani, etc.) with 1-click toggle to type any custom institution.
-- 🎨 **College Logo Studio & Custom Logo Creator**:
-  - **Preset Crests**: Pick from official style university seals (Imperial Blue, Crimson Veritas, Tech Atom, Oxford Shield, etc.).
-  - **Customize Logo Creator**: Real-time vector crest designer with custom shield/circle/hexagon/diamond shapes, emblems (Book, Torch, Atom, Pillars, Graduation Cap, Crown), custom 1–3 letter monogram, dual color pickers, and establishment year.
-  - **Custom Image Upload**: Drag & drop or upload any custom college logo/crest PNG/SVG.
+- 🏛️ **Select College Dropdown with Sample Institutions & Custom Mode**:
+  - Pre-loaded with 12 recognized universities:
+    * *Vignan's Foundation for Science, Technology and Research (VFSTR)*
+    * *Vignan University*
+    * *KL University*
+    * *GITAM University*
+    * *Andhra University*
+    * *Acharya Nagarjuna University*
+    * *IIT Hyderabad*
+    * *NIT Warangal*
+    * *IIIT Hyderabad*
+    * *University of Hyderabad*
+    * *SRM University*
+    * *Amrita Vishwa Vidyapeetham*
+  - **Custom College Option**: Allows entering College Name, College Short Name, and College Location with instant live propagation to the ID card.
+- 🎨 **Automatic Demo Logos & Custom Logo Creator**:
+  - **Authentic Placeholder Logos**: Unique, non-infringing vector demo logos designed for every sample college (`VF`, `VU`, `KL`, `G`, `AU`, `ANU`, `IITH`, `NITW`, `IIITH`, `UoH`, `SRM`, `AVV`).
+  - **Automatic Logo Switching**: Selecting any college instantly switches the logo on the card badge.
+  - **🖼️ Upload College Logo**: Upload any PNG, JPG, JPEG, or SVG file with immediate card badge replacement.
+  - **Remove Logo**: 1-click button restoring the selected college's default demo logo.
+  - **🎨 Custom Logo Creator Studio**: Modern two-column modal with live preview:
+    * *Logo Text*: College Initials / Short Name (e.g. `VFSTR`)
+    * *Logo Shape*: Circle, Shield, Square, Rounded Square, Hexagon, Badge
+    * *Logo Icon*: 🎓 Education, 🏫 College, 📚 Books, 🔬 Science, 💻 Technology, ⭐ Star, 🏛️ University, 🌐 Global
+    * *Logo Style*: Solid, Gradient, Outline
+    * *Background Color*: Interactive color picker with live hex code
+    * *Text Color*: Interactive color picker with live hex code
+    * *Border*: None, Thin, Medium, Thick
+    * *Logo Size Slider*: Dynamic badge sizing slider
+    * *Live Preview*: Instant vector rendering updating on every keystroke or slider change!
 - 📋 **Pre-Populated Academic & Personal Option Dropdowns**:
   - **Father's / Guardian's Name**: Dedicated bio field on the form, rendered on the ID card badge and embedded into the camera QR code.
   - **Academic Session Dropdown**: Pre-populated with 15+ standard 4-year, 3-year, 2-year, and 5-year sessions (e.g. `2024 - 2028`, `2025 - 2029`, etc.) with 1-click toggle to type custom.
