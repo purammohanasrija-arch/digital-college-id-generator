@@ -38,13 +38,16 @@ import {
   departmentOptions,
   courseOptions,
   academicSessionOptions,
-  collegeOptions
+  collegeOptions,
+  sampleColleges
 } from '../utils/defaultData';
 
 const StudentForm = ({
   student,
   errors,
   onChange,
+  onCollegeChange,
+  onCustomCollegeChange,
   onPhotoUpload,
   onPhotoRemove,
   onReset,
@@ -55,15 +58,20 @@ const StudentForm = ({
   selectedTheme,
   onThemeChange,
   logoConfig,
-  onLogoConfigChange,
+  onLogoUpload,
+  onLogoRemove,
+  onApplyCustomLogo,
   isDownloading,
   isGenerated
 }) => {
   const fileInputRef = useRef(null);
+  const logoFileInputRef = useRef(null);
   const [isLogoStudioOpen, setIsLogoStudioOpen] = useState(false);
 
+  const currentCollegeMeta =
+    sampleColleges.find((c) => c.name === (student.collegeChoice || student.college)) || sampleColleges[0];
+
   const [customMode, setCustomMode] = useState({
-    college: false,
     department: false,
     course: false,
     section: false,
@@ -333,58 +341,132 @@ const StudentForm = ({
             <h3 className="section-title">Academic Details</h3>
           </div>
 
-          {/* College Logo & Emblem Studio Banner */}
-          <div className="logo-selector-card">
-            <div className="logo-selector-left">
-              <div className="logo-preview-badge-mini">
-                <CollegeLogo config={logoConfig} size={42} />
-              </div>
-              <div className="logo-selector-info">
-                <span className="logo-selector-title">College Crest & Logo</span>
-                <span className="logo-selector-desc">
-                  {logoConfig?.mode === 'upload'
-                    ? '📁 Custom image active'
-                    : logoConfig?.mode === 'creator'
-                    ? `🎨 Custom: ${logoConfig?.creator?.monogram || 'Crest'} (${logoConfig?.creator?.shape})`
-                    : `🛡️ Preset: ${logoConfig?.preset?.name || 'Academic Shield'}`}
-                </span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="btn-open-logo-studio"
-              onClick={() => setIsLogoStudioOpen(true)}
-            >
-              <Sparkles size={14} />
-              <span>Customize Logo Creator</span>
-            </button>
+          {/* 1. College Selection Dropdown */}
+          <div className="form-grid-1">
+            <FormInput
+              label="Select College"
+              name="collegeChoice"
+              type="select"
+              options={collegeOptions}
+              value={student.collegeChoice || student.college}
+              onChange={(e) => onCollegeChange(e.target.value)}
+              placeholder="Select College"
+              required
+              error={errors.college}
+              icon={School}
+            />
           </div>
 
-          <div className="form-grid-1">
-            <div className="field-with-switch">
-              <div className="field-top-meta">
+          {/* Custom College Sub-fields (when Custom College is selected) */}
+          {student.collegeChoice === 'Custom College' && (
+            <div className="custom-college-fields-card">
+              <div className="custom-college-title-row">
+                <Sparkles size={14} className="sparkle-gold" />
+                <span className="custom-college-title">Custom College Details</span>
+              </div>
+              <div className="custom-college-grid">
+                <FormInput
+                  label="College Name"
+                  name="customCollegeName"
+                  type="text"
+                  value={student.customCollege?.name || ''}
+                  onChange={(e) => onCustomCollegeChange('name', e.target.value)}
+                  placeholder="e.g. Apex Institute of Science & Technology"
+                  required
+                  error={errors.college}
+                  icon={School}
+                />
+                <div className="form-grid-2">
+                  <FormInput
+                    label="College Short Name"
+                    name="customCollegeShortName"
+                    type="text"
+                    value={student.customCollege?.shortName || ''}
+                    onChange={(e) => onCustomCollegeChange('shortName', e.target.value)}
+                    placeholder="e.g. AIST or APEX"
+                    icon={Hash}
+                  />
+                  <FormInput
+                    label="College Location"
+                    name="customCollegeLocation"
+                    type="text"
+                    value={student.customCollege?.location || ''}
+                    onChange={(e) => onCustomCollegeChange('location', e.target.value)}
+                    placeholder="e.g. Hyderabad, Telangana"
+                    icon={MapPin}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 2. College Logo Controls & Custom Logo Creator Bar */}
+          <div className="logo-management-card">
+            <div className="logo-management-header">
+              <div className="logo-management-left">
+                <div className="logo-mini-badge-frame">
+                  <CollegeLogo config={logoConfig} size={44} />
+                </div>
+                <div className="logo-status-text-wrap">
+                  <span className="logo-management-title">College Logo / Crest</span>
+                  <span className="logo-management-status">
+                    {logoConfig?.mode === 'upload'
+                      ? '🖼️ Uploaded Custom Logo Active'
+                      : logoConfig?.mode === 'creator'
+                      ? `🎨 Custom Logo Active: ${logoConfig?.activeLogo?.text || 'Custom'} (${logoConfig?.activeLogo?.shape || 'Crest'})`
+                      : `🏛️ Default Logo Active: ${currentCollegeMeta?.shortName || 'College'}`}
+                  </span>
+                </div>
+              </div>
+
+              {/* Hidden file input for Upload College Logo */}
+              <input
+                ref={logoFileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    onLogoUpload(file);
+                    e.target.value = '';
+                  }
+                }}
+                style={{ display: 'none' }}
+              />
+
+              <div className="logo-action-buttons">
                 <button
                   type="button"
-                  className="btn-text-switch"
-                  onClick={() => toggleCustomMode('college')}
+                  className="btn-create-custom-logo"
+                  onClick={() => setIsLogoStudioOpen(true)}
+                  title="Design your custom college crest"
                 >
-                  {customMode.college ? <List size={12} /> : <Edit3 size={12} />}
-                  <span>{customMode.college ? 'College list' : 'Type custom'}</span>
+                  <Sparkles size={14} />
+                  <span>🎨 Create Custom Logo</span>
                 </button>
+
+                <button
+                  type="button"
+                  className="btn-upload-logo"
+                  onClick={() => logoFileInputRef.current?.click()}
+                  title="Upload PNG, JPG, JPEG, or SVG image"
+                >
+                  <UploadCloud size={14} />
+                  <span>🖼️ Upload College Logo</span>
+                </button>
+
+                {(logoConfig?.mode === 'upload' || logoConfig?.mode === 'creator') && (
+                  <button
+                    type="button"
+                    className="btn-remove-logo"
+                    onClick={onLogoRemove}
+                    title="Restore selected college default logo"
+                  >
+                    <RotateCcw size={13} />
+                    <span>Remove Logo</span>
+                  </button>
+                )}
               </div>
-              <FormInput
-                label="College / University Name"
-                name="college"
-                type={customMode.college ? 'text' : 'select'}
-                options={collegeOptions}
-                value={student.college}
-                onChange={onChange}
-                placeholder={customMode.college ? "e.g. Apex Institute of Science & Technology" : "Select College / University"}
-                required
-                error={errors.college}
-                icon={School}
-              />
             </div>
           </div>
 
@@ -576,12 +658,14 @@ const StudentForm = ({
         </div>
       </form>
 
-      {/* College Logo & Emblem Studio Modal */}
+      {/* Custom Logo Creator Modal */}
       <LogoStudioModal
         isOpen={isLogoStudioOpen}
         onClose={() => setIsLogoStudioOpen(false)}
-        logoConfig={logoConfig}
-        onChangeLogoConfig={onLogoConfigChange}
+        currentLogo={logoConfig}
+        defaultCollegeLogo={currentCollegeMeta?.defaultLogo}
+        onApplyLogo={onApplyCustomLogo}
+        onResetLogo={onLogoRemove}
       />
     </div>
   );

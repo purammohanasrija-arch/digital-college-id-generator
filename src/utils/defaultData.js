@@ -8,7 +8,13 @@ export const initialStudentState = {
   phone: "",
   email: "",
   photo: "",
-  college: "",
+  college: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
+  collegeChoice: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
+  customCollege: {
+    name: "",
+    shortName: "",
+    location: ""
+  },
   department: "",
   course: "",
   year: "",
@@ -28,7 +34,13 @@ export const sampleStudentData = {
   phone: "+1 (555) 382-9471",
   email: "alex.morgan@apex.edu",
   photo: "",
-  college: "Apex Institute of Science & Technology",
+  college: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
+  collegeChoice: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
+  customCollege: {
+    name: "",
+    shortName: "",
+    location: ""
+  },
   department: "School of Computing & Artificial Intelligence",
   course: "B.Tech Computer Science & Engineering",
   year: "3rd Year",
@@ -182,100 +194,287 @@ export const academicSessionOptions = [
   "2026 - 2027"
 ];
 
+export const sampleColleges = [
+  {
+    id: "vfstr",
+    name: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
+    shortName: "VFSTR",
+    location: "Vadlamudi, Guntur, AP",
+    accreditation: "NAAC A+ Accredited Deemed to be University",
+    defaultLogo: {
+      text: "VF",
+      shape: "circle",
+      icon: "education",
+      style: "gradient",
+      bgColor: "#0f3b7d",
+      textColor: "#ffffff",
+      borderColor: "#f59e0b",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "vignan-univ",
+    name: "Vignan University",
+    shortName: "VU",
+    location: "Guntur, Andhra Pradesh",
+    accreditation: "Estd. u/s 3 of UGC Act 1956",
+    defaultLogo: {
+      text: "VU",
+      shape: "shield",
+      icon: "college",
+      style: "gradient",
+      bgColor: "#1e3a8a",
+      textColor: "#ffffff",
+      borderColor: "#f59e0b",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "klu",
+    name: "KL University",
+    shortName: "KLU",
+    location: "Vaddeswaram, Guntur, AP",
+    accreditation: "Koneru Lakshmaiah Education Foundation (Deemed to be University)",
+    defaultLogo: {
+      text: "KL",
+      shape: "rounded-square",
+      icon: "technology",
+      style: "solid",
+      bgColor: "#991b1b",
+      textColor: "#ffffff",
+      borderColor: "#fbbf24",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "gitam",
+    name: "GITAM University",
+    shortName: "GITAM",
+    location: "Visakhapatnam, Andhra Pradesh",
+    accreditation: "Gandhi Institute of Technology and Management (NAAC A++)",
+    defaultLogo: {
+      text: "G",
+      shape: "badge",
+      icon: "university",
+      style: "gradient",
+      bgColor: "#065f46",
+      textColor: "#ffffff",
+      borderColor: "#facc15",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "andhra-univ",
+    name: "Andhra University",
+    shortName: "AU",
+    location: "Visakhapatnam, Andhra Pradesh",
+    accreditation: "Estd. 1926 • State Public University",
+    defaultLogo: {
+      text: "AU",
+      shape: "circle",
+      icon: "books",
+      style: "outline",
+      bgColor: "#581c87",
+      textColor: "#e9d5ff",
+      borderColor: "#c084fc",
+      border: "thick",
+      size: 46
+    }
+  },
+  {
+    id: "anu",
+    name: "Acharya Nagarjuna University",
+    shortName: "ANU",
+    location: "Nagarjuna Nagar, Guntur, AP",
+    accreditation: "State University Accredited with NAAC 'A' Grade",
+    defaultLogo: {
+      text: "ANU",
+      shape: "shield",
+      icon: "education",
+      style: "gradient",
+      bgColor: "#831843",
+      textColor: "#fef08a",
+      borderColor: "#f59e0b",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "iith",
+    name: "IIT Hyderabad",
+    shortName: "IITH",
+    location: "Kandi, Sangareddy, Telangana",
+    accreditation: "Institute of National Importance • Govt. of India",
+    defaultLogo: {
+      text: "IITH",
+      shape: "hexagon",
+      icon: "science",
+      style: "solid",
+      bgColor: "#0f172a",
+      textColor: "#38bdf8",
+      borderColor: "#38bdf8",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "nitw",
+    name: "NIT Warangal",
+    shortName: "NITW",
+    location: "Warangal, Telangana",
+    accreditation: "Institute of National Importance • NIRF Top Ranked",
+    defaultLogo: {
+      text: "NITW",
+      shape: "shield",
+      icon: "technology",
+      style: "gradient",
+      bgColor: "#14532d",
+      textColor: "#ffffff",
+      borderColor: "#fbbf24",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "iiith",
+    name: "IIIT Hyderabad",
+    shortName: "IIITH",
+    location: "Gachibowli, Hyderabad, Telangana",
+    accreditation: "International Institute of Information Technology",
+    defaultLogo: {
+      text: "IIITH",
+      shape: "square",
+      icon: "technology",
+      style: "solid",
+      bgColor: "#1e1b4b",
+      textColor: "#c7d2fe",
+      borderColor: "#818cf8",
+      border: "thin",
+      size: 46
+    }
+  },
+  {
+    id: "uoh",
+    name: "University of Hyderabad",
+    shortName: "UoH",
+    location: "Prof. C.R. Rao Road, Hyderabad, TS",
+    accreditation: "Institution of Eminence • Central University",
+    defaultLogo: {
+      text: "UoH",
+      shape: "circle",
+      icon: "global",
+      style: "gradient",
+      bgColor: "#1e293b",
+      textColor: "#f8fafc",
+      borderColor: "#38bdf8",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "srm",
+    name: "SRM University",
+    shortName: "SRM",
+    location: "Kattankulathur, Chennai, TN",
+    accreditation: "SRM Institute of Science and Technology (NAAC A++)",
+    defaultLogo: {
+      text: "SRM",
+      shape: "badge",
+      icon: "star",
+      style: "gradient",
+      bgColor: "#1e3a8a",
+      textColor: "#fef08a",
+      borderColor: "#f59e0b",
+      border: "thick",
+      size: 46
+    }
+  },
+  {
+    id: "amrita",
+    name: "Amrita Vishwa Vidyapeetham",
+    shortName: "AVV",
+    location: "Coimbatore, Tamil Nadu",
+    accreditation: "NAAC A++ Multi-Disciplinary Deemed University",
+    defaultLogo: {
+      text: "AVV",
+      shape: "shield",
+      icon: "education",
+      style: "gradient",
+      bgColor: "#7c2d12",
+      textColor: "#ffedd5",
+      borderColor: "#ea580c",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "custom",
+    name: "Custom College",
+    shortName: "CUSTOM",
+    location: "",
+    accreditation: "Higher Education Institution",
+    defaultLogo: {
+      text: "COL",
+      shape: "circle",
+      icon: "education",
+      style: "gradient",
+      bgColor: "#1e3a8a",
+      textColor: "#ffffff",
+      borderColor: "#f59e0b",
+      border: "medium",
+      size: 46
+    }
+  }
+];
+
 export const collegeOptions = [
-  "Apex Institute of Science & Technology",
-  "Stanford Institute of Higher Education",
-  "Massachusetts Institute of Technology (MIT)",
-  "Oxford Academic University",
-  "Indian Institute of Technology (IIT)",
-  "Imperial College of Engineering & Research",
-  "Harvard Academy of Technology",
-  "Cambridge International University",
-  "California State Polytechnic University",
-  "National University of Singapore (NUS)",
-  "Melbourne Institute of Technology",
-  "University of Toronto & Technology",
-  "National Institute of Technology (NIT)",
-  "Delhi Technological University",
-  "ETH Zurich University of Technology"
+  ...sampleColleges.map((c) => c.name)
 ];
 
-export const presetLogos = [
-  {
-    id: "classic",
-    name: "Academic Shield (Gold & Navy)",
-    icon: "book",
-    shape: "shield",
-    primaryColor: "#1e3a8a",
-    accentColor: "#f59e0b",
-    monogram: "AIST",
-    estYear: "1985"
-  },
-  {
-    id: "tech",
-    name: "Quantum Tech & Innovation",
-    icon: "atom",
-    shape: "hexagon",
-    primaryColor: "#0f172a",
-    accentColor: "#38bdf8",
-    monogram: "MIT",
-    estYear: "1960"
-  },
-  {
-    id: "pillars",
-    name: "Classical Heritage Pillars",
-    icon: "pillars",
-    shape: "circle",
-    primaryColor: "#450a0a",
-    accentColor: "#fbbf24",
-    monogram: "OXF",
-    estYear: "1872"
-  },
-  {
-    id: "torch",
-    name: "Beacon of Excellence (Torch)",
-    icon: "torch",
-    shape: "shield",
-    primaryColor: "#064e3b",
-    accentColor: "#34d399",
-    monogram: "IIT",
-    estYear: "1951"
-  },
-  {
-    id: "crown",
-    name: "Imperial Royal Crown",
-    icon: "crown",
-    shape: "diamond",
-    primaryColor: "#2e1065",
-    accentColor: "#c084fc",
-    monogram: "HARV",
-    estYear: "1905"
-  },
-  {
-    id: "cap",
-    name: "Scholars Mortarboard Cap",
-    icon: "cap",
-    shape: "circle",
-    primaryColor: "#172554",
-    accentColor: "#60a5fa",
-    monogram: "UNIV",
-    estYear: "1992"
-  }
+export const logoShapes = [
+  { id: "circle", label: "Circle" },
+  { id: "shield", label: "Shield" },
+  { id: "square", label: "Square" },
+  { id: "rounded-square", label: "Rounded Square" },
+  { id: "hexagon", label: "Hexagon" },
+  { id: "badge", label: "Badge" }
 ];
 
-export const initialLogoConfig = {
-  mode: "preset",
-  presetId: "classic",
-  preset: presetLogos[0],
+export const logoIcons = [
+  { id: "education", label: "Education", emoji: "🎓" },
+  { id: "college", label: "College", emoji: "🏫" },
+  { id: "books", label: "Books", emoji: "📚" },
+  { id: "science", label: "Science", emoji: "🔬" },
+  { id: "technology", label: "Technology", emoji: "💻" },
+  { id: "star", label: "Star", emoji: "⭐" },
+  { id: "university", label: "University", emoji: "🏛️" },
+  { id: "global", label: "Global", emoji: "🌐" }
+];
+
+export const logoStyles = [
+  { id: "solid", label: "Solid" },
+  { id: "gradient", label: "Gradient" },
+  { id: "outline", label: "Outline" }
+];
+
+export const borderOptions = [
+  { id: "none", label: "None" },
+  { id: "thin", label: "Thin" },
+  { id: "medium", label: "Medium" },
+  { id: "thick", label: "Thick" }
+];
+
+export const defaultLogoConfig = {
+  mode: "default", // "default" | "creator" | "upload"
   customUpload: "",
-  creator: {
-    icon: "book",
-    shape: "shield",
-    bgColor: "#1e3a8a",
-    accentColor: "#f59e0b",
-    monogram: "AIST",
-    estYear: "EST. 1985"
-  }
+  activeLogo: { ...sampleColleges[0].defaultLogo }
 };
+
+export const initialLogoConfig = defaultLogoConfig;
+
 
 

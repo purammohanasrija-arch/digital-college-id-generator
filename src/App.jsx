@@ -6,7 +6,7 @@ import Header from './components/Header';
 import StudentForm from './components/StudentForm';
 import IDCard from './components/IDCard';
 import Footer from './components/Footer';
-import { initialStudentState, sampleStudentData, cardThemes, initialLogoConfig } from './utils/defaultData';
+import { initialStudentState, sampleStudentData, cardThemes, initialLogoConfig, sampleColleges } from './utils/defaultData';
 import './App.css';
 
 function App() {
@@ -36,6 +36,146 @@ function App() {
         return updated;
       });
     }
+  };
+
+  // College selection handler
+  const handleCollegeChange = (selectedName) => {
+    const isCustom = selectedName === 'Custom College';
+    const collegeMeta = sampleColleges.find((c) => c.name === selectedName);
+
+    setStudent((prev) => ({
+      ...prev,
+      collegeChoice: selectedName,
+      college: isCustom ? (prev.customCollege?.name || '') : selectedName
+    }));
+
+    if (errors.college) {
+      setErrors((prev) => {
+        const updated = { ...prev };
+        delete updated.college;
+        return updated;
+      });
+    }
+
+    // Automatically change the logo on the ID card
+    if (collegeMeta) {
+      setLogoConfig({
+        mode: 'default',
+        customUpload: '',
+        activeLogo: { ...collegeMeta.defaultLogo }
+      });
+    } else if (isCustom) {
+      setLogoConfig({
+        mode: 'default',
+        customUpload: '',
+        activeLogo: {
+          text: student.customCollege?.shortName?.trim() || 'COL',
+          shape: 'circle',
+          icon: 'education',
+          style: 'gradient',
+          bgColor: '#1e3a8a',
+          textColor: '#ffffff',
+          borderColor: '#f59e0b',
+          border: 'medium',
+          size: 46
+        }
+      });
+    }
+  };
+
+  // Custom college sub-fields handler
+  const handleCustomCollegeChange = (field, value) => {
+    setStudent((prev) => {
+      const updatedCustom = {
+        ...prev.customCollege,
+        [field]: value
+      };
+      return {
+        ...prev,
+        customCollege: updatedCustom,
+        college: field === 'name' ? value : prev.college
+      };
+    });
+
+    if (field === 'name' && errors.college) {
+      setErrors((prev) => {
+        const updated = { ...prev };
+        delete updated.college;
+        return updated;
+      });
+    }
+
+    // If logo is in default mode, keep text monogram synced with custom short name
+    if (field === 'shortName' && logoConfig.mode === 'default') {
+      const monogram = value.trim().toUpperCase() || 'COL';
+      setLogoConfig((prev) => ({
+        ...prev,
+        activeLogo: {
+          ...prev.activeLogo,
+          text: monogram
+        }
+      }));
+    }
+  };
+
+  // Upload College Logo handler
+  const handleLogoUpload = (file) => {
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file (PNG, JPG, JPEG, or SVG).');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setLogoConfig((prev) => ({
+        ...prev,
+        mode: 'upload',
+        customUpload: event.target?.result || ''
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Remove Logo handler: restores the selected college's default logo
+  const handleLogoRemove = () => {
+    const isCustom = student.collegeChoice === 'Custom College';
+    const collegeMeta = sampleColleges.find((c) => c.name === student.collegeChoice);
+
+    if (collegeMeta) {
+      setLogoConfig({
+        mode: 'default',
+        customUpload: '',
+        activeLogo: { ...collegeMeta.defaultLogo }
+      });
+    } else if (isCustom) {
+      setLogoConfig({
+        mode: 'default',
+        customUpload: '',
+        activeLogo: {
+          text: student.customCollege?.shortName?.trim() || 'COL',
+          shape: 'circle',
+          icon: 'education',
+          style: 'gradient',
+          bgColor: '#1e3a8a',
+          textColor: '#ffffff',
+          borderColor: '#f59e0b',
+          border: 'medium',
+          size: 46
+        }
+      });
+    }
+  };
+
+  // Apply custom created logo from Custom Logo Creator modal
+  const handleApplyCustomLogo = (newLogoConfig) => {
+    setLogoConfig({
+      mode: 'creator',
+      customUpload: '',
+      activeLogo: { ...newLogoConfig.activeLogo },
+      customLogo: { ...newLogoConfig.activeLogo }
+    });
   };
 
   // Photo upload using FileReader for base64 data URL
@@ -68,6 +208,12 @@ function App() {
   // Auto-fill sample student data for rapid testing
   const handleLoadSample = () => {
     setStudent({ ...sampleStudentData });
+    const defaultMeta = sampleColleges[0];
+    setLogoConfig({
+      mode: 'default',
+      customUpload: '',
+      activeLogo: { ...defaultMeta.defaultLogo }
+    });
     setErrors({});
     setIsGenerated(true);
   };
@@ -84,8 +230,12 @@ function App() {
       newErrors.studentId = 'Please enter your student ID.';
     }
 
-    if (!student.college.trim()) {
-      newErrors.college = 'Please enter your college name.';
+    if (student.collegeChoice === 'Custom College') {
+      if (!student.customCollege?.name?.trim()) {
+        newErrors.college = 'Please enter your custom college name.';
+      }
+    } else if (!student.college.trim()) {
+      newErrors.college = 'Please select your college.';
     }
 
     if (!student.department.trim()) {
@@ -235,6 +385,8 @@ function App() {
               student={student}
               errors={errors}
               onChange={handleInputChange}
+              onCollegeChange={handleCollegeChange}
+              onCustomCollegeChange={handleCustomCollegeChange}
               onPhotoUpload={handlePhotoUpload}
               onPhotoRemove={handlePhotoRemove}
               onReset={handleReset}
@@ -245,7 +397,9 @@ function App() {
               selectedTheme={selectedTheme}
               onThemeChange={setSelectedTheme}
               logoConfig={logoConfig}
-              onLogoConfigChange={setLogoConfig}
+              onLogoUpload={handleLogoUpload}
+              onLogoRemove={handleLogoRemove}
+              onApplyCustomLogo={handleApplyCustomLogo}
               isDownloading={isDownloading}
               isGenerated={isGenerated}
             />

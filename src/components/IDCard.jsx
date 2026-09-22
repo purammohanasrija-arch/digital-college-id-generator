@@ -27,7 +27,7 @@ import {
   Check,
   UserCheck
 } from 'lucide-react';
-import { sampleStudentData } from '../utils/defaultData';
+import { sampleStudentData, sampleColleges } from '../utils/defaultData';
 
 const IDCard = ({
   student,
@@ -41,6 +41,21 @@ const IDCard = ({
   const [showTestModal, setShowTestModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // College name & metadata resolution
+  const isCustom = student.collegeChoice === 'Custom College';
+  const collegeName = isCustom
+    ? (student.customCollege?.name?.trim() || student.college?.trim() || 'Custom College')
+    : (student.college?.trim() || sampleStudentData.college);
+
+  const collegeMeta = sampleColleges.find((c) => c.name === (student.collegeChoice || student.college)) || null;
+  const collegeLocation = isCustom
+    ? (student.customCollege?.location?.trim() || '')
+    : (collegeMeta?.location || '');
+
+  const collegeAccreditation =
+    collegeMeta?.accreditation ||
+    (collegeLocation ? `${collegeLocation} • Accredited Institution` : "Affiliated to State University • Accredited Grade 'A++'");
+
   // Merge student input with fallback sample data so preview is never blank
   const displayData = {
     name: student.name.trim() || sampleStudentData.name,
@@ -52,7 +67,9 @@ const IDCard = ({
     phone: student.phone.trim() || sampleStudentData.phone,
     email: student.email.trim() || sampleStudentData.email,
     photo: student.photo || '',
-    college: student.college.trim() || sampleStudentData.college,
+    college: collegeName,
+    collegeLocation: collegeLocation,
+    collegeAccreditation: collegeAccreditation,
     department: student.department.trim() || sampleStudentData.department,
     course: student.course.trim() || sampleStudentData.course,
     year: student.year || sampleStudentData.year,
@@ -154,12 +171,12 @@ Status: OFFICIAL STUDENT ✅`;
               {/* College Header */}
               <div className="card-header-bar" style={{ background: theme.gradient }}>
                 <div className="header-crest-wrap">
-                  <CollegeLogo config={logoConfig} size={46} />
+                  <CollegeLogo config={logoConfig} size={logoConfig?.activeLogo?.size || 46} />
                 </div>
                 <div className="header-info">
                   <h3 className="card-college-name">{displayData.college}</h3>
                   <p className="card-college-accreditation">
-                    Affiliated to State University • Accredited Grade 'A++'
+                    {displayData.collegeAccreditation}
                   </p>
                 </div>
               </div>
@@ -393,7 +410,9 @@ Status: OFFICIAL STUDENT ✅`;
                   <div>
                     <span className="inst-title">{displayData.college}</span>
                     <p className="inst-details">
-                      Administrative Wing, Academic Avenue • Helpline: +1 (800) 555-UNIV
+                      {displayData.collegeLocation
+                        ? `${displayData.collegeLocation} • Helpline: +1 (800) 555-UNIV`
+                        : 'Administrative Wing, Academic Avenue • Helpline: +1 (800) 555-UNIV'}
                     </p>
                     <p className="inst-web">www.campus-registry.edu • registry@college.edu</p>
                   </div>
