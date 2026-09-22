@@ -3,11 +3,17 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import confetti from 'canvas-confetti';
 import Header from './components/Header';
-import StudentForm from './components/StudentForm';
-import IDCard from './components/IDCard';
 import Footer from './components/Footer';
 import AuroraBackground from './components/AuroraBackground';
 import MouseGlow from './components/MouseGlow';
+import LogoStudioModal from './components/LogoStudioModal';
+import BentoCommandCenterLayout from './layouts/BentoCommandCenterLayout';
+import {
+  IDFirstLayout,
+  CreativeLayout,
+  SidebarLayout,
+  FloatingLayout
+} from './layouts/OtherLayouts';
 import {
   initialStudentState,
   sampleStudentData,
@@ -19,13 +25,49 @@ import { Sparkles } from 'lucide-react';
 import './App.css';
 
 function App() {
-  const [student, setStudent] = useState(initialStudentState);
+  // Persistent layout selection
+  const [activeLayout, setActiveLayout] = useState(() => {
+    try {
+      return localStorage.getItem('digital_id_selected_layout') || 'bento';
+    } catch (e) {
+      return 'bento';
+    }
+  });
+
+  // State with localStorage recovery
+  const [student, setStudent] = useState(() => {
+    try {
+      const saved = localStorage.getItem('digital_id_student_state');
+      return saved ? JSON.parse(saved) : initialStudentState;
+    } catch (e) {
+      return initialStudentState;
+    }
+  });
+
   const [errors, setErrors] = useState({});
-  const [selectedTheme, setSelectedTheme] = useState(cardThemes[0]);
+  const [selectedTheme, setSelectedTheme] = useState(() => {
+    try {
+      const savedId = localStorage.getItem('digital_id_theme_id');
+      const found = cardThemes.find((t) => t.id === savedId);
+      return found || cardThemes[0];
+    } catch (e) {
+      return cardThemes[0];
+    }
+  });
+
   const [activeSide, setActiveSide] = useState('front');
   const [isGenerated, setIsGenerated] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [logoConfig, setLogoConfig] = useState(initialLogoConfig);
+  const [logoConfig, setLogoConfig] = useState(() => {
+    try {
+      const saved = localStorage.getItem('digital_id_logo_config');
+      return saved ? JSON.parse(saved) : initialLogoConfig;
+    } catch (e) {
+      return initialLogoConfig;
+    }
+  });
+
+  const [isLogoStudioOpen, setIsLogoStudioOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [hasSavedDraft, setHasSavedDraft] = useState(false);
 
@@ -39,10 +81,27 @@ function App() {
       if (saved) {
         setHasSavedDraft(true);
       }
-    } catch (e) {
-      // Local storage disabled or error
-    }
+    } catch (e) {}
   }, []);
+
+  // Sync state changes to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('digital_id_student_state', JSON.stringify(student));
+    } catch (e) {}
+  }, [student]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('digital_id_theme_id', selectedTheme.id);
+    } catch (e) {}
+  }, [selectedTheme]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('digital_id_logo_config', JSON.stringify(logoConfig));
+    } catch (e) {}
+  }, [logoConfig]);
 
   const showToast = (msg) => {
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
@@ -50,6 +109,14 @@ function App() {
     toastTimeoutRef.current = setTimeout(() => {
       setToastMessage(null);
     }, 3200);
+  };
+
+  const handleSelectLayout = (layoutId) => {
+    setActiveLayout(layoutId);
+    try {
+      localStorage.setItem('digital_id_selected_layout', layoutId);
+    } catch (e) {}
+    showToast(`Switched to ${layoutId.replace('-', ' ').toUpperCase()} layout`);
   };
 
   // Controlled input handler
@@ -223,6 +290,17 @@ function App() {
     showToast('🎨 Custom designed logo applied to ID card!');
   };
 
+  // Custom color tuning in Theme Studio
+  const handleCustomColorChange = (key, val) => {
+    setSelectedTheme((prev) => ({
+      ...prev,
+      [key]: val,
+      gradient: key === 'primary'
+        ? `linear-gradient(135deg, ${val} 0%, ${prev.secondary || val} 55%, ${val} 100%)`
+        : prev.gradient
+    }));
+  };
+
   // Photo upload using FileReader for base64 data URL
   const handlePhotoUpload = (file) => {
     if (!file) return;
@@ -309,31 +387,31 @@ function App() {
     const newErrors = {};
 
     if (!student.name.trim()) {
-      newErrors.name = 'Please enter your full name.';
+      newErrors.name = 'Please enter full name.';
     }
 
     if (!student.studentId.trim()) {
-      newErrors.studentId = 'Please enter your student ID.';
+      newErrors.studentId = 'Please enter student ID.';
     }
 
     if (student.collegeChoice === 'Custom College') {
       if (!student.customCollege?.name?.trim()) {
-        newErrors.college = 'Please enter your custom college name.';
+        newErrors.college = 'Please enter custom college name.';
       }
     } else if (!student.college.trim()) {
-      newErrors.college = 'Please select your college.';
+      newErrors.college = 'Please select college.';
     }
 
     if (!student.department.trim()) {
-      newErrors.department = 'Please enter your department.';
+      newErrors.department = 'Please enter department.';
     }
 
     if (!student.course.trim()) {
-      newErrors.course = 'Please enter your course.';
+      newErrors.course = 'Please enter course.';
     }
 
     if (!student.year.trim()) {
-      newErrors.year = 'Please select your year of study.';
+      newErrors.year = 'Please select year of study.';
     }
 
     setErrors(newErrors);
@@ -348,91 +426,86 @@ function App() {
       showToast('🎉 Official student ID badge verified & generated!');
       try {
         confetti({
-          particleCount: 90,
-          spread: 80,
-          origin: { y: 0.6 }
+          particleCount: 80,
+          spread: 65,
+          origin: { y: 0.65 },
+          colors: ['#38bdf8', '#818cf8', '#c084fc', '#f472b6', '#34d399']
         });
-      } catch (err) {
-        // Fallback
-      }
+      } catch (e) {}
     } else {
-      setIsGenerated(false);
-      showToast('⚠️ Please fill in all required fields highlighted in red.');
+      showToast('⚠️ Please fill out all required fields marked in red.');
     }
   };
 
-  // Reset form to pristine state
+  // Reset form handler
   const handleReset = () => {
-    setStudent(initialStudentState);
-    setLogoConfig(initialLogoConfig);
-    setErrors({});
-    setIsGenerated(false);
-    setActiveSide('front');
-    showToast('↺ Form reset to default blank state');
+    if (window.confirm('Are you sure you want to reset all form fields?')) {
+      setStudent(initialStudentState);
+      const defaultMeta = sampleColleges[0];
+      setLogoConfig({
+        mode: 'default',
+        customUpload: '',
+        activeLogo: { ...defaultMeta.defaultLogo }
+      });
+      setSelectedTheme(cardThemes[0]);
+      setErrors({});
+      setIsGenerated(false);
+      showToast('↺ Form reset to blank default');
+    }
   };
 
-  // Export as high-resolution PNG image
+  // Download High-Resolution 3x PNG
   const handleDownloadPNG = async () => {
     if (!cardRef.current) return;
 
-    const isValid = validateForm();
-    if (!isValid) {
-      alert('Please fill in the required fields before downloading the ID card.');
-      return;
-    }
-
     try {
       setIsDownloading(true);
+      showToast('📸 Preparing high-resolution 3x print export...');
 
-      const cardElement = cardRef.current;
-      const canvas = await html2canvas(cardElement, {
-        scale: 3,
+      const scale = 3;
+      const canvas = await html2canvas(cardRef.current, {
+        scale: scale,
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
         logging: false
       });
 
-      const image = canvas.toDataURL('image/png');
+      const image = canvas.toDataURL('image/png', 1.0);
       const link = document.createElement('a');
-      const filename = `${student.studentId.trim() || 'student'}_${activeSide}_id_card.png`.toLowerCase().replace(/[^a-z0-9._-]/g, '_');
+      const filename = `${student.studentId.trim() || 'student'}_id_${activeSide}.png`.toLowerCase().replace(/[^a-z0-9._-]/g, '_');
       link.href = image;
       link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      showToast('📥 PNG download complete!');
+
+      showToast(`✨ Downloaded ${activeSide.toUpperCase()} side as high-res PNG!`);
     } catch (error) {
       console.error('Failed to export ID Card image:', error);
-      alert('An error occurred while generating the ID card image. Please try again.');
+      alert('An error occurred while generating the image. Please try again.');
     } finally {
       setIsDownloading(false);
     }
   };
 
-  // Export as PDF document
+  // Download Official PDF
   const handleDownloadPDF = async () => {
     if (!cardRef.current) return;
 
-    const isValid = validateForm();
-    if (!isValid) {
-      alert('Please fill in the required fields before downloading the ID card.');
-      return;
-    }
-
     try {
       setIsDownloading(true);
+      showToast('📄 Generating official PDF document...');
 
-      const cardElement = cardRef.current;
-      const canvas = await html2canvas(cardElement, {
+      const canvas = await html2canvas(cardRef.current, {
         scale: 3,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: null,
+        backgroundColor: '#ffffff',
         logging: false
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -453,6 +526,41 @@ function App() {
 
   const isLiveCustom = Object.entries(student).some(([key, val]) => val && val.trim?.() !== '');
 
+  const commonLayoutProps = {
+    student,
+    errors,
+    onChange: handleInputChange,
+    onCollegeChange: handleCollegeChange,
+    onCustomCollegeChange: handleCustomCollegeChange,
+    onPhotoUpload: handlePhotoUpload,
+    onPhotoRemove: handlePhotoRemove,
+    logoConfig,
+    onLogoUpload: handleLogoUpload,
+    onLogoRemove: handleLogoRemove,
+    onUpdateLogoSetting: handleUpdateLogoSetting,
+    onOpenLogoStudio: () => setIsLogoStudioOpen(true),
+    selectedTheme,
+    onThemeChange: setSelectedTheme,
+    onCustomColorChange: handleCustomColorChange,
+    cardRef,
+    activeSide,
+    onToggleSide: setActiveSide,
+    isLiveCustom,
+    onGenerate: handleGenerate,
+    onSaveDraft: handleSaveDraft,
+    onLoadDraft: handleLoadDraft,
+    hasSavedDraft,
+    onReset: handleReset,
+    onLoadSample: handleLoadSample,
+    onDownloadPNG: handleDownloadPNG,
+    onDownloadPDF: handleDownloadPDF,
+    isDownloading
+  };
+
+  // Current college meta for logo modal
+  const currentCollegeMeta =
+    sampleColleges.find((c) => c.name === (student.collegeChoice || student.college)) || sampleColleges[0];
+
   return (
     <div className="app-layout futuristic-layout">
       {/* 🌌 Aurora Background System */}
@@ -470,72 +578,41 @@ function App() {
       )}
 
       <div className="app-container">
-        {/* Header */}
-        <Header />
+        {/* Header with Layout Switcher */}
+        <Header
+          activeLayout={activeLayout}
+          onSelectLayout={handleSelectLayout}
+        />
 
-        {/* Bento Grid Dashboard Layout */}
-        <main className="bento-dashboard-layout">
-          {/* Left Column: Form Bento Cards */}
-          <section className="bento-form-col">
-            <StudentForm
-              student={student}
-              errors={errors}
-              onChange={handleInputChange}
-              onCollegeChange={handleCollegeChange}
-              onCustomCollegeChange={handleCustomCollegeChange}
-              onPhotoUpload={handlePhotoUpload}
-              onPhotoRemove={handlePhotoRemove}
-              onReset={handleReset}
-              onGenerate={handleGenerate}
-              onDownloadPNG={handleDownloadPNG}
-              onDownloadPDF={handleDownloadPDF}
-              onLoadSample={handleLoadSample}
-              onSaveDraft={handleSaveDraft}
-              onLoadDraft={handleLoadDraft}
-              hasSavedDraft={hasSavedDraft}
-              selectedTheme={selectedTheme}
-              onThemeChange={setSelectedTheme}
-              logoConfig={logoConfig}
-              onLogoUpload={handleLogoUpload}
-              onLogoRemove={handleLogoRemove}
-              onUpdateLogoSetting={handleUpdateLogoSetting}
-              onApplyCustomLogo={handleApplyCustomLogo}
-              isDownloading={isDownloading}
-              isGenerated={isGenerated}
-            />
-          </section>
-
-          {/* Right Column: Live 3D Holographic ID Card Preview */}
-          <section className="bento-preview-col">
-            <div className="bento-card bento-preview-card glass-panel sticky-bento-preview">
-              <div className="bento-card-header preview-bento-header">
-                <div className="bento-header-left">
-                  <div className="bento-icon-box cyan-glow">
-                    <Sparkles size={18} />
-                  </div>
-                  <div>
-                    <h3 className="bento-title">🪪 Live 3D Credential Preview</h3>
-                    <p className="bento-subtitle">Interactive 3D tilt & holographic security verification</p>
-                  </div>
-                </div>
-              </div>
-
-              <IDCard
-                student={student}
-                cardRef={cardRef}
-                theme={selectedTheme}
-                activeSide={activeSide}
-                onToggleSide={setActiveSide}
-                logoConfig={logoConfig}
-                isLiveCustom={isLiveCustom}
-              />
-            </div>
-          </section>
+        {/* Dynamic Layout Router */}
+        <main className="dashboard-layout-viewport">
+          {activeLayout === 'id-first' ? (
+            <IDFirstLayout {...commonLayoutProps} />
+          ) : activeLayout === 'creative' ? (
+            <CreativeLayout {...commonLayoutProps} />
+          ) : activeLayout === 'sidebar' ? (
+            <SidebarLayout {...commonLayoutProps} />
+          ) : activeLayout === 'floating' ? (
+            <FloatingLayout {...commonLayoutProps} />
+          ) : (
+            /* Default: Bento Command Center (3-Column Layout) */
+            <BentoCommandCenterLayout {...commonLayoutProps} />
+          )}
         </main>
 
         {/* Footer */}
         <Footer />
       </div>
+
+      {/* Global Logo Studio Modal */}
+      <LogoStudioModal
+        isOpen={isLogoStudioOpen}
+        onClose={() => setIsLogoStudioOpen(false)}
+        currentLogo={logoConfig}
+        defaultCollegeLogo={currentCollegeMeta?.defaultLogo}
+        onApplyLogo={handleApplyCustomLogo}
+        onResetLogo={handleLogoRemove}
+      />
     </div>
   );
 }

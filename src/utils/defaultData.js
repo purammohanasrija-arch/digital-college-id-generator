@@ -52,54 +52,64 @@ export const sampleStudentData = {
 
 export const cardThemes = [
   {
-    id: "navy",
-    name: "Royal Navy & Gold",
+    id: "aurora",
+    name: "Aurora",
+    primary: "#0c1a30",
+    secondary: "#0284c7",
+    accent: "#38bdf8",
+    badgeBg: "#075985",
+    gradient: "linear-gradient(135deg, #0c1a30 0%, #0369a1 50%, #4f46e5 100%)",
+    lightAccent: "#e0f2fe"
+  },
+  {
+    id: "ocean",
+    name: "Ocean",
+    primary: "#082f49",
+    secondary: "#0284c7",
+    accent: "#06b6d4",
+    badgeBg: "#0e7490",
+    gradient: "linear-gradient(135deg, #082f49 0%, #0369a1 60%, #0891b2 100%)",
+    lightAccent: "#cffafe"
+  },
+  {
+    id: "galaxy",
+    name: "Galaxy",
+    primary: "#2e1065",
+    secondary: "#6b21a8",
+    accent: "#c084fc",
+    badgeBg: "#581c87",
+    gradient: "linear-gradient(135deg, #2e1065 0%, #7e22ce 55%, #ec4899 100%)",
+    lightAccent: "#f3e8ff"
+  },
+  {
+    id: "cyber",
+    name: "Cyber",
+    primary: "#030712",
+    secondary: "#111827",
+    accent: "#22d3ee",
+    badgeBg: "#1f2937",
+    gradient: "linear-gradient(135deg, #030712 0%, #0f172a 50%, #064e3b 100%)",
+    lightAccent: "#ccfbf1"
+  },
+  {
+    id: "royal",
+    name: "Royal",
     primary: "#0f172a",
     secondary: "#1e3a8a",
     accent: "#f59e0b",
     badgeBg: "#1e293b",
     gradient: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #172554 100%)",
-    lightAccent: "#dbeafe"
-  },
-  {
-    id: "crimson",
-    name: "Crimson & Bronze",
-    primary: "#450a0a",
-    secondary: "#991b1b",
-    accent: "#f59e0b",
-    badgeBg: "#7f1d1d",
-    gradient: "linear-gradient(135deg, #450a0a 0%, #991b1b 60%, #7f1d1d 100%)",
-    lightAccent: "#fee2e2"
+    lightAccent: "#fef3c7"
   },
   {
     id: "emerald",
-    name: "Emerald & Silver",
+    name: "Emerald",
     primary: "#022c22",
     secondary: "#065f46",
     accent: "#34d399",
     badgeBg: "#047857",
     gradient: "linear-gradient(135deg, #022c22 0%, #065f46 60%, #064e3b 100%)",
     lightAccent: "#d1fae5"
-  },
-  {
-    id: "purple",
-    name: "Imperial Violet & Cyan",
-    primary: "#2e1065",
-    secondary: "#581c87",
-    accent: "#38bdf8",
-    badgeBg: "#4c1d95",
-    gradient: "linear-gradient(135deg, #2e1065 0%, #581c87 60%, #3b0764 100%)",
-    lightAccent: "#f3e8ff"
-  },
-  {
-    id: "carbon",
-    name: "Midnight Onyx",
-    primary: "#09090b",
-    secondary: "#27272a",
-    accent: "#60a5fa",
-    badgeBg: "#18181b",
-    gradient: "linear-gradient(135deg, #09090b 0%, #27272a 60%, #18181b 100%)",
-    lightAccent: "#f4f4f5"
   }
 ];
 
