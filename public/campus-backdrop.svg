@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 130" width="360" height="130">
+  <defs>
+    <linearGradient id="skyAtmosphere" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#e0f2fe" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="buildingGlassLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748b" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#334155" stop-opacity="0.5" />
+    </linearGradient>
+    <linearGradient id="buildingGlassRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#1e293b" stop-opacity="0.48" />
+    </linearGradient>
+    <linearGradient id="windowGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.25" />
+    </linearGradient>
+    <linearGradient id="lawnGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#059669" stop-opacity="0.45" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sky Base -->
+  <rect width="360" height="130" fill="url(#skyAtmosphere)" />
+
+  <!-- Left Campus Architectural Building (Multi-tier Academic Wing) -->
+  <g id="left-campus-wing" opacity="0.82">
+    <!-- Main Block -->
+    <rect x="-10" y="24" width="95" height="106" rx="3" fill="url(#buildingGlassLeft)" />
+    <!-- Upper Story Roofline / Overhang -->
+    <rect x="-12" y="20" width="100" height="6" rx="2" fill="#475569" opacity="0.6" />
+    <rect x="-8" y="10" width="70" height="12" rx="2" fill="#64748b" opacity="0.4" />
+    
+    <!-- Floor Windows - Floor 3 -->
+    <rect x="2" y="32" width="18" height="12" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="26" y="32" width="18" height="12" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="50" y="32" width="18" height="12" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="72" y="32" width="10" height="12" rx="1.5" fill="url(#windowGlow)" />
+
+    <!-- Floor Windows - Floor 2 -->
+    <rect x="2" y="52" width="18" height="12" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="26" y="52" width="18" height="12" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="50" y="52" width="18" height="12" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="72" y="52" width="10" height="12" rx="1.5" fill="url(#windowGlow)" />
+
+    <!-- Floor Windows - Floor 1 -->
+    <rect x="2" y="72" width="18" height="14" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="26" y="72" width="18" height="14" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="50" y="72" width="18" height="14" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="72" y="72" width="10" height="14" rx="1.5" fill="url(#windowGlow)" />
+
+    <!-- Connecting colonnade corridor -->
+    <rect x="80" y="60" width="35" height="70" fill="url(#buildingGlassLeft)" opacity="0.7" />
+    <line x1="88" y1="64" x2="88" y2="120" stroke="#94a3b8" stroke-width="2" opacity="0.6" />
+    <line x1="100" y1="64" x2="100" y2="120" stroke="#94a3b8" stroke-width="2" opacity="0.6" />
+  </g>
+
+  <!-- Right Campus Architectural Building (Science & Technology Complex) -->
+  <g id="right-campus-wing" opacity="0.82">
+    <!-- Right Main Block -->
+    <rect x="275" y="20" width="95" height="110" rx="3" fill="url(#buildingGlassRight)" />
+    <rect x="272" y="16" width="98" height="6" rx="2" fill="#334155" opacity="0.6" />
+    <rect x="295" y="8" width="60" height="10" rx="2" fill="#475569" opacity="0.4" />
+
+    <!-- Right Window Strips (Curtain Wall Modern Facade) -->
+    <rect x="282" y="28" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="304" y="28" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="326" y="28" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="348" y="28" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+
+    <rect x="282" y="48" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="304" y="48" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="326" y="48" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="348" y="48" width="16" height="13" rx="1.5" fill="url(#windowGlow)" />
+
+    <rect x="282" y="68" width="16" height="15" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="304" y="68" width="16" height="15" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="326" y="68" width="16" height="15" rx="1.5" fill="url(#windowGlow)" />
+    <rect x="348" y="68" width="16" height="15" rx="1.5" fill="url(#windowGlow)" />
+
+    <!-- Right wing connecting colonnade -->
+    <rect x="245" y="55" width="35" height="75" fill="url(#buildingGlassRight)" opacity="0.65" />
+    <line x1="256" y1="58" x2="256" y2="120" stroke="#94a3b8" stroke-width="2" opacity="0.6" />
+    <line x1="268" y1="58" x2="268" y2="120" stroke="#94a3b8" stroke-width="2" opacity="0.6" />
+  </g>
+
+  <!-- Campus Trees & Foliage -->
+  <g id="campus-trees" opacity="0.75">
+    <!-- Left trees -->
+    <ellipse cx="108" cy="98" rx="12" ry="18" fill="#10b981" opacity="0.6" />
+    <ellipse cx="116" cy="102" rx="9" ry="14" fill="#059669" opacity="0.7" />
+    <!-- Right trees -->
+    <ellipse cx="242" cy="98" rx="12" ry="18" fill="#10b981" opacity="0.6" />
+    <ellipse cx="234" cy="102" rx="9" ry="14" fill="#059669" opacity="0.7" />
+  </g>
+
+  <!-- Ground Lawn & Pathway -->
+  <path d="M 0 108 Q 180 98 360 108 L 360 130 L 0 130 Z" fill="url(#lawnGrad)" />
+</svg>

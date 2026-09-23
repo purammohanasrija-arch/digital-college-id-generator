@@ -1,120 +1,406 @@
 export const initialStudentState = {
-  name: "",
-  fatherName: "",
-  studentId: "",
-  dob: "",
-  gender: "",
-  bloodGroup: "",
-  phone: "",
-  email: "",
-  photo: "",
-  college: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
-  collegeChoice: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
-  customCollege: {
-    name: "",
-    shortName: "",
-    location: ""
-  },
-  department: "",
-  course: "",
-  year: "",
-  section: "",
-  academicYear: "",
-  address: "",
-  emergencyContact: ""
-};
-
-export const sampleStudentData = {
-  name: "Alexander J. Morgan",
-  fatherName: "Robert H. Morgan",
-  studentId: "STU-2024-8842",
-  dob: "2003-08-14",
-  gender: "Male",
-  bloodGroup: "O+",
-  phone: "+1 (555) 382-9471",
-  email: "alex.morgan@apex.edu",
-  photo: "",
-  college: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
-  collegeChoice: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
-  customCollege: {
-    name: "",
-    shortName: "",
-    location: ""
-  },
-  department: "School of Computing & Artificial Intelligence",
-  course: "B.Tech Computer Science & Engineering",
+  name: "Mohana P",
+  fatherName: "Prasad P",
+  studentId: "24CS1234",
+  dob: "2004-05-18",
+  gender: "Female",
+  bloodGroup: "B+",
+  phone: "+91 98765 43210",
+  email: "mohana.p@vignan.ac.in",
+  photo: "/student_mohana_portrait.png",
+  college: "Vignan's Foundation for Science, Technology and Research",
+  collegeChoice: "Vignan's Foundation for Science, Technology and Research",
+  department: "Computer Science & Engineering",
+  course: "B.Tech",
   year: "3rd Year",
   section: "Section A",
+  hostel: "Girls Hostel - A",
+  validUntil: "2028",
   academicYear: "2024 - 2028",
-  address: "402 Silicon Valley Blvd, Technology Park, CA 94025",
-  emergencyContact: "+1 (555) 998-1122 (Guardian)"
+  address: "Girls Hostel - A, VFSTR Campus, Vadlamudi, AP 522213",
+  emergencyContact: "+91 98480 12345 (Campus Warden)",
+  tagline: "Learn\nInnovate\nLead ✨",
+  motto: "For a Better Tomorrow"
 };
 
-export const cardThemes = [
+export const sampleStudentData = { ...initialStudentState };
+
+// 8 Selectable Card Templates as required
+export const cardTemplates = [
   {
     id: "aurora",
     name: "Aurora",
-    primary: "#0c1a30",
-    secondary: "#0284c7",
-    accent: "#38bdf8",
-    badgeBg: "#075985",
-    gradient: "linear-gradient(135deg, #0c1a30 0%, #0369a1 50%, #4f46e5 100%)",
-    lightAccent: "#e0f2fe"
+    thumb: "/thumb_aurora.png",
+    cardBg: "linear-gradient(145deg, rgba(255, 255, 255, 0.88) 0%, rgba(240, 245, 255, 0.78) 32%, rgba(228, 238, 255, 0.72) 68%, rgba(248, 238, 255, 0.84) 100%)",
+    borderGlow: "rgba(168, 85, 247, 0.55)",
+    textColor: "#0f172a",
+    primaryColor: "#1e3a8a",
+    styleDesc: "Translucent frosted glass with iridescent rainbow edges"
   },
   {
-    id: "ocean",
-    name: "Ocean",
-    primary: "#082f49",
-    secondary: "#0284c7",
-    accent: "#06b6d4",
-    badgeBg: "#0e7490",
-    gradient: "linear-gradient(135deg, #082f49 0%, #0369a1 60%, #0891b2 100%)",
-    lightAccent: "#cffafe"
+    id: "minimal",
+    name: "Minimal",
+    thumb: "/thumb_minimal.png",
+    cardBg: "linear-gradient(145deg, rgba(255, 255, 255, 0.94) 0%, rgba(248, 250, 252, 0.92) 100%)",
+    borderGlow: "rgba(255, 255, 255, 0.7)",
+    textColor: "#0f172a",
+    primaryColor: "#0284c7",
+    styleDesc: "Crisp architectural white frost with clean lines"
   },
   {
-    id: "galaxy",
-    name: "Galaxy",
-    primary: "#2e1065",
-    secondary: "#6b21a8",
-    accent: "#c084fc",
-    badgeBg: "#581c87",
-    gradient: "linear-gradient(135deg, #2e1065 0%, #7e22ce 55%, #ec4899 100%)",
-    lightAccent: "#f3e8ff"
+    id: "classic",
+    name: "Classic",
+    thumb: "/thumb_classic.png",
+    cardBg: "linear-gradient(145deg, rgba(241, 245, 249, 0.92) 0%, rgba(219, 234, 254, 0.86) 100%)",
+    borderGlow: "rgba(59, 130, 246, 0.5)",
+    textColor: "#0f172a",
+    primaryColor: "#1d4ed8",
+    styleDesc: "Royal academic navy and sapphire collegiate styling"
   },
   {
-    id: "cyber",
-    name: "Cyber",
-    primary: "#030712",
-    secondary: "#111827",
-    accent: "#22d3ee",
-    badgeBg: "#1f2937",
-    gradient: "linear-gradient(135deg, #030712 0%, #0f172a 50%, #064e3b 100%)",
-    lightAccent: "#ccfbf1"
+    id: "dark",
+    name: "Dark",
+    thumb: "/thumb_dark.png",
+    cardBg: "linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 27, 75, 0.94) 100%)",
+    borderGlow: "rgba(168, 85, 247, 0.4)",
+    textColor: "#ffffff",
+    primaryColor: "#38bdf8",
+    isDark: true,
+    styleDesc: "Obsidian dark glass with luminous typography"
   },
   {
-    id: "royal",
-    name: "Royal",
-    primary: "#0f172a",
-    secondary: "#1e3a8a",
-    accent: "#f59e0b",
-    badgeBg: "#1e293b",
-    gradient: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #172554 100%)",
-    lightAccent: "#fef3c7"
+    id: "holographic",
+    name: "Holographic",
+    thumb: "/thumb_aurora.png",
+    cardBg: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(236, 72, 153, 0.3) 35%, rgba(56, 189, 248, 0.3) 70%, rgba(255, 255, 255, 0.9) 100%)",
+    borderGlow: "rgba(236, 72, 153, 0.6)",
+    textColor: "#0f172a",
+    primaryColor: "#7e22ce",
+    styleDesc: "Prismatic chromatic sheen with vivid rainbow refraction"
   },
   {
-    id: "emerald",
-    name: "Emerald",
-    primary: "#022c22",
-    secondary: "#065f46",
-    accent: "#34d399",
-    badgeBg: "#047857",
-    gradient: "linear-gradient(135deg, #022c22 0%, #065f46 60%, #064e3b 100%)",
-    lightAccent: "#d1fae5"
+    id: "neon",
+    name: "Neon",
+    thumb: "/thumb_dark.png",
+    cardBg: "linear-gradient(145deg, rgba(6, 7, 18, 0.94) 0%, rgba(17, 24, 39, 0.96) 100%)",
+    borderGlow: "rgba(6, 182, 212, 0.8)",
+    textColor: "#ffffff",
+    primaryColor: "#22d3ee",
+    isDark: true,
+    styleDesc: "Cyberpunk electric cyan and ultraviolet edge illumination"
+  },
+  {
+    id: "glass",
+    name: "Glass",
+    thumb: "/thumb_minimal.png",
+    cardBg: "linear-gradient(145deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.25) 100%)",
+    borderGlow: "rgba(255, 255, 255, 0.6)",
+    textColor: "#0f172a",
+    primaryColor: "#0f172a",
+    styleDesc: "Ultra-pure transparent acrylic liquid glass"
+  },
+  {
+    id: "university",
+    name: "University",
+    thumb: "/thumb_classic.png",
+    cardBg: "linear-gradient(145deg, rgba(254, 252, 232, 0.92) 0%, rgba(254, 243, 199, 0.85) 100%)",
+    borderGlow: "rgba(245, 158, 11, 0.5)",
+    textColor: "#0f172a",
+    primaryColor: "#b45309",
+    styleDesc: "Prestigious Ivy-league heritage gold & ivory parchment"
+  }
+];
+
+// 6 Selectable Accent Colors as required
+export const accentColors = [
+  { id: "purple", name: "Purple", hex: "#a855f7", ring: "#c084fc", glow: "rgba(168, 85, 247, 0.55)" },
+  { id: "blue", name: "Blue", hex: "#3b82f6", ring: "#60a5fa", glow: "rgba(59, 130, 246, 0.55)" },
+  { id: "pink", name: "Pink", hex: "#ec4899", ring: "#f472b6", glow: "rgba(236, 72, 153, 0.55)" },
+  { id: "mint", name: "Mint", hex: "#10b981", ring: "#34d399", glow: "rgba(16, 185, 129, 0.55)" },
+  { id: "orange", name: "Orange", hex: "#f97316", ring: "#fb923c", glow: "rgba(249, 115, 22, 0.55)" },
+  { id: "cyan", name: "Cyan", hex: "#06b6d4", ring: "#38bdf8", glow: "rgba(6, 182, 212, 0.55)" }
+];
+
+// 10 Sample Colleges as required
+export const sampleColleges = [
+  {
+    id: "vfstr",
+    name: "Vignan's Foundation for Science, Technology and Research",
+    shortName: "VFSTR",
+    location: "Vadlamudi, Guntur, Andhra Pradesh",
+    accreditation: "Deemed to be University • NAAC 'A+' Grade",
+    tagline: "Learn\nInnovate\nLead ✨",
+    motto: "For a Better Tomorrow",
+    crestImg: "/vignan_crest_clean.png",
+    bottomLogoImg: "/vignan_logo_bottom.png",
+    primaryColor: "#1e3a8a",
+    defaultLogo: {
+      text: "VFSTR",
+      shape: "shield",
+      icon: "education",
+      style: "gradient",
+      bgColor: "#1e3a8a",
+      textColor: "#ffffff",
+      borderColor: "#38bdf8",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "iith",
+    name: "IIT Hyderabad",
+    shortName: "IITH",
+    location: "Kandi, Sangareddy, Telangana",
+    accreditation: "Institute of National Importance • NIRF #8",
+    tagline: "Invention\nInnovation\nImpact ✨",
+    motto: "Dedicated to the Nation",
+    primaryColor: "#0f766e",
+    defaultLogo: {
+      text: "IITH",
+      shape: "shield",
+      icon: "technology",
+      style: "gradient",
+      bgColor: "#0f766e",
+      textColor: "#ffffff",
+      borderColor: "#2dd4bf",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "nitw",
+    name: "NIT Warangal",
+    shortName: "NITW",
+    location: "Warangal, Telangana",
+    accreditation: "Institute of National Importance • Estd. 1959",
+    tagline: "Knowledge\nService\nExcellence ✨",
+    motto: "Truth is Eternal",
+    primaryColor: "#1e40af",
+    defaultLogo: {
+      text: "NITW",
+      shape: "circle",
+      icon: "science",
+      style: "gradient",
+      bgColor: "#1e40af",
+      textColor: "#ffffff",
+      borderColor: "#fbbf24",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "au",
+    name: "Andhra University",
+    shortName: "AU",
+    location: "Visakhapatnam, Andhra Pradesh",
+    accreditation: "Estd. 1926 • NAAC 'A++' Grade",
+    tagline: "Tejasvinav\nAdhitamastu\nEver Forward ✨",
+    motto: "May Our Study Be Glorious",
+    primaryColor: "#701a75",
+    defaultLogo: {
+      text: "AU",
+      shape: "badge",
+      icon: "books",
+      style: "solid",
+      bgColor: "#701a75",
+      textColor: "#ffffff",
+      borderColor: "#f472b6",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "gitam",
+    name: "GITAM University",
+    shortName: "GITAM",
+    location: "Visakhapatnam, Andhra Pradesh",
+    accreditation: "Deemed to be University • NAAC 'A++'",
+    tagline: "Explore\nDream\nAchieve ✨",
+    motto: "Strive, Serve, Thrive",
+    primaryColor: "#065f46",
+    defaultLogo: {
+      text: "GITAM",
+      shape: "circle",
+      icon: "university",
+      style: "gradient",
+      bgColor: "#065f46",
+      textColor: "#ffffff",
+      borderColor: "#34d399",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "klu",
+    name: "KL University",
+    shortName: "KLU",
+    location: "Vaddeswaram, Guntur, AP",
+    accreditation: "KLEF Deemed University • NAAC 'A++' (3.57/4)",
+    tagline: "Innovate\nCreate\nTransform ✨",
+    motto: "Focus on Excellence",
+    primaryColor: "#991b1b",
+    defaultLogo: {
+      text: "KLU",
+      shape: "square",
+      icon: "technology",
+      style: "solid",
+      bgColor: "#991b1b",
+      textColor: "#ffffff",
+      borderColor: "#f59e0b",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "srm",
+    name: "SRM University",
+    shortName: "SRM",
+    location: "Kattankulathur, Chennai / AP",
+    accreditation: "Institute of Science & Technology • NAAC 'A++'",
+    tagline: "Learn\nLeap\nLead ✨",
+    motto: "Learn. Leap. Lead.",
+    primaryColor: "#0284c7",
+    defaultLogo: {
+      text: "SRM",
+      shape: "shield",
+      icon: "education",
+      style: "gradient",
+      bgColor: "#0284c7",
+      textColor: "#ffffff",
+      borderColor: "#38bdf8",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "amrita",
+    name: "Amrita Vishwa Vidyapeetham",
+    shortName: "AMRITA",
+    location: "Coimbatore / Amaravati",
+    accreditation: "Institution of Eminence • NAAC 'A++'",
+    tagline: "Education\nfor Life\nCompassion ✨",
+    motto: "Living in Harmony",
+    primaryColor: "#c2410c",
+    defaultLogo: {
+      text: "AMRITA",
+      shape: "circle",
+      icon: "star",
+      style: "gradient",
+      bgColor: "#c2410c",
+      textColor: "#ffffff",
+      borderColor: "#fb923c",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "vit",
+    name: "VIT University",
+    shortName: "VIT",
+    location: "Vellore / AP",
+    accreditation: "Institute of Eminence • NAAC 'A++'",
+    tagline: "Aspire\nAchieve\nLead ✨",
+    motto: "A Place to Learn, A Chance to Grow",
+    primaryColor: "#1e3a8a",
+    defaultLogo: {
+      text: "VIT",
+      shape: "hexagon",
+      icon: "global",
+      style: "solid",
+      bgColor: "#1e3a8a",
+      textColor: "#ffffff",
+      borderColor: "#f59e0b",
+      border: "medium",
+      size: 46
+    }
+  },
+  {
+    id: "iiith",
+    name: "IIIT Hyderabad",
+    shortName: "IIITH",
+    location: "Gachibowli, Hyderabad, Telangana",
+    accreditation: "Premier Autonomous Research University",
+    tagline: "Research\nDiscovery\nLeadership ✨",
+    motto: "Transforming Society through Tech",
+    primaryColor: "#312e81",
+    defaultLogo: {
+      text: "IIITH",
+      shape: "shield",
+      icon: "technology",
+      style: "gradient",
+      bgColor: "#312e81",
+      textColor: "#ffffff",
+      borderColor: "#818cf8",
+      border: "medium",
+      size: 46
+    }
   }
 ];
 
 export const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 export const genders = ["Male", "Female", "Non-Binary", "Other"];
+
+export const programOptions = [
+  "B.Tech",
+  "B.E.",
+  "B.Sc",
+  "B.Com",
+  "BBA",
+  "BCA",
+  "B.Des",
+  "B.Arch",
+  "B.Pharm",
+  "MBBS",
+  "M.Tech",
+  "M.E.",
+  "M.Sc",
+  "MBA",
+  "MCA",
+  "M.Des",
+  "Ph.D / Doctorate",
+  "Integrated M.Tech (5 Years)",
+  "Diploma"
+];
+
+export const departmentOptions = [
+  "Computer Science & Engineering",
+  "CSE (Artificial Intelligence & ML)",
+  "CSE (Data Science & Cyber Security)",
+  "Information Technology",
+  "Electronics & Communication Engineering",
+  "Electrical & Electronics Engineering",
+  "Mechanical Engineering",
+  "Civil Engineering",
+  "Biotechnology & Bioinformatics",
+  "Chemical & Petroleum Engineering",
+  "Aerospace & Aeronautical Engineering",
+  "Robotics & Automation",
+  "Biomedical Engineering",
+  "Business & Management Studies",
+  "Commerce & Economics",
+  "Sciences & Humanities",
+  "Pharmacy & Pharmaceutical Sciences",
+  "Architecture & Planning",
+  "Design & Media Arts",
+  "Law & Legal Studies",
+  "Other"
+];
+
+export const hostelOptions = [
+  "Girls Hostel - A",
+  "Girls Hostel - B",
+  "Girls Hostel - C",
+  "Boys Hostel - A",
+  "Boys Hostel - B",
+  "Boys Hostel - C",
+  "International Scholars Hostel",
+  "Postgraduate & Research Block",
+  "Executive Deluxe Hall",
+  "Day Scholar (Bus Transport)",
+  "Day Scholar (Self Commute)",
+  "Off-Campus Residence",
+  "Other"
+];
 
 export const yearOptions = [
   "1st Year",
@@ -128,340 +414,30 @@ export const yearOptions = [
   "Ph.D / Research Scholar"
 ];
 
-// Sections 1 to 22 as requested by user, plus common letter sections
-export const sectionOptions = [
-  ...Array.from({ length: 22 }, (_, i) => `Section ${i + 1}`),
-  "Section A",
-  "Section B",
-  "Section C",
-  "Section D",
-  "Batch 1",
-  "Batch 2",
-  "Batch 3"
-];
-
-export const departmentOptions = [
-  "Computer Science & Engineering",
-  "Information Technology",
-  "Artificial Intelligence & Machine Learning",
-  "Data Science & Analytics",
-  "Cyber Security & Forensics",
-  "Electronics & Communication Engineering",
-  "Electrical & Electronics Engineering",
-  "Mechanical Engineering",
-  "Civil Engineering",
-  "Aerospace & Aeronautical Engineering",
-  "Biotechnology & Bioinformatics",
-  "Chemical Engineering",
-  "Business Administration & Management",
-  "Commerce & Financial Studies",
-  "Computer Applications (BCA / MCA)",
-  "Physics & Applied Sciences",
-  "Mathematics & Computing",
-  "Humanities, Arts & Social Sciences"
-];
-
-export const courseOptions = [
-  "B.Tech Computer Science & Engineering",
-  "B.Tech Information Technology",
-  "B.Tech Artificial Intelligence & ML",
-  "B.Tech Electronics & Communication",
-  "B.Tech Mechanical Engineering",
-  "B.Tech Civil Engineering",
-  "B.Tech Electrical Engineering",
-  "B.E. Computer Science",
-  "BCA (Bachelor of Computer Applications)",
-  "B.Sc Computer Science",
-  "B.Sc Information Technology",
-  "B.Sc Data Science",
-  "BBA (Bachelor of Business Admin)",
-  "B.Com (Honours)",
-  "B.A. Economics / English",
-  "M.Tech Computer Science",
-  "M.Tech Artificial Intelligence",
-  "MCA (Master of Computer Applications)",
-  "MBA (Master of Business Admin)",
-  "M.Sc Computer Science",
-  "Ph.D Research Fellow"
-];
-
-export const academicSessionOptions = [
-  "2025 - 2029",
-  "2024 - 2028",
-  "2023 - 2027",
-  "2022 - 2026",
-  "2021 - 2025",
-  "2025 - 2028",
-  "2024 - 2027",
-  "2023 - 2026",
-  "2025 - 2027",
-  "2024 - 2026",
-  "2023 - 2025",
-  "2025 - 2030",
-  "2024 - 2029",
-  "2025 - 2026",
-  "2024 - 2025",
-  "2026 - 2027"
-];
-
-export const sampleColleges = [
-  {
-    id: "vfstr",
-    name: "Vignan's Foundation for Science, Technology and Research (VFSTR)",
-    shortName: "VFSTR",
-    location: "Vadlamudi, Guntur, AP",
-    accreditation: "NAAC A+ Accredited Deemed to be University",
-    defaultLogo: {
-      text: "VF",
-      shape: "circle",
-      icon: "education",
-      style: "gradient",
-      bgColor: "#0f3b7d",
-      textColor: "#ffffff",
-      borderColor: "#f59e0b",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "vignan-univ",
-    name: "Vignan University",
-    shortName: "VU",
-    location: "Guntur, Andhra Pradesh",
-    accreditation: "Estd. u/s 3 of UGC Act 1956",
-    defaultLogo: {
-      text: "VU",
-      shape: "shield",
-      icon: "college",
-      style: "gradient",
-      bgColor: "#1e3a8a",
-      textColor: "#ffffff",
-      borderColor: "#f59e0b",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "klu",
-    name: "KL University",
-    shortName: "KLU",
-    location: "Vaddeswaram, Guntur, AP",
-    accreditation: "Koneru Lakshmaiah Education Foundation (Deemed to be University)",
-    defaultLogo: {
-      text: "KL",
-      shape: "rounded-square",
-      icon: "technology",
-      style: "solid",
-      bgColor: "#991b1b",
-      textColor: "#ffffff",
-      borderColor: "#fbbf24",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "gitam",
-    name: "GITAM University",
-    shortName: "GITAM",
-    location: "Visakhapatnam, Andhra Pradesh",
-    accreditation: "Gandhi Institute of Technology and Management (NAAC A++)",
-    defaultLogo: {
-      text: "G",
-      shape: "badge",
-      icon: "university",
-      style: "gradient",
-      bgColor: "#065f46",
-      textColor: "#ffffff",
-      borderColor: "#facc15",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "andhra-univ",
-    name: "Andhra University",
-    shortName: "AU",
-    location: "Visakhapatnam, Andhra Pradesh",
-    accreditation: "Estd. 1926 • State Public University",
-    defaultLogo: {
-      text: "AU",
-      shape: "circle",
-      icon: "books",
-      style: "outline",
-      bgColor: "#581c87",
-      textColor: "#e9d5ff",
-      borderColor: "#c084fc",
-      border: "thick",
-      size: 46
-    }
-  },
-  {
-    id: "anu",
-    name: "Acharya Nagarjuna University",
-    shortName: "ANU",
-    location: "Nagarjuna Nagar, Guntur, AP",
-    accreditation: "State University Accredited with NAAC 'A' Grade",
-    defaultLogo: {
-      text: "ANU",
-      shape: "shield",
-      icon: "education",
-      style: "gradient",
-      bgColor: "#831843",
-      textColor: "#fef08a",
-      borderColor: "#f59e0b",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "iith",
-    name: "IIT Hyderabad",
-    shortName: "IITH",
-    location: "Kandi, Sangareddy, Telangana",
-    accreditation: "Institute of National Importance • Govt. of India",
-    defaultLogo: {
-      text: "IITH",
-      shape: "hexagon",
-      icon: "science",
-      style: "solid",
-      bgColor: "#0f172a",
-      textColor: "#38bdf8",
-      borderColor: "#38bdf8",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "nitw",
-    name: "NIT Warangal",
-    shortName: "NITW",
-    location: "Warangal, Telangana",
-    accreditation: "Institute of National Importance • NIRF Top Ranked",
-    defaultLogo: {
-      text: "NITW",
-      shape: "shield",
-      icon: "technology",
-      style: "gradient",
-      bgColor: "#14532d",
-      textColor: "#ffffff",
-      borderColor: "#fbbf24",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "iiith",
-    name: "IIIT Hyderabad",
-    shortName: "IIITH",
-    location: "Gachibowli, Hyderabad, Telangana",
-    accreditation: "International Institute of Information Technology",
-    defaultLogo: {
-      text: "IIITH",
-      shape: "square",
-      icon: "technology",
-      style: "solid",
-      bgColor: "#1e1b4b",
-      textColor: "#c7d2fe",
-      borderColor: "#818cf8",
-      border: "thin",
-      size: 46
-    }
-  },
-  {
-    id: "uoh",
-    name: "University of Hyderabad",
-    shortName: "UoH",
-    location: "Prof. C.R. Rao Road, Hyderabad, TS",
-    accreditation: "Institution of Eminence • Central University",
-    defaultLogo: {
-      text: "UoH",
-      shape: "circle",
-      icon: "global",
-      style: "gradient",
-      bgColor: "#1e293b",
-      textColor: "#f8fafc",
-      borderColor: "#38bdf8",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "srm",
-    name: "SRM University",
-    shortName: "SRM",
-    location: "Kattankulathur, Chennai, TN",
-    accreditation: "SRM Institute of Science and Technology (NAAC A++)",
-    defaultLogo: {
-      text: "SRM",
-      shape: "badge",
-      icon: "star",
-      style: "gradient",
-      bgColor: "#1e3a8a",
-      textColor: "#fef08a",
-      borderColor: "#f59e0b",
-      border: "thick",
-      size: 46
-    }
-  },
-  {
-    id: "amrita",
-    name: "Amrita Vishwa Vidyapeetham",
-    shortName: "AVV",
-    location: "Coimbatore, Tamil Nadu",
-    accreditation: "NAAC A++ Multi-Disciplinary Deemed University",
-    defaultLogo: {
-      text: "AVV",
-      shape: "shield",
-      icon: "education",
-      style: "gradient",
-      bgColor: "#7c2d12",
-      textColor: "#ffedd5",
-      borderColor: "#ea580c",
-      border: "medium",
-      size: 46
-    }
-  },
-  {
-    id: "custom",
-    name: "Custom College",
-    shortName: "CUSTOM",
-    location: "",
-    accreditation: "Higher Education Institution",
-    defaultLogo: {
-      text: "COL",
-      shape: "circle",
-      icon: "education",
-      style: "gradient",
-      bgColor: "#1e3a8a",
-      textColor: "#ffffff",
-      borderColor: "#f59e0b",
-      border: "medium",
-      size: 46
-    }
-  }
-];
-
-export const collegeOptions = [
-  ...sampleColleges.map((c) => c.name)
+export const validUntilOptions = [
+  "2026",
+  "2027",
+  "2028",
+  "2029",
+  "2030",
+  "2031"
 ];
 
 export const logoShapes = [
   { id: "circle", label: "Circle" },
   { id: "shield", label: "Shield" },
   { id: "square", label: "Square" },
-  { id: "rounded-square", label: "Rounded Square" },
   { id: "hexagon", label: "Hexagon" },
-  { id: "badge", label: "Badge" }
+  { id: "badge", label: "Crest / Badge" }
 ];
 
 export const logoIcons = [
   { id: "education", label: "Education", emoji: "🎓" },
-  { id: "college", label: "College", emoji: "🏫" },
+  { id: "university", label: "University", emoji: "🏛️" },
   { id: "books", label: "Books", emoji: "📚" },
   { id: "science", label: "Science", emoji: "🔬" },
   { id: "technology", label: "Technology", emoji: "💻" },
   { id: "star", label: "Star", emoji: "⭐" },
-  { id: "university", label: "University", emoji: "🏛️" },
   { id: "global", label: "Global", emoji: "🌐" }
 ];
 
@@ -482,13 +458,10 @@ export const defaultLogoConfig = {
   mode: "default", // "default" | "creator" | "upload"
   customUpload: "",
   activeLogo: { ...sampleColleges[0].defaultLogo },
-  uploadShape: "circle", // "circle" | "rounded" | "natural"
-  uploadBg: "white",     // "white" | "transparent" | "glass"
-  uploadSize: 48,
-  uploadFit: "contain"   // "contain" | "cover"
+  uploadShape: "circle",
+  uploadBg: "white",
+  uploadSize: 46,
+  uploadFit: "contain"
 };
 
 export const initialLogoConfig = defaultLogoConfig;
-
-
-

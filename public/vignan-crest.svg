@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="vignanShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" />
+      <stop offset="50%" stop-color="#172554" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="vignanGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <filter id="vignanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e3a8a" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Outer Golden Laurel Arch -->
+  <circle cx="60" cy="60" r="54" fill="none" stroke="url(#vignanGold)" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.85" />
+
+  <!-- Shield Base with Shadow -->
+  <path d="M 28 26 Q 60 20 92 26 C 92 68 80 94 60 108 C 40 94 28 68 28 26 Z" 
+        fill="url(#vignanShieldGrad)" 
+        stroke="url(#vignanGold)" 
+        stroke-width="3" 
+        filter="url(#vignanGlow)" />
+
+  <!-- Inner Shield Trim Line -->
+  <path d="M 34 32 Q 60 27 86 32 C 86 64 76 87 60 99 C 44 87 34 64 34 32 Z" 
+        fill="none" 
+        stroke="#38bdf8" 
+        stroke-width="1.2" 
+        opacity="0.7" />
+
+  <!-- Central Star of Knowledge / Compass -->
+  <g transform="translate(60, 54)">
+    <!-- Radial Rays -->
+    <path d="M 0 -22 L 4 -7 L 18 -4 L 6 3 L 8 18 L 0 8 L -8 18 L -6 3 L -18 -4 L -4 -7 Z" fill="url(#vignanGold)" />
+    <!-- Inner Core Circle -->
+    <circle cx="0" cy="0" r="4.5" fill="#1e3a8a" stroke="url(#vignanGold)" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="2" fill="#fde047" />
+  </g>
+
+  <!-- Open Book of Learning -->
+  <g transform="translate(60, 80)">
+    <path d="M -16 -6 Q 0 -10 0 2 Q 0 -10 16 -6 L 16 8 Q 0 4 0 16 Q 0 4 -16 8 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1" />
+    <line x1="0" y1="2" x2="0" y2="16" stroke="#1e3a8a" stroke-width="1.2" />
+  </g>
+
+  <!-- Motto Banner Ribbon -->
+  <path d="M 20 102 Q 60 116 100 102 L 96 110 Q 60 122 24 110 Z" fill="url(#vignanGold)" opacity="0.95" />
+</svg>

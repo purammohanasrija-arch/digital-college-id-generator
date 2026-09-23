@@ -1,664 +1,452 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import BarcodeCanvas from './BarcodeCanvas';
 import CollegeLogo from './CollegeLogo';
+import DynamicBarcode from './DynamicBarcode';
 import {
-  Shield,
+  User,
+  GraduationCap,
+  Building,
+  Droplet,
+  Clock,
+  RotateCw,
   Phone,
   Mail,
-  Calendar,
-  HeartPulse,
-  Hash,
   MapPin,
-  Building,
-  GraduationCap,
-  Globe,
-  Award,
-  Layers,
-  Sparkles,
-  Eye,
-  CheckCircle,
-  FileBadge,
-  QrCode,
-  Barcode as BarcodeIcon,
-  Maximize2,
-  X,
-  ArrowLeft,
-  Copy,
-  Check,
-  UserCheck,
-  ShieldCheck
+  ShieldCheck,
+  ScanLine
 } from 'lucide-react';
-import { sampleStudentData, sampleColleges } from '../utils/defaultData';
 
 const IDCard = ({
   student,
   cardRef,
-  theme,
-  activeSide,
-  onToggleSide,
+  template,
+  accentColor,
   logoConfig,
-  isLiveCustom
+  activeSide = 'front',
+  onToggleSide,
+  onOpenScanner,
+  showBackground = true,
+  showQRCode = true,
+  showTagline = true,
+  showBarcode = true,
+  showSignature = true,
+  showHostel = true,
+  showBloodGroup = true
 }) => {
-  const [showTestModal, setShowTestModal] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const tiltStageRef = useRef(null);
+  // Student values with dynamic fallbacks
+  const name = student.name || 'Mohana P';
+  const rollNo = student.studentId || '24CS1234';
+  const branch = student.department || 'Computer Science & Engineering';
+  const course = student.course || 'B.Tech';
+  const year = student.year || '3rd Year';
+  const hostel = student.hostel || 'Girls Hostel - A';
+  const bloodGroup = student.bloodGroup || 'B+';
+  const validUntil = student.validUntil || '2028';
+  const college = student.college || "Vignan's Foundation for Science, Technology and Research";
+  const photo = student.photo || '/mohana_center.png';
+  const tagline = student.tagline || 'Learn\nInnovate\nLead ✨';
+  const motto = student.motto || 'For a Better Tomorrow';
 
-  // Close modal on Escape key and prevent background scroll when modal is open
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setShowTestModal(false);
-      }
-    };
-    if (showTestModal) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [showTestModal]);
+  // 1. Detailed Full Official QR Verification Payload (Scannable by all iPhone & Android Cameras, Google Lens, Samsung Camera)
+  const fullVerificationPayload = [
+    `🎓 OFFICIAL STUDENT ID VERIFICATION`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `Name: ${name}`,
+    `Roll No: ${rollNo}`,
+    `College: ${college}`,
+    `Course: ${course} (${year})`,
+    `Department: ${branch}`,
+    `Hostel: ${hostel}`,
+    `Blood Group: ${bloodGroup}`,
+    `Valid Until: ${validUntil}`,
+    `Status: OFFICIAL VERIFIED ACTIVE`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `Issued by CampusID Verification Authority`
+  ].join('\n');
 
-  // College name & metadata resolution
-  const isCustom = student.collegeChoice === 'Custom College';
-  const collegeName = isCustom
-    ? (student.customCollege?.name?.trim() || student.college?.trim() || 'Custom College')
-    : (student.college?.trim() || sampleStudentData.college);
+  // 2. Concise Front Mini-Badge Payload (Optimized for 50px badge size so modules are crisp and easily scannable)
+  const conciseFrontPayload = [
+    `🎓 STUDENT ID: ${rollNo}`,
+    `Name: ${name}`,
+    `Branch: ${branch}`,
+    `College: ${college.split(' ')[0]}`,
+    `Valid: ${validUntil} • VERIFIED ACTIVE`
+  ].join('\n');
 
-  const collegeMeta = sampleColleges.find((c) => c.name === (student.collegeChoice || student.college)) || null;
-  const collegeLocation = isCustom
-    ? (student.customCollege?.location?.trim() || '')
-    : (collegeMeta?.location || '');
-
-  const collegeAccreditation =
-    collegeMeta?.accreditation ||
-    (collegeLocation ? `${collegeLocation} • Accredited Institution` : "Affiliated to State University • Accredited Grade 'A++'");
-
-  // Merge student input with fallback sample data so preview is never blank
-  const displayData = {
-    name: student.name.trim() || sampleStudentData.name,
-    fatherName: student.fatherName?.trim() || sampleStudentData.fatherName,
-    studentId: student.studentId.trim() || sampleStudentData.studentId,
-    dob: student.dob || sampleStudentData.dob,
-    gender: student.gender || sampleStudentData.gender,
-    bloodGroup: student.bloodGroup || sampleStudentData.bloodGroup,
-    phone: student.phone.trim() || sampleStudentData.phone,
-    email: student.email.trim() || sampleStudentData.email,
-    photo: student.photo || '',
-    college: collegeName,
-    collegeLocation: collegeLocation,
-    collegeAccreditation: collegeAccreditation,
-    department: student.department.trim() || sampleStudentData.department,
-    course: student.course.trim() || sampleStudentData.course,
-    year: student.year || sampleStudentData.year,
-    section: student.section.trim() || sampleStudentData.section,
-    academicYear: student.academicYear.trim() || sampleStudentData.academicYear,
-    address: student.address.trim() || sampleStudentData.address,
-    emergencyContact: student.emergencyContact.trim() || sampleStudentData.emergencyContact
-  };
-
-  // Human-readable and camera-friendly QR Code Verification Payload
-  const qrPayload = `🎓 STUDENT IDENTITY VERIFICATION
-Name: ${displayData.name}
-Father's Name: ${displayData.fatherName}
-ID: ${displayData.studentId}
-College: ${displayData.college}
-Dept: ${displayData.department}
-Course: ${displayData.course}
-Year: ${displayData.year}
-Validity: ${displayData.academicYear}
-Status: OFFICIAL VERIFIED STUDENT ✅`;
-
-  const handleCopyPayload = () => {
-    navigator.clipboard.writeText(qrPayload);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  // 3D Tilt calculations on mouse movement (Zero React re-renders)
-  const handleMouseMove = (e) => {
-    if (window.matchMedia('(hover: none)').matches) return;
-    const stage = tiltStageRef.current;
-    if (!stage) return;
-
-    const rect = stage.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5; // -0.5 to 0.5
-
-    const rotateX = -y * 18; // Max 9 deg tilt
-    const rotateY = x * 18;  // Max 9 deg tilt
-    const glareX = ((e.clientX - rect.left) / rect.width) * 100;
-    const glareY = ((e.clientY - rect.top) / rect.height) * 100;
-
-    stage.style.setProperty('--card-rotate-x', `${rotateX}deg`);
-    stage.style.setProperty('--card-rotate-y', `${rotateY}deg`);
-    stage.style.setProperty('--glare-x', `${glareX}%`);
-    stage.style.setProperty('--glare-y', `${glareY}%`);
-    stage.style.setProperty('--glare-opacity', '0.75');
-  };
-
-  const handleMouseLeave = () => {
-    const stage = tiltStageRef.current;
-    if (!stage) return;
-
-    stage.style.setProperty('--card-rotate-x', '0deg');
-    stage.style.setProperty('--card-rotate-y', '0deg');
-    stage.style.setProperty('--glare-opacity', '0');
-  };
+  const isCustomLogo =
+    logoConfig && (
+      logoConfig.mode === 'creator' ||
+      logoConfig.mode === 'upload' ||
+      (logoConfig.mode === 'default' && (student?.collegeChoice ? !student.collegeChoice.includes('Vignan') : !college.includes('Vignan')))
+    );
 
   return (
-    <div className="id-card-stage">
-      {/* Top Preview Controls Bar */}
-      <div className="card-stage-controls">
-        <div className="side-toggle-group">
+    <div className="holo-card-presentation-wrap">
+      {/* Side Switcher Floating Pill */}
+      <div className="card-quick-toggle-pill">
+        <button
+          type="button"
+          className={`side-pill-btn ${activeSide === 'front' ? 'active' : ''}`}
+          onClick={() => onToggleSide?.('front')}
+        >
+          Front
+        </button>
+        <button
+          type="button"
+          className={`side-pill-btn ${activeSide === 'back' ? 'active' : ''}`}
+          onClick={() => onToggleSide?.('back')}
+        >
+          Back (QR)
+        </button>
+        <button
+          type="button"
+          className="flip-icon-btn"
+          onClick={() => onToggleSide?.(activeSide === 'front' ? 'back' : 'front')}
+          title="Flip Card"
+          aria-label="Flip Card"
+        >
+          <RotateCw size={13} />
+        </button>
+        {onOpenScanner && (
           <button
             type="button"
-            className={`side-tab-btn ${activeSide === 'front' ? 'active' : ''}`}
-            onClick={() => onToggleSide('front')}
+            className="side-pill-btn verifier-pill-btn"
+            onClick={onOpenScanner}
+            title="Test Live Scanner (QR & Barcode)"
           >
-            <FileBadge size={15} />
-            <span>Front Side</span>
+            <ScanLine size={12} className="scan-icon-spark" />
+            <span>Test Scan</span>
           </button>
-          <button
-            type="button"
-            className={`side-tab-btn ${activeSide === 'back' ? 'active' : ''}`}
-            onClick={() => onToggleSide('back')}
-          >
-            <Layers size={15} />
-            <span>Back Side</span>
-          </button>
-        </div>
-
-        <div className="status-indicator">
-          <button
-            type="button"
-            className="btn-test-scanner"
-            onClick={() => setShowTestModal(true)}
-            title="Inspect & test scannability of QR & Barcode"
-          >
-            <Maximize2 size={13} />
-            <span>Test Scanners</span>
-          </button>
-        </div>
+        )}
       </div>
 
-      {/* Lanyard Strap & Clip Simulation */}
-      <div className="lanyard-container">
-        <div className="lanyard-ribbon" style={{ background: theme.primary }}>
-          <div className="lanyard-texture"></div>
-          <span className="lanyard-text">
-            {collegeMeta?.shortName || student.customCollege?.shortName || 'CAMPUS ID'}
-          </span>
-        </div>
-        <div className="lanyard-hardware">
-          <div className="lanyard-metal-clip"></div>
-          <div className="lanyard-metal-loop"></div>
-        </div>
-      </div>
+      {/* Hero ID Card Wrapper with Ambient Bloom and 3D Depth */}
+      <div className="card-hero-glow-positioner">
+        {/* Luminous Ambient Bloom Glow Layer directly behind the card */}
+        <div className="card-ambient-bloom-glow" aria-hidden="true"></div>
 
-      {/* 3D TILT STAGE WRAPPER */}
-      <div
-        ref={tiltStageRef}
-        className="holo-tilt-stage"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        {/* Holographic Border Outer Glow Frame */}
-        <div className="holo-border-frame">
-          {/* Moving Light Streak across the card surface */}
-          <div className="holo-light-streak" aria-hidden="true"></div>
+        {/* The Target Card Container for html2canvas / export */}
+        <div
+          ref={cardRef}
+          id="campus-hologram-card"
+          className={`campus-id-card-frame template-${template?.id || 'aurora'} ${template?.isDark ? 'theme-card-dark' : 'theme-card-light'} ${activeSide === 'back' ? 'is-back' : ''}`}
+          style={{
+            '--accent-color': accentColor?.hex || '#a855f7',
+            '--accent-ring': accentColor?.ring || '#c084fc',
+            '--accent-glow': accentColor?.glow || 'rgba(168, 85, 247, 0.55)',
+            background: template?.cardBg
+          }}
+        >
+          {/* Iridescent Crystal Specular Overlay */}
+          <div className="card-glass-specular-edge" aria-hidden="true"></div>
 
-          {/* Interactive Specular Glare overlay */}
-          <div className="card-specular-glare" aria-hidden="true"></div>
+          {/* Prismatic Dynamic Holographic Sheen Layer */}
+          <div className="card-holographic-sheen" aria-hidden="true"></div>
 
-          {/* THE ID CARD BADGE — Target for html2canvas */}
-          <div
-            ref={cardRef}
-            id="college-id-card"
-            className={`id-card-badge glass-id-card ${theme.id} ${activeSide === 'back' ? 'showing-back' : ''}`}
-            style={{
-              '--theme-primary': theme.primary,
-              '--theme-secondary': theme.secondary,
-              '--theme-accent': theme.accent,
-              '--theme-badge-bg': theme.badgeBg,
-              '--theme-gradient': theme.gradient,
-              '--theme-light-accent': theme.lightAccent
-            }}
-          >
-            {/* Lanyard Slot Cutout */}
-            <div className="card-slot-punch">
-              <div className="slot-inner-hole"></div>
-            </div>
+          {/* Luminous Beveled Edge Highlight */}
+          <div className="card-beveled-glass-highlight" aria-hidden="true"></div>
 
-            {activeSide === 'front' ? (
-              /* ================= FRONT SIDE ================= */
-              <div className="card-face card-face-front">
-                {/* College Header */}
-                <div className="card-header-bar" style={{ background: theme.gradient }}>
+          {/* ========================================================
+              FRONT SIDE OF CARD (Luminous Frosted Crystal Acrylic)
+              ======================================================== */}
+          {activeSide === 'front' ? (
+            <div className="card-face card-face-front">
+              {/* Top College Header Bar */}
+              <div className="card-header-vignan">
+                <div className="vignan-header-left">
+                  {/* College Crest / Custom Logo */}
+                  <div className="vignan-crest-box">
+                    {isCustomLogo ? (
+                      <CollegeLogo config={logoConfig} size={48} />
+                    ) : (
+                      <img
+                        src="/vignan-crest.svg"
+                        alt="College Crest"
+                        className="vignan-crest-img"
+                        onError={(e) => {
+                          e.target.src = '/college-crest.svg';
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="vignan-header-titles">
+                    <h3 className="vignan-title-primary">
+                      {college.includes("Vignan") ? "VIGNAN'S" : college.split(' ')[0]}
+                    </h3>
+                    <p className="vignan-title-sub">
+                      {college.includes("Vignan") ? "Foundation for Science, Technology and Research" : college}
+                    </p>
+                    <p className="vignan-title-deemed">Deemed to be University</p>
+                  </div>
+                </div>
+
+                {/* Right Tagline */}
+                {showTagline && (
+                  <div className="vignan-header-tagline">
+                    {tagline.split('\n').map((line, idx) => (
+                      <span
+                        key={idx}
+                        className={`tagline-word ${idx === tagline.split('\n').length - 1 ? 'highlight' : ''}`}
+                      >
+                        {line}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Campus Landscape Backdrop & Centered Student Portrait */}
+              <div className="card-middle-stage">
+                {showBackground && (
+                  <div className="card-campus-backdrop" aria-hidden="true">
+                    <div className="campus-building-silhouette"></div>
+                    <div className="campus-backdrop-glow"></div>
+                  </div>
+                )}
+
+                {/* Student Portrait Center with glowing rounded squircle frame */}
+                <div className="card-portrait-center">
+                  <div className="portrait-glow-frame">
+                    <img
+                      src={photo}
+                      alt={name}
+                      className="portrait-student-img"
+                      crossOrigin="anonymous"
+                    />
+                    {/* Embedded Glass Specular Reflection on portrait */}
+                    <div className="portrait-glass-reflection" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Student Name & Academic Program */}
+              <div className="card-student-identity">
+                <h2 className="student-main-name">{name}</h2>
+                <div className="student-degree-line">{course}</div>
+                <div className="student-branch-line">{branch}</div>
+              </div>
+
+              {/* Student Key-Value Details Grid */}
+              <div className="card-details-table">
+                <div className="detail-row">
+                  <div className="detail-key">
+                    <User size={13} className="detail-icon" />
+                    <span>Roll No</span>
+                  </div>
+                  <div className="detail-colon">:</div>
+                  <div className="detail-val roll-val">{rollNo}</div>
+                </div>
+
+                <div className="detail-row">
+                  <div className="detail-key">
+                    <GraduationCap size={13} className="detail-icon" />
+                    <span>Year</span>
+                  </div>
+                  <div className="detail-colon">:</div>
+                  <div className="detail-val">{year}</div>
+                </div>
+
+                {showHostel && (
+                  <div className="detail-row">
+                    <div className="detail-key">
+                      <Building size={13} className="detail-icon" />
+                      <span>Hostel</span>
+                    </div>
+                    <div className="detail-colon">:</div>
+                    <div className="detail-val">{hostel}</div>
+                  </div>
+                )}
+
+                {showBloodGroup && (
+                  <div className="detail-row">
+                    <div className="detail-key">
+                      <Droplet size={13} className="detail-icon" />
+                      <span>Blood Group</span>
+                    </div>
+                    <div className="detail-colon">:</div>
+                    <div className="detail-val blood-val">{bloodGroup}</div>
+                  </div>
+                )}
+
+                {validUntil && (
+                  <div className="detail-row">
+                    <div className="detail-key">
+                      <Clock size={13} className="detail-icon" />
+                      <span>Valid Until</span>
+                    </div>
+                    <div className="detail-colon">:</div>
+                    <div className="detail-val">{validUntil}</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Row: Signature, QR Badge, & University Branding */}
+              <div className="card-bottom-auth-row">
+                {/* Authorized Signature */}
+                {showSignature ? (
+                  <div className="auth-signature-block">
+                    <div className="signature-display-wrap">
+                      <img
+                        src="/authorized-signature.svg"
+                        alt="Authorized Signature"
+                        className="signature-crop-img"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="auth-label">Authorized Signatory</div>
+                  </div>
+                ) : <div className="auth-placeholder"></div>}
+
+                {/* Front Scannable QR Mini-Badge with White Contrast Backing */}
+                {showQRCode && (
                   <div
-                    className={`header-crest-wrap crest-shape-${logoConfig?.uploadShape || 'circle'} crest-bg-${logoConfig?.uploadBg || 'white'}`}
-                    style={{
-                      width: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`,
-                      height: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`,
-                      minWidth: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`,
-                      minHeight: `${logoConfig?.mode === 'upload' ? (logoConfig.uploadSize || 48) : (logoConfig?.activeLogo?.size || 48)}px`
+                    className="front-qr-badge"
+                    title="Click to enlarge & scan student verification"
+                    onClick={onOpenScanner}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onOpenScanner?.();
+                      }
                     }}
                   >
-                    <CollegeLogo
-                      config={logoConfig}
-                      size={
-                        logoConfig?.mode === 'upload'
-                          ? (logoConfig.uploadBg === 'transparent' ? (logoConfig.uploadSize || 48) : (logoConfig.uploadSize || 48) - 4)
-                          : (logoConfig?.activeLogo?.size ? logoConfig.activeLogo.size - 4 : 44)
-                      }
-                    />
-                  </div>
-                  <div className="header-info">
-                    <h3 className="card-college-name">{displayData.college}</h3>
-                    <p className="card-college-accreditation">
-                      {displayData.collegeAccreditation}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Card Sub-banner */}
-                <div className="card-sub-banner">
-                  <div className="badge-title-box">
-                    <span className="badge-title-text">DIGITAL STUDENT ID</span>
-                  </div>
-                  <div className="sub-banner-pills">
-                    <span className="badge-verified-tag">
-                      <span className="verified-dot"></span>
-                      <span>VERIFIED</span>
-                    </span>
-                    <span className="badge-session-pill">{displayData.academicYear}</span>
-                  </div>
-                </div>
-
-                {/* Main Body with Photo & Key Bio */}
-                <div className="card-main-body">
-                  {/* Left Column: Photo, Chip, Hologram */}
-                  <div className="card-photo-column">
-                    <div className="photo-outer-frame holo-photo-ring">
-                      {displayData.photo ? (
-                        <img
-                          src={displayData.photo}
-                          alt={displayData.name}
-                          className="student-portrait-img"
-                        />
-                      ) : (
-                        <div className="default-avatar-graphic">
-                          <svg viewBox="0 0 100 100" className="avatar-svg">
-                            <circle cx="50" cy="50" r="48" fill="#e2e8f0" />
-                            <circle cx="50" cy="38" r="20" fill="#94a3b8" />
-                            <path
-                              d="M 20 85 C 20 65, 35 60, 50 60 C 65 60, 80 65, 80 85 Z"
-                              fill="#64748b"
-                            />
-                          </svg>
-                          <span className="avatar-label">PHOTO</span>
-                        </div>
-                      )}
-                      <div className="photo-corner-accent top-left"></div>
-                      <div className="photo-corner-accent bottom-right"></div>
-                    </div>
-
-                    {/* Smart Chip & Security Hologram */}
-                    <div className="security-badges-row">
-                      {/* Smart RFID Microchip */}
-                      <div className="smart-chip-sim" title="RFID Microchip">
-                        <div className="chip-lines line-top"></div>
-                        <div className="chip-lines line-mid"></div>
-                        <div className="chip-lines line-bot"></div>
-                        <div className="chip-center"></div>
-                      </div>
-
-                      {/* Rainbow Hologram Seal */}
-                      <div className="hologram-seal" title="Authentic Security Hologram">
-                        <div className="hologram-shimmer"></div>
-                        <Shield className="hologram-icon" size={12} />
-                        <span className="hologram-text">SECURE</span>
-                      </div>
-                    </div>
-
-                    {/* Blood Group Tag */}
-                    <div className="blood-group-tag">
-                      <HeartPulse size={12} className="blood-icon" />
-                      <span className="blood-val">{displayData.bloodGroup}</span>
-                    </div>
-
-                    {/* FRONT CODE 128 BARCODE */}
-                    <div className="front-barcode-wrap" title={`Barcode: ${displayData.studentId}`}>
-                      <BarcodeCanvas
-                        value={displayData.studentId}
-                        width={1.05}
-                        height={24}
-                        fontSize={9}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Right Column: Bio Data */}
-                  <div className="card-info-column">
-                    <div className="student-name-block">
-                      <span className="label-tiny">STUDENT NAME</span>
-                      <h2 className="student-full-name">{displayData.name}</h2>
-                      {displayData.fatherName && (
-                        <div className="student-father-name-row">
-                          <span className="label-tiny">S/O • D/O:</span>
-                          <span className="val-father-name">{displayData.fatherName}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="id-number-block">
-                      <span className="label-tiny">REGISTRATION / ROLL NO.</span>
-                      <div className="id-badge-code">
-                        <Hash size={13} className="hash-icon" />
-                        <span className="code-text">{displayData.studentId}</span>
-                      </div>
-                    </div>
-
-                    <div className="academic-meta-grid">
-                      <div className="meta-item full-row">
-                        <span className="label-tiny">DEPARTMENT</span>
-                        <span className="val-text dept-text">{displayData.department}</span>
-                      </div>
-
-                      <div className="meta-item full-row">
-                        <span className="label-tiny">COURSE / PROGRAM</span>
-                        <span className="val-text course-text">{displayData.course}</span>
-                      </div>
-
-                      <div className="meta-item">
-                        <span className="label-tiny">YEAR</span>
-                        <span className="val-text highlight">{displayData.year}</span>
-                      </div>
-
-                      <div className="meta-item">
-                        <span className="label-tiny">SECTION</span>
-                        <span className="val-text highlight">{displayData.section}</span>
-                      </div>
-
-                      <div className="meta-item">
-                        <span className="label-tiny">DATE OF BIRTH</span>
-                        <span className="val-text">{displayData.dob || '—'}</span>
-                      </div>
-
-                      <div className="meta-item">
-                        <span className="label-tiny">GENDER</span>
-                        <span className="val-text">{displayData.gender}</span>
-                      </div>
-
-                      <div className="meta-item full-row contact-mini-row">
-                        <div className="contact-mini-item" title={displayData.phone}>
-                          <Phone size={10} className="contact-mini-icon" />
-                          <span className="contact-text">{displayData.phone || '—'}</span>
-                        </div>
-                        <div className="contact-mini-item" title={displayData.email}>
-                          <Mail size={10} className="contact-mini-icon" />
-                          <span className="contact-text email-text">{displayData.email || '—'}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Zone: QR Code & Dual Signatures */}
-                <div className="card-footer-zone">
-                  {/* Verified Dynamic QR Code */}
-                  <div className="qr-container-box">
-                    <div className="qr-wrapper-border">
+                    <div className="qr-badge-inner-glass">
                       <QRCodeSVG
-                        value={qrPayload}
+                        value={conciseFrontPayload}
                         size={64}
                         level="M"
-                        includeMargin={false}
-                        fgColor="#000000"
+                        includeMargin={true}
                         bgColor="#ffffff"
-                        aria-label="Student Identity QR Code"
+                        fgColor="#000000"
                       />
                     </div>
-                    <span className="qr-caption">SCAN TO VERIFY</span>
                   </div>
+                )}
 
-                  {/* Signatures */}
-                  <div className="signatures-row">
-                    <div className="signature-box">
-                      <div className="signature-line-drawn student-sig">
-                        {displayData.name.split(' ')[0] || 'Student'}
-                      </div>
-                      <div className="signature-divider"></div>
-                      <span className="signature-title">Card Holder Signature</span>
-                    </div>
-
-                    <div className="signature-box">
-                      <div className="signature-line-drawn auth-sig">
-                        Dr. R. Vance
-                      </div>
-                      <div className="signature-divider"></div>
-                      <span className="signature-title">Dean / Authorized Signatory</span>
-                    </div>
+                {/* University Branding Bottom Right */}
+                <div className="vignan-bottom-logo-block">
+                  <img
+                    src="/vignan-branding.svg"
+                    alt={motto}
+                    className="vignan-bottom-logo-img"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                  <div className="vignan-bottom-fallback-labels">
+                    <span className="vignan-bottom-name">
+                      {college.includes("Vignan") ? "VIGNAN" : college.split(' ')[0]}
+                    </span>
+                    <span className="vignan-bottom-sub">{motto}</span>
                   </div>
-                </div>
-
-                {/* Bottom security strip */}
-                <div className="card-bottom-strip" style={{ background: theme.primary }}>
-                  <span>OFFICIAL STUDENT IDENTIFICATION • PROPERTY OF {displayData.college.toUpperCase()}</span>
                 </div>
               </div>
-            ) : (
-              /* ================= BACK SIDE ================= */
-              <div className="card-face card-face-back">
-                <div className="back-top-strip" style={{ background: theme.primary }}>
-                  <span>INSTITUTIONAL REGULATIONS & EMERGENCY CONTACT</span>
-                </div>
 
-                <div className="back-card-body">
-                  {/* Institutional Terms */}
-                  <div className="back-section">
-                    <h4 className="back-heading">Terms & Conditions of Usage</h4>
-                    <ul className="back-rules-list">
-                      <li>This card is non-transferable and remains property of the college.</li>
-                      <li>Loss of this card must be immediately reported to the Campus Registrar.</li>
-                      <li>Must be visibly worn or produced upon request by campus authorities.</li>
-                      <li>Valid strictly through the completion of the registered program.</li>
-                    </ul>
-                  </div>
-
-                  {/* Residential & Emergency Details */}
-                  <div className="back-section contact-section">
-                    {displayData.fatherName && (
-                      <div className="back-info-item">
-                        <UserCheck size={15} className="back-icon" />
-                        <div>
-                          <strong>Father / Guardian:</strong>
-                          <p>{displayData.fatherName}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="back-info-item">
-                      <MapPin size={15} className="back-icon" />
-                      <div>
-                        <strong>Permanent Address:</strong>
-                        <p>{displayData.address || 'Campus Residential Hall, Student Quarter'}</p>
-                      </div>
-                    </div>
-
-                    <div className="back-info-item emergency-item">
-                      <Phone size={15} className="back-icon" />
-                      <div>
-                        <strong>Emergency Contact:</strong>
-                        <p>{displayData.emergencyContact || '+1 (555) 000-HELP (Campus Security)'}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Institution Contact Information */}
-                  <div className="back-institution-box">
-                    <Building size={16} className="inst-icon" />
-                    <div>
-                      <span className="inst-title">{displayData.college}</span>
-                      <p className="inst-details">
-                        {displayData.collegeLocation
-                          ? `${displayData.collegeLocation} • Helpline: +1 (800) 555-UNIV`
-                          : 'Administrative Wing, Academic Avenue • Helpline: +1 (800) 555-UNIV'}
-                      </p>
-                      <p className="inst-web">www.campus-registry.edu • registry@college.edu</p>
-                    </div>
-                  </div>
-
-                  {/* REAL CODE128 BARCODE CANVAS ON BACK */}
-                  <div className="barcode-container">
-                    <div className="real-barcode-wrapper">
-                      <BarcodeCanvas
-                        value={displayData.studentId}
-                        width={1.65}
-                        height={40}
-                        fontSize={11}
-                      />
-                    </div>
-                    <p className="return-policy">
-                      If found, please return to any campus administrative desk or drop in nearest mailbox.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="back-bottom-strip" style={{ background: theme.primary }}>
-                  <span>ISSUED UNDER THE REGULATORY AUTHORITY OF THE ACADEMIC COUNCIL</span>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Tips */}
-      <div className="card-preview-tips">
-        <Sparkles size={14} className="tip-sparkle" />
-        <span>Hover & move mouse to tilt 3D card • Flip side to inspect back barcode</span>
-      </div>
-
-      {/* SCANNER INSPECTION & TEST MODAL */}
-      {showTestModal && (
-        <div className="modal-backdrop" onClick={() => setShowTestModal(false)}>
-          <div className="modal-container scanner-test-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div className="modal-title-group">
-                <QrCode size={20} className="modal-icon-sparkle" />
-                <div>
-                  <h3 className="modal-title">Scanner Inspector & Test Center</h3>
-                  <p className="modal-subtitle">Directly test optical barcode & smartphone camera verification</p>
-                </div>
-              </div>
-              <div className="modal-header-actions">
-                <button
-                  type="button"
-                  className="modal-btn-back"
-                  onClick={() => setShowTestModal(false)}
-                  title="Go back to live ID card preview"
-                >
-                  <ArrowLeft size={15} />
-                  <span>Back to ID Card</span>
-                </button>
-                <button
-                  type="button"
-                  className="modal-btn-close"
-                  onClick={() => setShowTestModal(false)}
-                  aria-label="Close"
-                  title="Close Inspector"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-            </div>
-
-            <div className="scanner-test-content">
-              {/* QR Code Testing Box */}
-              <div className="scanner-card">
-                <div className="scanner-card-header">
-                  <span className="scanner-tag">Smartphone Camera Scannable</span>
-                  <h4>QR Code Payload</h4>
-                </div>
-                <div className="scanner-qr-display">
-                  <div className="scanner-qr-frame">
-                    <QRCodeSVG
-                      value={qrPayload}
-                      size={140}
-                      level="M"
-                      includeMargin={true}
-                      fgColor="#000000"
-                      bgColor="#ffffff"
+              {/* Right Vertical Barcode Strip - Real Standards-Compliant Code-128 SVG Barcode */}
+              {showBarcode && (
+                <aside className="card-right-vertical-barcode" aria-label={`Vertical Barcode for ${rollNo}`}>
+                  <div className="vertical-barcode-rotator" title={`Code-128 Barcode: ${rollNo}`}>
+                    <DynamicBarcode
+                      value={rollNo}
+                      format="CODE128"
+                      width={1.35}
+                      height={28}
+                      displayValue={false}
+                      background="#ffffff"
+                      lineColor="#000000"
+                      margin={3}
                     />
                   </div>
-                </div>
-                <p className="scanner-desc">
-                  Open your iPhone Camera or Google Lens and point at the QR code above. It will instantly pop up the student's verification credentials.
-                </p>
-                <div className="payload-preview-box">
-                  <pre className="payload-text">{qrPayload}</pre>
-                </div>
-                <button
-                  type="button"
-                  className="btn-copy-payload"
-                  onClick={handleCopyPayload}
-                >
-                  {copied ? <Check size={14} /> : <Copy size={14} />}
-                  <span>{copied ? 'Copied to Clipboard!' : 'Copy Decoded Text'}</span>
-                </button>
+                  <div className="barcode-code-vert-text">{rollNo}</div>
+                </aside>
+              )}
+            </div>
+          ) : (
+            /* ========================================================
+                BACK SIDE OF CARD (Official Verification & Emergency Info)
+                ======================================================== */
+            <div className="card-face card-face-back">
+              <div className="back-header-strip">
+                <ShieldCheck size={17} className="shield-icon" />
+                <span>OFFICIAL DIGITAL STUDENT BADGE • VERIFIED</span>
               </div>
 
-              {/* Barcode Testing Box */}
-              <div className="scanner-card">
-                <div className="scanner-card-header">
-                  <span className="scanner-tag">Optical Laser / Mobile App Ready</span>
-                  <h4>Code 128 Barcode</h4>
-                </div>
-                <div className="scanner-barcode-display">
-                  <BarcodeCanvas
-                    value={displayData.studentId}
-                    width={2.2}
-                    height={70}
-                    fontSize={14}
+              {/* Real Dynamic Camera Scannable QR Code */}
+              <div className="back-qr-showcase">
+                <div className="qr-code-holder">
+                  <QRCodeSVG
+                    value={fullVerificationPayload}
+                    size={160}
+                    level="M"
+                    includeMargin={true}
+                    bgColor="#ffffff"
+                    fgColor="#000000"
                   />
                 </div>
-                <p className="scanner-desc">
-                  High-contrast pure Code 128 canvas rasterization with dedicated quiet zones. Fully readable by USB handheld scanners and library check-in apps.
-                </p>
-                <div className="barcode-meta-info">
-                  <div className="meta-pair">
-                    <span className="k">Symbology:</span>
-                    <span className="v">Code 128 Auto</span>
+                <p className="qr-caption">Scan with any phone camera (Google Lens / iOS) to verify identity</p>
+              </div>
+
+              {/* Real Code-128 Horizontal Barcode on Back */}
+              {showBarcode && (
+                <div className="back-barcode-showcase" title={`Code-128 Barcode: ${rollNo}`}>
+                  <div className="back-barcode-box">
+                    <DynamicBarcode
+                      value={rollNo}
+                      format="CODE128"
+                      width={1.6}
+                      height={38}
+                      displayValue={true}
+                      fontSize={11}
+                      background="#ffffff"
+                      lineColor="#000000"
+                      margin={6}
+                    />
                   </div>
-                  <div className="meta-pair">
-                    <span className="k">Encoded String:</span>
-                    <span className="v">{displayData.studentId}</span>
+                  <span className="back-barcode-label">OFFICIAL 1D BARCODE (CODE-128)</span>
+                </div>
+              )}
+
+              {/* Structured Info Grid */}
+              <div className="back-info-grid">
+                <div className="back-info-item">
+                  <Phone size={13} className="back-icon" />
+                  <div>
+                    <div className="back-info-title">Emergency Contact</div>
+                    <div className="back-info-val">+91 98480 12345 (Campus Security)</div>
                   </div>
-                  <div className="meta-pair">
-                    <span className="k">Placements:</span>
-                    <span className="v">Front Check-in + Back Regulatory</span>
+                </div>
+
+                <div className="back-info-item">
+                  <Mail size={13} className="back-icon" />
+                  <div>
+                    <div className="back-info-title">Student Institutional Email</div>
+                    <div className="back-info-val">{student.email || `${name.toLowerCase().replace(/\s+/g, '.')}@univ.ac.in`}</div>
+                  </div>
+                </div>
+
+                <div className="back-info-item">
+                  <MapPin size={13} className="back-icon" />
+                  <div>
+                    <div className="back-info-title">Campus Address</div>
+                    <div className="back-info-val">Vadlamudi, Guntur, AP - 522213</div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="modal-footer">
-              <span className="modal-footer-hint">💡 Press Esc key or click outside to return</span>
-              <button
-                type="button"
-                className="btn-modal-back-primary"
-                onClick={() => setShowTestModal(false)}
-              >
-                <ArrowLeft size={16} />
-                <span>Back to ID Card Preview</span>
-              </button>
+              {/* Official Statutory Disclaimer */}
+              <div className="back-terms-box">
+                <p>
+                  This card is the property of {college}. If found, please return to the Office of the Registrar. Official verified digital credential.
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

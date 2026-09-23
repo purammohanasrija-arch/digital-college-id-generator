@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <defs>
+    <filter id="inkSlightGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="0.8" flood-color="#1e3a8a" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Fluent, Authentic Executive Registrar Signature Ink Strokes -->
+  <g fill="none" stroke="#1e3a8a" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkSlightGlow)">
+    <!-- Initial Loop 'A' / flourish -->
+    <path d="M 24 46 C 28 32, 38 18, 48 24 C 54 28, 52 42, 42 46 C 36 48, 30 45, 34 35 C 38 24, 52 20, 62 28 C 70 34, 68 44, 76 40 C 82 36, 84 28, 92 32 C 98 35, 102 44, 110 38" 
+          stroke-width="2.6" />
+    
+    <!-- Middle Rapid Loop Cursive Script 'sir / registrar' -->
+    <path d="M 112 37 C 118 30, 124 28, 130 36 C 134 42, 138 32, 144 30 C 150 28, 154 38, 160 34 C 166 30, 172 26, 178 32 C 182 36, 186 32, 192 28" 
+          stroke-width="2.3" />
+    
+    <!-- Ascender loop / flourish crossing back -->
+    <path d="M 88 42 C 94 22, 106 14, 114 20 C 120 25, 110 48, 98 52 C 86 56, 78 50, 84 42" 
+          stroke-width="2" />
+
+    <!-- Sharp Terminal Swash Stroke extending across baseline -->
+    <path d="M 40 49 Q 120 44 208 36 C 218 34, 226 31, 232 28" 
+          stroke-width="2.4" />
+    
+    <!-- Underline decorative dot -->
+    <circle cx="216" cy="46" r="2.2" fill="#1e3a8a" stroke="none" />
+  </g>
+</svg>
